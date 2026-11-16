@@ -57,8 +57,63 @@ theorem lateralRowNumerator_swapped_le_dominant
     (u v : ℝ) (hu0 : 0 ≤ u) (hu1 : u ≤ 1)
     (hv0 : 0 ≤ v) (hv1 : v ≤ 1) :
     lateralRowNumerator v u ≤ dominantRowNumerator u v := by
-  simpa only [dominantRowNumerator, add_comm, add_left_comm, add_assoc]
-    using lateralRowNumerator_le_dominant v u hv0 hv1 hu0 hu1
+  calc
+    lateralRowNumerator v u ≤ dominantRowNumerator v u :=
+      lateralRowNumerator_le_dominant v u hv0 hv1 hu0 hu1
+    _ = dominantRowNumerator u v := by
+      unfold dominantRowNumerator
+      ring
+
+/-!
+## Reduction to one scalar parameter at fixed Euclidean radius
+
+A direct square argument shows that, at fixed `u²+v²`, the
+numerator is maximal on the diagonal `u=v`. This is a genuine
+step toward the sharp one-variable bound; no Lipschitz or operator-norm
+claim is hidden in the algebra.
+-/
+
+/-- The nonnegative diagonal parameter with equal Euclidean radius
+contribution from the two smaller normalized coordinates. -/
+noncomputable def diagonalParameter (u v : ℝ) : ℝ :=
+  Real.sqrt ((u ^ 2 + v ^ 2) / 2)
+
+/-- Exact squared-radius normalization of the diagonal parameter. -/
+theorem diagonalParameter_sq (u v : ℝ) :
+    0 ≤ diagonalParameter u v ∧
+      2 * (diagonalParameter u v) ^ 2 = u ^ 2 + v ^ 2 := by
+  have hnonneg : 0 ≤ (u ^ 2 + v ^ 2) / (2 : ℝ) := by positivity
+  constructor
+  · exact Real.sqrt_nonneg _
+  · unfold diagonalParameter
+    rw [Real.sq_sqrt hnonneg]
+    ring
+
+/-- The first-row numerator is maximized on the diagonal at fixed
+sum of squares. No comparison of denominators is required here. -/
+theorem dominantRowNumerator_le_diagonal_of_sq
+    (u v t : ℝ) (ht : 0 ≤ t)
+    (hsq : 2 * t ^ 2 = u ^ 2 + v ^ 2) :
+    dominantRowNumerator u v ≤ dominantRowNumerator t t := by
+  have hsquares : (u + v) ^ 2 ≤ (2 * t) ^ 2 := by
+    nlinarith [sq_nonneg (u - v)]
+  have hsum : u + v ≤ 2 * t := by
+    by_contra h
+    have hstrict : 2 * t < u + v := lt_of_not_ge h
+    have hplus : 0 < u + v + 2 * t := by linarith
+    have hprod : 0 < (u + v - 2 * t) * (u + v + 2 * t) :=
+      mul_pos (sub_pos.mpr hstrict) hplus
+    nlinarith [hprod]
+  unfold dominantRowNumerator
+  nlinarith
+
+/-- Exact reduction to the diagonal, with its parameter defined from
+the original pair of coordinates rather than assumed externally. -/
+theorem dominantRowNumerator_le_diagonal (u v : ℝ) :
+    dominantRowNumerator u v ≤
+      dominantRowNumerator (diagonalParameter u v) (diagonalParameter u v) := by
+  obtain ⟨ht, hsq⟩ := diagonalParameter_sq u v
+  exact dominantRowNumerator_le_diagonal_of_sq u v (diagonalParameter u v) ht hsq
 
 /-- Completing two squares produces a simple rational quadratic cap.
 This is a numerator inequality, not yet a Lipschitz estimate. -/

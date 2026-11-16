@@ -33,37 +33,66 @@ The mathematical coefficient, if ultimately proved optimal, would be optimal **o
 
 ## Results acquired and verification status
 
-**Initial state: infrastructure, foundational Newtonian definitions and existing conservative estimates, with CI verification pending for the enlarged codebase.** The repository does not yet contain a formal proof of the candidate optimal coefficient, its sharpness, or a comparison with published literature sufficient to establish mathematical originality.
+The baseline Newtonian library has been **Lean-compiled in [Action #10](https://github.com/alexodas/NewtonianLipschitzOptimality/actions/runs/43980863205)**. Further work toward the sharp coefficient is in review: [Action #11](https://github.com/alexodas/NewtonianLipschitzOptimality/actions/runs/43982849584) failed on one row-comparison elaboration issue, which is corrected in the present branch. **The current branch's new lemmas remain pending a green full-build run.** The repository does not yet prove the candidate optimal coefficient or its sharpness.
 
-Claims will be recorded as **proposed**, **Lean-compiled**, **independently kernel-checked**, or **externally reviewed** only when corresponding evidence exists. Successful compilation of a definition is not proof of a later theorem; a numerical calculation is not a formal proof. Future results must cite exact Lean declarations and successful CI runs.
+Claims are recorded as **proposed**, **Lean-compiled**, **independently kernel-checked**, or **externally reviewed**, with the exact declaration, source and verification evidence. Individual modules may have compiled in an otherwise unsuccessful workflow, but that does **not** qualify the full proposed revision as verified.
 
-## New proof obligations and incremental quantitative improvements
+## Theorem status ledger
 
-The baseline inequality derives the dimensionless coefficient **10** from
-the exact Newtonian derivative. The next Lean milestone aims to prove the
-strictly improved **nonoptimal coefficient 7**, using the elementary
-three-dimensional conversion `‖x‖₂ ≤ 2 ‖x‖∞`. The new derivative and
-convex-domain theorems must pass their own CI run before being recorded as
-Lean-compiled results.
+The table records **mathematical declarations**, not inferred results or historical result labels. The source of truth for compilation is a successful full CI run on the relevant commit.
 
-The separate algebraic reduction establishes that, for normalized
-nonnegative coordinates `(1,u,v)`, the row associated with a maximal
-coordinate dominates the other two absolute Jacobian row numerators.
-The stationary cubic has an exact sign bracket and is strictly decreasing
-on `[0,1]`. **These are individual intermediate statements:** identifying
-the full operator norm, proving the maximum of the candidate coefficient,
-and constructing a sharpness witness remain open.
+| Exact Lean declaration | Source | Verification / role |
+|---|---|---|
+| `NewtonianPointSource.accelerationField_fderiv_full` | `NewtonianLipschitz/Derivative.lean` | **Lean-compiled**, Action #10: exact Fréchet derivative of the physical inverse-cube force |
+| `NewtonianPointSource.accelerationField_fderiv_norm_le_ten_of_clearance` | `NewtonianLipschitz/BaselineBounds.lean` | **Lean-compiled**, Action #10: conservative coefficient 10, not sharp |
+| `NewtonianPointSource.accelerationField_lipschitzOnWith_of_clearance` | `NewtonianLipschitz/ConvexBaseline.lean` | **Lean-compiled**, Action #10: conservative bound on convex noncollision domains |
+| `NewtonianPointSource.accelerationField_fderiv_norm_le_seven_of_clearance` | `NewtonianLipschitz/ImprovedBounds.lean` | **Pending complete successful CI**, optional nonoptimal coefficient 7; not on critical path |
+| `NewtonianPointSource.accelerationField_lipschitzOnWith_seven` | `NewtonianLipschitz/ConvexImproved.lean` | **Pending complete successful CI**, optional convex-domain improvement |
+| `lateralRowNumerator_le_dominant`, `lateralRowNumerator_swapped_le_dominant`, `dominantRowNumerator_le_diagonal` | `NewtonianLipschitz/JacobianRows.lean` | **Pending CI**, algebraic reductions for the sharp Jacobian bound |
+| `stationaryCubic_strictAntiOn_unitInterval`, `stationaryCubic_root_unique_on_unitInterval` | `NewtonianLipschitz/CubicCandidate.lean` | **Pending complete successful CI**, analysis of the proposed stationary polynomial |
+
+**Not established:** the exact supremum operator norm, the candidate coefficient as a proved maximum, a matching sharpness witness, a global sharp bound on the nonconvex cube exterior, independent Comparator verification or external peer review.
+
+## Direct proof strategy
+
+The **shortest proof-directed route** is to bound the exact Cartesian
+Jacobian in the supremum operator norm. By scaling, signs and coordinate
+permutations, normalize a nonzero point to a nonnegative vector
+`(1,u,v)` with `0 ≤ u,v ≤ 1`. Next show that the row of the maximal
+coordinate dominates, and at fixed `u²+v²` the largest numerator occurs
+at `u=v=t`. This reduces the full upper-bound problem to the exact
+one-variable function
+
+```text
+f(t) = (2 + 6t - 2t²) / (1 + 2t²)^(5/2),    0 ≤ t ≤ 1.
+```
+
+Identify its maximum via the stationary cubic
+`2t³ - 8t² - 4t + 1 = 0`, then **separately prove sharpness** by producing
+admissible configurations whose difference quotients approach the
+claimed derivative norm. Apply the exact derivative bound to convex
+collision-free domains using the existing mean-value infrastructure.
+The nonconvex global-domain question has a distinct geometric obligation.
+
+No further effort on incremental constants such as 7 is a research
+milestone unless it directly resolves a dependency of the sharp proof.
 
 ## Roadmap
 
-1. Define the three-dimensional field, Euclidean radius, supremum norm and collision-free domains; reuse existing mathematical foundations without importing unrelated physical models.
-2. Formalize its exact Fréchet derivative and induced supremum operator norm.
-3. Establish a universal sharp upper bound, with the coefficient specified exactly rather than by an unexplained decimal approximation.
-4. Prove sharpness with admissible configurations excluding every smaller coefficient.
-5. Transfer the result to convex noncollision domains and, separately, investigate the nonconvex exterior of a cube.
-6. Only after the main theorem is established, investigate finite-source sums or uniformly bounded scenario families, and compare the exact statement with prior literature.
+| Milestone | Mathematical / verification obligation | Status |
+|---|---|---|
+| **M01 — Foundation** | Exact physical field, Fréchet derivative, norm bridges and conservative convex-domain certificate | **Verified in Lean, Action #10** |
+| **M02 — Jacobian reduction** | Exact row formula, coordinate/sign symmetry, dominant row and diagonal reduction at fixed radius | **In progress**; partial algebraic lemmas pending CI |
+| **M03 — Sharp upper bound** | Prove the maximum of `f(t)`, existence and uniqueness of its critical root, and the resulting sharp universal derivative coefficient | **Open** |
+| **M04 — Optimality** | Produce a matching directional derivative / nearby-point witness excluding every smaller coefficient | **Open** |
+| **M05 — Domain theorem** | Apply the sharp coefficient on precisely quantified convex safe domains; investigate nonconvex exterior bounds separately | **Open** |
+| **M06 — Scientific and archival validation** | Audit theorem ledger, proofs, assumptions, references, novelty, Palomar metadata, standalone Comparator and full CI before merge | **Open** |
 
-These are research objectives, **not completed theorems**. The order may change after formal verification or mathematical criticism.
+**Update rule:** every mathematical PR revision must refresh this table
+and the theorem ledger with accurate evidence. Keep the history of
+successful verifications, never convert a candidate into an acquired
+theorem because its numerical value looks plausible, and review the
+entire README before the eventual merge.
 
 ## Repository structure and reproducibility
 
@@ -78,7 +107,7 @@ These are research objectives, **not completed theorems**. The order may change 
 - `NewtonianLipschitz/ConvexBaseline.lean` — nonoptimal Lipschitz bounds on convex safe domains.
 - `NewtonianLipschitz/ImprovedBounds.lean` — proposed new conservative derivative coefficient 7, pending CI.
 - `NewtonianLipschitz/ConvexImproved.lean` — convex-domain companion coefficient 7, pending CI.
-- `NewtonianLipschitz/JacobianRows.lean` — algebraic maximal-coordinate row comparison and quadratic cap, pending CI.
+- `NewtonianLipschitz/JacobianRows.lean` — dominant-row and diagonal-reduction algebra toward the exact coefficient, pending CI.
 - `NewtonianLipschitz/CubicCandidate.lean` — exact definitions for an unproved optimization candidate.
 - `NewtonianLipschitz.lean` — substantive library entry point.
 - `lean-toolchain`, `lakefile.toml`, `lake-manifest.json` — pinned Lean 4 / Mathlib environment.
