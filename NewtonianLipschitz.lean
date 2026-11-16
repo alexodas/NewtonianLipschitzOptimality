@@ -4,3 +4,4 @@ public import NewtonianLipschitz.Derivative
 public import NewtonianLipschitz.Clearance
 public import NewtonianLipschitz.FiniteSources
 public import NewtonianLipschitz.CubicCandidate
+public import NewtonianLipschitz.ConvexBaseline

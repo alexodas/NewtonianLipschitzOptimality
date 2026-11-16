@@ -22,7 +22,7 @@ A current *unverified research candidate* for the pointwise derivative and conve
 
 ## Results acquired and verification status
 
-**Initial state: infrastructure and foundational Newtonian definitions and lemmas, with CI verification pending for the enlarged codebase.** The repository does not yet contain a formal proof of the candidate optimal coefficient, its sharpness, or a comparison with published literature sufficient to establish mathematical originality.
+**Initial state: infrastructure, foundational Newtonian definitions and existing conservative estimates, with CI verification pending for the enlarged codebase.** The repository does not yet contain a formal proof of the candidate optimal coefficient, its sharpness, or a comparison with published literature sufficient to establish mathematical originality.
 
 Claims will be recorded as **proposed**, **Lean-compiled**, **independently kernel-checked**, or **externally reviewed** only when corresponding evidence exists. Successful compilation of a definition is not proof of a later theorem; a numerical calculation is not a formal proof. Future results must cite exact Lean declarations and successful CI runs.
 
@@ -46,6 +46,8 @@ These are research objectives, **not completed theorems**. The order may change 
 - `NewtonianLipschitz/Derivative.lean` — full Fréchet derivative of the exact point-source field.
 - `NewtonianLipschitz/Clearance.lean` — explicit geometric anchor-to-clearance lemmas.
 - `NewtonianLipschitz/FiniteSources.lean` — finite exact differential-force sums.
+- `NewtonianLipschitz/BaselineBounds.lean` — explicit conservative derivative estimates recovered from existing checked mathematics.
+- `NewtonianLipschitz/ConvexBaseline.lean` — nonoptimal Lipschitz bounds on convex safe domains.
 - `NewtonianLipschitz/CubicCandidate.lean` — exact definitions for an unproved optimization candidate.
 - `NewtonianLipschitz.lean` — substantive library entry point.
 - `lean-toolchain`, `lakefile.toml`, `lake-manifest.json` — pinned Lean 4 / Mathlib environment.

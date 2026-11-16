@@ -15,6 +15,7 @@ needed = [
     "NewtonianLipschitz/Smoothness.lean", "NewtonianLipschitz/Norms.lean",
     "NewtonianLipschitz/Derivative.lean", "NewtonianLipschitz/FiniteSources.lean",
     "NewtonianLipschitz/Clearance.lean", "NewtonianLipschitz/CubicCandidate.lean",
+    "NewtonianLipschitz/BaselineBounds.lean", "NewtonianLipschitz/ConvexBaseline.lean",
     "Challenge.lean", "Solution.lean", "comparator.json",
     "formalization.yaml", "PALOMAR.md", ".github/workflows/comparator.yml",
     "scripts/verify-comparator.sh", "scripts/check-comparator.py",
@@ -47,7 +48,7 @@ if manifest.get("name") != config.get("name"):
 expected_imports = {
     "NewtonianLipschitz.lean": [
         "NewtonianLipschitz.Derivative", "NewtonianLipschitz.Clearance",
-        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate",
+        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ConvexBaseline",
     ],
     "NewtonianLipschitz/Basic.lean": ["Mathlib"],
     "NewtonianLipschitz/Field.lean": ["NewtonianLipschitz.Basic"],
@@ -59,6 +60,8 @@ expected_imports = {
     "NewtonianLipschitz/Clearance.lean": ["NewtonianLipschitz.Norms"],
     "NewtonianLipschitz/FiniteSources.lean": ["NewtonianLipschitz.Field"],
     "NewtonianLipschitz/CubicCandidate.lean": ["Mathlib"],
+    "NewtonianLipschitz/BaselineBounds.lean": ["NewtonianLipschitz.Derivative"],
+    "NewtonianLipschitz/ConvexBaseline.lean": ["NewtonianLipschitz.BaselineBounds", "NewtonianLipschitz.Clearance"],
     "Challenge.lean": ["Mathlib"],
     "Solution.lean": ["NewtonianLipschitz"],
 }
