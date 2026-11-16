@@ -52,8 +52,10 @@ theorem NewtonianPointSource.accelerationField_eq_physical
       WithLp.ofLp
         (physicalNewtonianAcceleration c.gravitationalParameter
           (toPhysicalVec3 x)) := by
-  rw [NewtonianPointSource.accelerationField,
-    physicalNewtonianAcceleration_eq_smul]
+  change (-(c.gravitationalParameter) / euclideanRadius x ^ 3) • x =
+    WithLp.ofLp
+      ((-(c.gravitationalParameter) / ‖toPhysicalVec3 x‖ ^ 3) •
+        toPhysicalVec3 x)
   rw [← euclideanRadius_eq_physical_norm]
   rw [WithLp.ofLp_smul, ofLp_toPhysicalVec3]
 
