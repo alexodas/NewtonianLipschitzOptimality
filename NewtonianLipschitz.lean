@@ -1,3 +1,6 @@
 module
 
-public import NewtonianLipschitz.Field
+public import NewtonianLipschitz.Derivative
+public import NewtonianLipschitz.Clearance
+public import NewtonianLipschitz.FiniteSources
+public import NewtonianLipschitz.CubicCandidate
