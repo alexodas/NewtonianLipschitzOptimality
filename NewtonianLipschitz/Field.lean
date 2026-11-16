@@ -34,6 +34,14 @@ noncomputable def NewtonianPointSource.accelerationField
     (c : NewtonianPointSource) (x : Vec3) : Vec3 :=
   (-(c.gravitationalParameter) / euclideanRadius x ^ 3) • x
 
+/-- The exact Cartesian field formula, exposed across sealed Lean module
+boundaries without requiring downstream unfolding of the definition. -/
+theorem NewtonianPointSource.accelerationField_eq_formula
+    (c : NewtonianPointSource) (x : Vec3) :
+    c.accelerationField x =
+      (-(c.gravitationalParameter) / euclideanRadius x ^ 3) • x := by
+  rfl
+
 /-- Exact nonlinear differential point-source acceleration between
 two positions with relative displacement q. Meaningful only when
 both actual source separations are nonzero. This nonlinear
