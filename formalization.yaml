@@ -2,7 +2,7 @@
   "version": "v0.4",
   "project": {
     "name": "NewtonianLipschitzOptimality",
-    "description": "Research in progress: formal verification in Lean 4 of the best universal Lipschitz coefficient of the three-dimensional Newtonian gravitational field in the Cartesian supremum norm under explicit noncollision assumptions. No optimality theorem is currently selected or submitted.",
+    "description": "Research in progress: Lean 4 verification of the sharp Cartesian-supremum-norm Lipschitz coefficient for the exact 3D Newtonian point-source field with explicit noncollision clearance, initially on convex safe domains. A proved deterministic sensitivity bound could inform rigorous dynamics and interval methods, planetary-defense uncertainty propagation, space situational awareness, and certified Cartesian N-body algorithms. The global nonconvex problem remains separate. No optimality theorem, validated application, or Palomar submission is claimed.",
     "authors": [
       "Alessandro Odasso"
     ],

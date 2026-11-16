@@ -20,6 +20,17 @@ on specified collision-free sets with a **certified Cartesian supremum-norm clea
 
 A current *unverified research candidate* for the pointwise derivative and convex-domain coefficient is `C ≈ 2.5775644212`. This decimal, and its claimed optimality, are **not yet Lean-verified theorems**. The repository must not present either as an established mathematical contribution before both the universal inequality and a matching sharpness example are formally proved.
 
+## Why the result may matter — intended audience
+
+An **optimal, formally checked deterministic sensitivity bound** for the exact Newtonian inverse-cube field, measured in the Cartesian supremum norm, could sharpen the error budgets used by rigorous numerical methods. Its usefulness depends on the *precise geometric clearance and domain assumptions* of the theorem, as well as on how a given application propagates those bounds. The following are **potential research audiences and use cases**, not integrations or certified applications delivered by this repository.
+
+- **Rigorous dynamical systems and interval arithmetic:** developers and users of validated ODE integration, interval enclosures and Taylor models (e.g. CAPD, VNODE-LP, COSY Infinity / Taylor Models), for whom explicit force-sensitivity constants can enter validated propagation estimates. No integration with those libraries has been implemented or tested here.
+- **Planetary defense and asteroid impact monitoring:** researchers studying rigorous propagation of orbital and parameter uncertainty through gravitational close approaches. Any application must establish the required positive source separation throughout the relevant region; the proposed theorem alone does not certify an encounter, impact or orbital trajectory.
+- **Aerospace engineering and space situational awareness:** analysts of satellite–debris conjunctions and collision risk who may benefit from deterministic bounds in uncertainty propagation. **A Lipschitz constant does not itself certify a collision probability**: statistical uncertainty models, additional forces, trajectory enclosures and independent numerical validation are separate requirements.
+- **Cartesian-grid \(N\)-body algorithms:** researchers building rigorously bounded Octree / Barnes–Hut-type approximations, where an explicit force regularity estimate may be one component of a certified error analysis. Tree approximation errors, truncation effects and near-field treatment require additional proofs.
+
+The mathematical coefficient, if ultimately proved optimal, would be optimal **only for the stated norm, clearance and domain class**. The nonconvex global-domain problem is separate. No originality claim or validated improvement in these application areas is made at this stage.
+
 ## Results acquired and verification status
 
 **Initial state: infrastructure, foundational Newtonian definitions and existing conservative estimates, with CI verification pending for the enlarged codebase.** The repository does not yet contain a formal proof of the candidate optimal coefficient, its sharpness, or a comparison with published literature sufficient to establish mathematical originality.

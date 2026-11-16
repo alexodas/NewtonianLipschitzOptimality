@@ -8,6 +8,10 @@ readme = (root / "README.md").read_text(encoding="utf-8")
 required = [
     "## Executive summary",
     "## Mathematical question",
+    "## Why the result may matter — intended audience",
+    "CAPD", "VNODE-LP", "COSY Infinity",
+    "planetary defense", "space situational awareness",
+    "Barnes–Hut", "does not itself certify a collision probability",
     "## Results acquired and verification status",
     "## Roadmap",
     "## Repository structure and reproducibility",
@@ -24,6 +28,15 @@ issues = [f"README missing: {token}" for token in required if token not in readm
 palomar_notes = (root / "PALOMAR.md").read_text(encoding="utf-8")
 if "not a submitted formalization" not in palomar_notes:
     issues.append("PALOMAR.md must explicitly disclose placeholder status")
+description = __import__("json").loads(
+    (root / "formalization.yaml").read_text(encoding="utf-8")
+)["project"]["description"]
+for audience in ("rigorous dynamics", "planetary-defense", "space situational awareness", "Cartesian N-body"):
+    if audience not in description:
+        issues.append(f"Metadata description missing potential audience: {audience}")
+for audience in ("CAPD", "planetary defense", "space situational awareness", "Barnes–Hut"):
+    if audience not in palomar_notes:
+        issues.append(f"PALOMAR.md missing potential audience: {audience}")
 if "LeanAsteroidPairs" in readme:
     issues.append("New project README must be scientifically self-contained")
 if issues:
