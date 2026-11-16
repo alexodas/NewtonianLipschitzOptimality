@@ -1,0 +1,38 @@
+name: Independent Comparator (manual; selected theorem required)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  comparator-on-verified-theorem:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refuse placeholder-only Comparator
+        run: python3 scripts/check-comparator.py --require-selected
+      - name: Install elan
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Install pinned Lean toolchain
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if lake --version && lean --version; then exit 0; fi
+            sleep $((5 * attempt))
+          done
+          exit 1
+      - name: Download pinned Mathlib cache
+        run: lake exe cache get
+      - name: Compile all sources, Challenge and Solution
+        run: lake build NewtonianLipschitz Challenge Solution
+      - name: Install Comparator sandbox requirements
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq bubblewrap
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+      - name: Run independent NanoDa and con-ron kernels
+        run: timeout --signal=TERM --kill-after=30s 1800 bash scripts/verify-comparator.sh

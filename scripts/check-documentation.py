@@ -18,8 +18,12 @@ required = [
     "not yet Lean-verified theorems",
     "nonconvex exterior of a cube",
     "independently kernel-checked",
+    "Palomar files are placeholders",
 ]
 issues = [f"README missing: {token}" for token in required if token not in readme]
+palomar_notes = (root / "PALOMAR.md").read_text(encoding="utf-8")
+if "not a submitted formalization" not in palomar_notes:
+    issues.append("PALOMAR.md must explicitly disclose placeholder status")
 if "LeanAsteroidPairs" in readme:
     issues.append("New project README must be scientifically self-contained")
 if issues:

@@ -12,6 +12,12 @@ needed = [
     "lean-toolchain", "lakefile.toml", "lake-manifest.json", "LICENSE",
     "README.md", "NewtonianLipschitz.lean",
     "NewtonianLipschitz/Basic.lean", "NewtonianLipschitz/Field.lean",
+    "NewtonianLipschitz/Smoothness.lean", "NewtonianLipschitz/Norms.lean",
+    "NewtonianLipschitz/Derivative.lean", "NewtonianLipschitz/FiniteSources.lean",
+    "NewtonianLipschitz/Clearance.lean", "NewtonianLipschitz/CubicCandidate.lean",
+    "Challenge.lean", "Solution.lean", "comparator.json",
+    "formalization.yaml", "PALOMAR.md", ".github/workflows/comparator.yml",
+    "scripts/verify-comparator.sh", "scripts/check-comparator.py",
     ".github/workflows/lean.yml",
 ]
 for rel in needed:
@@ -29,7 +35,7 @@ if config.get("name") != "NewtonianLipschitzOptimality":
 if config.get("defaultTargets") != ["NewtonianLipschitz"]:
     issues.append("Unexpected default build target")
 libraries = config.get("lean_lib", [])
-if [lib.get("name") for lib in libraries] != ["NewtonianLipschitz"]:
+if [lib.get("name") for lib in libraries] != ["NewtonianLipschitz", "Challenge", "Solution"]:
     issues.append("Unexpected Lean libraries")
 req = [pkg for pkg in config.get("require", []) if pkg.get("name") == "mathlib"]
 locked = [pkg for pkg in manifest.get("packages", []) if pkg.get("name") == "mathlib"]
@@ -39,10 +45,24 @@ if manifest.get("name") != config.get("name"):
     issues.append("Manifest package name mismatch")
 
 expected_imports = {
-    "NewtonianLipschitz.lean": ["NewtonianLipschitz.Field"],
+    "NewtonianLipschitz.lean": [
+        "NewtonianLipschitz.Derivative", "NewtonianLipschitz.Clearance",
+        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate",
+    ],
     "NewtonianLipschitz/Basic.lean": ["Mathlib"],
     "NewtonianLipschitz/Field.lean": ["NewtonianLipschitz.Basic"],
+    "NewtonianLipschitz/Smoothness.lean": ["NewtonianLipschitz.Field"],
+    "NewtonianLipschitz/Norms.lean": ["NewtonianLipschitz.Basic"],
+    "NewtonianLipschitz/Derivative.lean": [
+        "NewtonianLipschitz.Smoothness", "NewtonianLipschitz.Norms"
+    ],
+    "NewtonianLipschitz/Clearance.lean": ["NewtonianLipschitz.Norms"],
+    "NewtonianLipschitz/FiniteSources.lean": ["NewtonianLipschitz.Field"],
+    "NewtonianLipschitz/CubicCandidate.lean": ["Mathlib"],
+    "Challenge.lean": ["Mathlib"],
+    "Solution.lean": ["NewtonianLipschitz"],
 }
+
 for rel, imports in expected_imports.items():
     file = root / rel
     if not file.is_file():

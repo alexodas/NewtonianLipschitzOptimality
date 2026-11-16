@@ -1,0 +1,54 @@
+{
+  "version": "v0.4",
+  "project": {
+    "name": "NewtonianLipschitzOptimality",
+    "description": "Research in progress: formal verification in Lean 4 of the best universal Lipschitz coefficient of the three-dimensional Newtonian gravitational field in the Cartesian supremum norm under explicit noncollision assumptions. No optimality theorem is currently selected or submitted.",
+    "authors": [
+      "Alessandro Odasso"
+    ],
+    "license": "Apache-2.0",
+    "responsible_maintainers": [
+      "Alessandro Odasso"
+    ]
+  },
+  "classification": {
+    "msc2020": [
+      "70F10",
+      "68V20"
+    ]
+  },
+  "sources": [],
+  "status": {
+    "scope": "Repository initialization only: no selected theorem, no independently verified optimality coefficient and no Palomar submission.",
+    "sorry_count": 0,
+    "sorry_in_definitions": 0,
+    "axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "automation": {
+    "methods": [
+      {
+        "method": "agent",
+        "models": [
+          "OpenAI GPT-6"
+        ],
+        "framework": "ChatGPT",
+        "tool_setup": "Connected GitHub and GitHub Actions, Lean 4.35.0 and Mathlib"
+      }
+    ],
+    "spend_usd": "not tracked",
+    "notes": "Alessandro Odasso, a non-mathematician interested in assessing LLMs in scientific research, initiated and directs the project. GPT-6 assists with the initial project structure and formal mathematical work."
+  },
+  "fidelity": {
+    "divergences": "No formal sharpness theorem exists at the date of initialization. A proposed numerical coefficient is not a checked theorem. The global nonconvex-domain case is separate from the convex-domain case."
+  },
+  "review": {
+    "status": "self-assessed",
+    "reviewers": [],
+    "notes": "Placeholder metadata only, not submitted or accepted by Palomar, not a claim of mathematical priority or external peer review."
+  },
+  "acknowledgements": "Uses Lean 4 and Mathlib. Independent scientific review and novelty assessment remain future tasks."
+}

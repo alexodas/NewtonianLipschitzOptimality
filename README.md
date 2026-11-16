@@ -22,7 +22,7 @@ A current *unverified research candidate* for the pointwise derivative and conve
 
 ## Results acquired and verification status
 
-**Initial state: project infrastructure and foundational definitions only.** The repository does not yet contain a formal proof of the candidate optimal coefficient, its sharpness, or a comparison with published literature sufficient to establish mathematical originality.
+**Initial state: infrastructure and foundational Newtonian definitions and lemmas, with CI verification pending for the enlarged codebase.** The repository does not yet contain a formal proof of the candidate optimal coefficient, its sharpness, or a comparison with published literature sufficient to establish mathematical originality.
 
 Claims will be recorded as **proposed**, **Lean-compiled**, **independently kernel-checked**, or **externally reviewed** only when corresponding evidence exists. Successful compilation of a definition is not proof of a later theorem; a numerical calculation is not a formal proof. Future results must cite exact Lean declarations and successful CI runs.
 
@@ -39,12 +39,21 @@ These are research objectives, **not completed theorems**. The order may change 
 
 ## Repository structure and reproducibility
 
-- `NewtonianLipschitz/Basic.lean` — coordinate vectors and the physical radius.
-- `NewtonianLipschitz/Field.lean` — exact gravitational field.
+- `NewtonianLipschitz/Basic.lean` — Cartesian coordinates, physical vectors and the Euclidean norm bridge.
+- `NewtonianLipschitz/Field.lean` — exact point-source acceleration and differential force.
+- `NewtonianLipschitz/Smoothness.lean` — physical and Cartesian differentiability away from collision.
+- `NewtonianLipschitz/Norms.lean` — proved norm-conversion inequalities.
+- `NewtonianLipschitz/Derivative.lean` — full Fréchet derivative of the exact point-source field.
+- `NewtonianLipschitz/Clearance.lean` — explicit geometric anchor-to-clearance lemmas.
+- `NewtonianLipschitz/FiniteSources.lean` — finite exact differential-force sums.
+- `NewtonianLipschitz/CubicCandidate.lean` — exact definitions for an unproved optimization candidate.
 - `NewtonianLipschitz.lean` — substantive library entry point.
 - `lean-toolchain`, `lakefile.toml`, `lake-manifest.json` — pinned Lean 4 / Mathlib environment.
 - `.github/workflows/lean.yml` — full Lean build and source/documentation checks.
-- `scripts/` — checks against proof placeholders and inaccurate project documentation.
+- `.github/workflows/comparator.yml` — **manual, readiness-gated** independent Comparator run after selecting a proved theorem.
+- `Challenge.lean`, `Solution.lean`, `comparator.json` — initialized but **unselected** future Comparator interface; no verification is implied.
+- `formalization.yaml` and `PALOMAR.md` — Palomar-oriented **draft placeholders**, not a submission-ready theorem record.
+- `scripts/` — proof-hole, integrity, documentation and future independent-kernel checks.
 - `LICENSE` — Apache License, Version 2.0.
 
 Run locally with:
@@ -57,7 +66,7 @@ python3 scripts/check-no-proof-holes.py
 lake build NewtonianLipschitz
 ```
 
-An independent Challenge/Solution Comparator stage may be added when a substantive selected theorem and faithful standalone challenge exist. **No independent kernel comparison is claimed for the initial scaffold.**
+The independent Comparator infrastructure is present but **disabled until an actual, compiled theorem is selected**. The separate manual workflow deliberately fails without a nonempty theorem selection; no Comparator pass is claimed. Palomar files are placeholders and must be finalized against the Registry standard only after the target proof exists.
 
 ## Methodology — transparent LLM-assisted research
 
