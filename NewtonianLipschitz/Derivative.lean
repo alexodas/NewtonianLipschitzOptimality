@@ -25,6 +25,7 @@ noncomputable def NewtonianPointSource.radialCoefficient
 theorem NewtonianPointSource.accelerationField_eq_radialCoefficient_smul
     (c : NewtonianPointSource) (x : Vec3) :
     c.accelerationField x = c.radialCoefficient x • x := by
+  rw [c.accelerationField_eq_formula x]
   rfl
 
 /-- Conditional product-rule factorization of the TRUE
@@ -43,9 +44,11 @@ theorem NewtonianPointSource.accelerationField_fderiv_product
       (ContinuousLinearMap.id ℝ Vec3) x :=
     hasFDerivAt_id x
   have hsmul := hc.smul hid
-  change fderiv ℝ (fun y : Vec3 => c.radialCoefficient y • y) x =
-    c.radialCoefficient x • ContinuousLinearMap.id ℝ Vec3 +
-      (fderiv ℝ c.radialCoefficient x).smulRight x
+  have hfun : c.accelerationField =
+      (fun y : Vec3 => c.radialCoefficient y • y) := by
+    funext y
+    exact c.accelerationField_eq_radialCoefficient_smul y
+  rw [hfun]
   exact hsmul.fderiv
 
 theorem NewtonianPointSource.radialCoefficient_contDiffAt
