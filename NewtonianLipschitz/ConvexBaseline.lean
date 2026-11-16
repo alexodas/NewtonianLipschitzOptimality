@@ -51,7 +51,7 @@ private theorem no_collision_of_clearance
 /-- Mean-value transfer: an *explicit derived* bound on the actual
 inverse-cube field's Fréchet derivative yields a Lipschitz certificate
 on any convex, uniformly noncolliding spatial domain. This avoids
-assuming an independent unit-field Lipschitz certificate (R055). -/
+assuming an independent unit-field Lipschitz certificate. -/
 theorem NewtonianPointSource.accelerationField_lipschitzOnWith_of_clearance
     (c : NewtonianPointSource) (positions : Set Vec3)
     (hconvex : Convex ℝ positions)
@@ -90,7 +90,7 @@ theorem NewtonianPointSource.accelerationField_lipschitzOnWith_of_clearance
 
 /-- A finite-anchor noncollision margin yields an *explicit* unit
 field Lipschitz constant on the whole anchor ball. This is precisely
-the missing R055 certificate and is proved, rather than supplied. -/
+an explicit unit-field certificate; it is proved, not supplied. -/
 theorem NewtonianPointSource.unitAxis_lipschitzOnWith_anchor_of_clearance
     (anchor : Vec3) (ρ d : ℝ) (hd : 0 < d)
     (hanchor : d + ρ ≤ dist anchor (0 : Vec3)) :

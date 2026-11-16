@@ -68,7 +68,7 @@ theorem NewtonianPointSource.inverse_fifth_derivative_coefficient_le
 /-- The true Newtonian field derivative, not an assumed auxiliary
 field, has the following explicit *directionwise* norm bound.
 
-The remaining steps for the full R058 Lipschitz coefficient are to
+The remaining steps for a full quantitative Lipschitz certificate are to
 control the inner product by Cauchy–Schwarz, convert the Pi norm,
 and apply the mean-value theorem on a convex collision-free domain.
 This inequality by itself is not a uniform Lipschitz estimate. -/

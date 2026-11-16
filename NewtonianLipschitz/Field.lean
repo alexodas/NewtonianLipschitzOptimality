@@ -73,8 +73,8 @@ def NewtonianPointSource.unitAxis : NewtonianPointSource where
 
 /-- Expose the exact unit gravitational parameter across Lean module
 boundaries, where the original illustrative source definition is opaque.
-This is needed to instantiate an independently derived R058
-quantitative Lipschitz coefficient without assuming an external bound. -/
+This can instantiate explicit quantitative bounds without assuming
+an external unit-field Lipschitz coefficient. -/
 theorem NewtonianPointSource.unitAxis_gravitationalParameter_eq_one :
     NewtonianPointSource.unitAxis.gravitationalParameter = 1 := by
   rfl

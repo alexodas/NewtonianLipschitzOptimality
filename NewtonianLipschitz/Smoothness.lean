@@ -58,7 +58,7 @@ theorem NewtonianPointSource.accelerationField_eq_physical
   rw [WithLp.ofLp_smul, ofLp_toPhysicalVec3]
 
 /-- The exact source field, not merely its candidate tidal tensor,
-is C¹ at every nonzero source separation, by transporting R019's
+is C¹ at every nonzero source separation by transporting
 Euclidean regularity to the actual Cartesian source field. -/
 theorem NewtonianPointSource.accelerationField_contDiffAt
     (c : NewtonianPointSource) (x : Vec3) (hx : x ≠ 0) :

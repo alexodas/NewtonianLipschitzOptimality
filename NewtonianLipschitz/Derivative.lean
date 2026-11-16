@@ -27,7 +27,7 @@ theorem NewtonianPointSource.accelerationField_eq_radialCoefficient_smul
     c.accelerationField x = c.radialCoefficient x • x := by
   rfl
 
-/-- R036: conditional product-rule factorization of the TRUE
+/-- Conditional product-rule factorization of the TRUE
 Fréchet derivative. The scalar differentiability assumption is
 supplied rather than proved from noncollision. -/
 theorem NewtonianPointSource.accelerationField_fderiv_product
@@ -77,14 +77,14 @@ theorem NewtonianPointSource.radialCoefficient_contDiffAt
   rw [hrepr]
   exact hscalar
 
-/-- R037: R036's radial-prefactor differentiability premise is
+/-- The radial-prefactor differentiability premise is
 unconditionally available at any noncolliding source separation. -/
 theorem NewtonianPointSource.radialCoefficient_differentiableAt_of_ne_zero
     (c : NewtonianPointSource) (x : Vec3) (hx : x ≠ 0) :
     DifferentiableAt ℝ c.radialCoefficient x := by
   exact (c.radialCoefficient_contDiffAt x hx).differentiableAt_one
 
-/-- Eliminate R036's formerly supplied radial regularity premise
+/-- Eliminate the formerly supplied radial regularity premise
 from the product-rule formula, still without evaluating the radial
 Fréchet derivative explicitly. -/
 theorem NewtonianPointSource.accelerationField_fderiv_product_of_ne_zero

@@ -24,7 +24,7 @@ theorem cartesian_norm_le_euclideanRadius (x : Vec3) :
   simpa only [toPhysicalVec3_apply] using
     (PiLp.norm_apply_le (toPhysicalVec3 x) i)
 
-/-- A positive lower distance certificate from R054, stated in
+/-- A positive lower distance certificate stated in
 the Cartesian/Pi norm, implies the *Euclidean* lower radius that is
 actually used in the inverse-cube denominator. -/
 theorem euclideanRadius_ge_of_cartesian_distance

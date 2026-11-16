@@ -78,6 +78,16 @@ for rel, imports in expected_imports.items():
         issues.append(f"{rel}: expected imports {imports}, got {found}")
     if len(source.splitlines()) > 10000:
         issues.append(f"{rel}: source exceeds 10,000 lines")
+# No independent proof is selected at initialization; forbid any
+# silent claim that the empty Comparator configuration verified a theorem.
+comparison = json.loads((root / "comparator.json").read_text(encoding="utf-8"))
+if comparison.get("theorem_names") != [] or comparison.get("definition_names") != []:
+    issues.append("A selected Comparator theorem requires updating the readiness and CI policy")
+if comparison.get("permitted_axioms") != ["propext", "Quot.sound", "Classical.choice"]:
+    issues.append("Invalid Comparator axiom allowance")
+metadata = json.loads((root / "formalization.yaml").read_text(encoding="utf-8"))
+if metadata.get("version") != "v0.4" or metadata.get("sources") != []:
+    issues.append("The current Palomar file is a draft with no selected proof source")
 if issues:
     print("\n".join(issues), file=sys.stderr)
     sys.exit(1)
