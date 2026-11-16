@@ -1,0 +1,43 @@
+name: Lean 4 build and research integrity checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lean-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install elan
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Install pinned Lean toolchain
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if lake --version && lean --version; then exit 0; fi
+            echo "Retry Lean toolchain download: $attempt/5"
+            sleep $((5 * attempt))
+          done
+          exit 1
+      - name: Download pinned Mathlib cache
+        run: lake exe cache get
+      - name: Check repository, documentation and proof-hole policy
+        run: |
+          python3 scripts/check-repository.py
+          python3 scripts/check-documentation.py
+          python3 scripts/check-no-proof-holes.py
+      - name: Compile full substantive Lean library
+        run: lake build NewtonianLipschitz
