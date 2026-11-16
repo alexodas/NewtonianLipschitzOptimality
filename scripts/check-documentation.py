@@ -10,7 +10,7 @@ required = [
     "## Mathematical question",
     "## Why the result may matter — intended audience",
     "CAPD", "VNODE-LP", "COSY Infinity",
-    "planetary defense", "space situational awareness",
+    "Planetary defense", "space situational awareness",
     "Barnes–Hut", "does not itself certify a collision probability",
     "## Results acquired and verification status",
     "## Roadmap",
