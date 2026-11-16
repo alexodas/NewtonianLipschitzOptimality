@@ -61,4 +61,38 @@ theorem toPhysicalVec3_norm_le_three_cartesian_norm (x : Vec3) :
   rw [← euclideanRadius_eq_physical_norm]
   exact euclideanRadius_le_three_mul_cartesian_norm x
 
+/-!
+## A strictly improved, still nonoptimal norm conversion
+
+The factor two is elementary in dimension three: the Euclidean squared
+radius is at most three times the squared Cartesian supremum norm.
+It improves the earlier factor three without changing the norm.
+-/
+
+/-- Conservative but sharper bound between the physical radius and
+the Cartesian supremum norm. -/
+theorem euclideanRadius_le_two_mul_cartesian_norm (x : Vec3) :
+    euclideanRadius x ≤ 2 * ‖x‖ := by
+  have h0 : (x 0) ^ 2 ≤ ‖x‖ ^ 2 := by
+    simpa only [Real.norm_eq_abs, sq_abs] using
+      (pow_le_pow_left₀ (norm_nonneg (x 0))
+        (norm_le_pi_norm x 0) 2)
+  have h1 : (x 1) ^ 2 ≤ ‖x‖ ^ 2 := by
+    simpa only [Real.norm_eq_abs, sq_abs] using
+      (pow_le_pow_left₀ (norm_nonneg (x 1))
+        (norm_le_pi_norm x 1) 2)
+  have h2 : (x 2) ^ 2 ≤ ‖x‖ ^ 2 := by
+    simpa only [Real.norm_eq_abs, sq_abs] using
+      (pow_le_pow_left₀ (norm_nonneg (x 2))
+        (norm_le_pi_norm x 2) 2)
+  rw [euclideanRadius_eq_coordinates]
+  apply (Real.sqrt_le_left (by positivity : 0 ≤ (2 : ℝ) * ‖x‖)).2
+  nlinarith [sq_nonneg (‖x‖)]
+
+/-- Physical norm bound with coefficient two. -/
+theorem toPhysicalVec3_norm_le_two_cartesian_norm (x : Vec3) :
+    ‖toPhysicalVec3 x‖ ≤ 2 * ‖x‖ := by
+  rw [← euclideanRadius_eq_physical_norm]
+  exact euclideanRadius_le_two_mul_cartesian_norm x
+
 end NewtonianLipschitz

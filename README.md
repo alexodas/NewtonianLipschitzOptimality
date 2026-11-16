@@ -37,6 +37,23 @@ The mathematical coefficient, if ultimately proved optimal, would be optimal **o
 
 Claims will be recorded as **proposed**, **Lean-compiled**, **independently kernel-checked**, or **externally reviewed** only when corresponding evidence exists. Successful compilation of a definition is not proof of a later theorem; a numerical calculation is not a formal proof. Future results must cite exact Lean declarations and successful CI runs.
 
+## New proof obligations and incremental quantitative improvements
+
+The baseline inequality derives the dimensionless coefficient **10** from
+the exact Newtonian derivative. The next Lean milestone aims to prove the
+strictly improved **nonoptimal coefficient 7**, using the elementary
+three-dimensional conversion `‖x‖₂ ≤ 2 ‖x‖∞`. The new derivative and
+convex-domain theorems must pass their own CI run before being recorded as
+Lean-compiled results.
+
+The separate algebraic reduction establishes that, for normalized
+nonnegative coordinates `(1,u,v)`, the row associated with a maximal
+coordinate dominates the other two absolute Jacobian row numerators.
+The stationary cubic has an exact sign bracket and is strictly decreasing
+on `[0,1]`. **These are individual intermediate statements:** identifying
+the full operator norm, proving the maximum of the candidate coefficient,
+and constructing a sharpness witness remain open.
+
 ## Roadmap
 
 1. Define the three-dimensional field, Euclidean radius, supremum norm and collision-free domains; reuse existing mathematical foundations without importing unrelated physical models.
@@ -59,6 +76,9 @@ These are research objectives, **not completed theorems**. The order may change 
 - `NewtonianLipschitz/FiniteSources.lean` — finite exact differential-force sums.
 - `NewtonianLipschitz/BaselineBounds.lean` — explicit conservative derivative estimates recovered from existing checked mathematics.
 - `NewtonianLipschitz/ConvexBaseline.lean` — nonoptimal Lipschitz bounds on convex safe domains.
+- `NewtonianLipschitz/ImprovedBounds.lean` — proposed new conservative derivative coefficient 7, pending CI.
+- `NewtonianLipschitz/ConvexImproved.lean` — convex-domain companion coefficient 7, pending CI.
+- `NewtonianLipschitz/JacobianRows.lean` — algebraic maximal-coordinate row comparison and quadratic cap, pending CI.
 - `NewtonianLipschitz/CubicCandidate.lean` — exact definitions for an unproved optimization candidate.
 - `NewtonianLipschitz.lean` — substantive library entry point.
 - `lean-toolchain`, `lakefile.toml`, `lake-manifest.json` — pinned Lean 4 / Mathlib environment.
