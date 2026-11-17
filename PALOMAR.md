@@ -111,13 +111,12 @@ unproved; the full physical-source parametrization,
 matching Palomar declarations and independent
 Comparator verification remain outstanding.
 
-**Repository stage:** R001–R040 are integrated in
-`main`. R041 is Lean-verified on its research branch
-as an explicit **conditional implication**; no claim
-is made that its global single-source hypothesis is
-proved. The cumulative README ledger records its
-exact statement, utility and limitation. No temporary
-PR status is used as a mathematical result.
+**Repository stage:** R001–R041 have passed complete
+Lean builds, and the permanent README ledger records
+their exact statements and limitations. R041 is verified
+only as a **conditional implication**; its one-source
+global C3 premise remains open. This description does
+not depend on the transient state of a pull request.
 Neither compilation nor merge constitutes independent
 Comparator validation or a Palomar submission.
 
