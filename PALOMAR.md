@@ -93,7 +93,8 @@ different active axes and a verified **nonsharp
 2*C3** two-point bound in that case. R041 verifies
 the **conditional** deduction of the exact finite-source
 bound with coefficient `N*M*C3/d³` from the still-open
-one-source global C3 hypothesis. The sharp
+one-source global C3 proposition
+`oneSourceGlobalCandidateBound`. The sharp
 global nonconvex **C3 upper bound** remains open
 for short cross-face pairs.
 
