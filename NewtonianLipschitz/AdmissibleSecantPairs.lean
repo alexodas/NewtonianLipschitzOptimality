@@ -136,7 +136,21 @@ theorem NewtonianPointSource.unitAxis_exists_safe_secant_quotient_limit :
     (c.accelerationField_contDiffAt x hx).differentiableAt_one.hasFDerivAt
   have hline :=
     (hf.hasLineDerivAt h).tendsto_slope_zero_right
-  simpa only [haction] using hline.norm
+  have hnorm_limit := hline.norm
+  change Filter.Tendsto
+    (fun s : ℝ =>
+      ‖s⁻¹ •
+        (NewtonianPointSource.unitAxis.accelerationField
+          (normalizedVector candidateCriticalPoint candidateCriticalPoint +
+            s • h) -
+        NewtonianPointSource.unitAxis.accelerationField
+          (normalizedVector candidateCriticalPoint candidateCriticalPoint))‖)
+    (nhdsWithin 0 (Set.Ioi 0))
+    (nhds ‖(fderiv ℝ NewtonianPointSource.unitAxis.accelerationField
+      (normalizedVector candidateCriticalPoint candidateCriticalPoint)) h‖)
+    at hnorm_limit
+  rw [haction] at hnorm_limit
+  exact hnorm_limit
 
 /-- R037: any coefficient valid for every pair of unit-cube-safe
 displacements for the unit Newtonian source must be at least C3.
