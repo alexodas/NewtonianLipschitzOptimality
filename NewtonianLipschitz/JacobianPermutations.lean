@@ -27,6 +27,12 @@ def cycleIndex (i : Fin 3) : Fin 3 :=
 @[simp] theorem cycleIndex_one : cycleIndex 1 = 2 := by decide
 @[simp] theorem cycleIndex_two : cycleIndex 2 = 0 := by decide
 
+/-- Three cyclic relabelings return every Cartesian index to itself.
+Proved where the defining equation of cycleIndex is available. -/
+theorem cycleIndex_three (i : Fin 3) :
+    cycleIndex (cycleIndex (cycleIndex i)) = i := by
+  fin_cases i <;> decide
+
 /-- Cyclic coordinate rotation from (X,Y,Z) to (Y,Z,X). -/
 def cycleVec (x : Vec3) : Vec3 := ![x 1, x 2, x 0]
 

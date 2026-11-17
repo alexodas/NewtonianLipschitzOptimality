@@ -15,12 +15,6 @@ signs and a universal maximum-norm statement are later steps.
 
 namespace NewtonianLipschitz
 
-/-- Three cyclic relabelings bring every Cartesian index back
-to itself. -/
-theorem cycleIndex_three (i : Fin 3) :
-    cycleIndex (cycleIndex (cycleIndex i)) = i := by
-  fin_cases i <;> simp [cycleIndex]
-
 /-- Every row has the sharp candidate bound when Y is positive
 and dominates the other two nonnegative Cartesian coordinates. -/
 theorem newtonianJacobianMatrix_secondMax_le_candidateMaximum
