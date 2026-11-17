@@ -21,6 +21,7 @@ public import NewtonianLipschitz.CartesianBoxSharp
 public import NewtonianLipschitz.DerivativeCoefficientMinimality
 public import NewtonianLipschitz.DerivativeAttainingDirection
 public import NewtonianLipschitz.AdmissibleCriticalDirection
+public import NewtonianLipschitz.AdmissibleSecantPairs
 public import NewtonianLipschitz.ConvexBaseline
 public import NewtonianLipschitz.ConvexImproved
 public import NewtonianLipschitz.JacobianRows

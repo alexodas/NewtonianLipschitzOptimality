@@ -246,8 +246,8 @@ as verified in the permanent mathematical ledger below.
   where the derivative operator norm **equals C3**.
 - R032 proves that **no smaller universal coefficient**
   works for the Newtonian derivative operator norm.
-- R033 constructs a real Cartesian direction in which
-  the physical derivative action **attains C3**.
+- R033–R034 exhibit an attaining derivative direction
+  whose entire forward ray stays outside the unit cube.
 - R030–R031 prove **finite-difference bounds** with C3
   on convex safe domains and certified Cartesian boxes.
 - R001–R015 and R018–R023 document the foundational
@@ -256,9 +256,9 @@ as verified in the permanent mathematical ledger below.
 
 **Proposed but not yet verified in Lean:**
 
-- `AdmissibleCriticalDirection.lean` proposes an
-  outward-oriented attaining direction whose forward
-  ray remains outside the unit Cartesian safety cube.
+- `AdmissibleSecantPairs.lean` proposes a unit
+  derivative-attaining direction and distinct admissible
+  secant endpoints with an exact step-length identity.
 
 **Still unproved:**
 
@@ -962,20 +962,52 @@ prove global two-point minimality.
 **Source:**
 [DerivativeAttainingDirection.lean][derivative-direction].
 
+### R034 — Admissible outward ray attaining the derivative norm
+
+At the unit-Cartesian-norm critical displacement
+`x_star = (1,t_star,t_star)`, Lean proves that an
+attaining derivative direction can be oriented
+outward, with `norm_inf(h) <= 1` and
+
+```text
+norm_inf((fderiv accelerationField x_star) h) = C3.
+norm_inf(x_star + s*h) >= 1 for every s >= 0.
+```
+
+The proof uses the invariance of derivative-action
+norm under `h -> -h` and chooses the sign with
+nonnegative first Cartesian component. Since
+`(x_star)_X = 1`, the forward ray cannot enter
+the forbidden open unit cube around the source.
+
+**Why useful:** Connects the pointwise sharpness
+witness (R033) to the actual cubical clearance
+geometry required by the global conjecture.
+**Limit:** This is an admissible ray, not yet a
+proof that secant quotients converge to C3 or
+that the global nonconvex two-point bound holds.
+
+**Lean:**
+`NewtonianPointSource.unitAxis_exists_outward_attaining_direction`,
+`criticalDiagonal_outward_ray_cartesian_clearance`,
+`NewtonianPointSource.unitAxis_exists_safe_sharp_outward_ray`.
+**Source:**
+[AdmissibleCriticalDirection.lean][admissible-critical].
+
 ## Direct proof strategy
 
 The derivative bound (R027) is attained (R029)
-and is minimal among universal derivative estimates
-(R032). An attaining direction is verified (R033).
-R030–R031 cover convex safe sets and Cartesian boxes.
+and minimal for universal derivative estimates (R032).
+R033–R034 construct an attaining direction with an
+admissible outward ray. R030–R031 cover convex domains.
 
-1. Orient a sharp direction so that small positive
-   perturbations remain outside the source safety cube.
+1. Show that the outward ray gives distinct pairs
+   with a unit direction and known step length.
 2. Prove the matching admissible **two-point** lower
-   bound using a limiting finite-difference quotient.
-3. Analyze endpoints outside nonconvex forbidden cubes,
-   including pairs whose segments enter the exclusion.
-4. Prove the complete multi-source global bound and
+   bound using the finite-difference quotient limit.
+3. Analyze safe endpoints outside nonconvex cubes
+   even when their connecting segment enters a cube.
+4. Prove the multi-source global upper bound and
    its separate optimality theorem for Palomar.
 
 ## Roadmap
@@ -994,13 +1026,13 @@ R030–R031 cover convex safe sets and Cartesian boxes.
   R028–R029 prove its attainment. R030 proves the
   actual finite-difference bound on convex safe domains.
   The unrestricted nonconvex bound remains unproved.
-- **M04 — Optimality: in progress.** R029 verifies
-  attainment of the operator norm, R032 its universal
-  pointwise minimality, and R033 an attaining direction.
-  An admissible outward ray is proposed in
-  AdmissibleCriticalDirection.lean, awaiting Lean.
-  Two-point minimality and the global nonconvex bound
-  remain unproved.
+- **M04 — Optimality: in progress.** R029 proves
+  derivative-norm attainment, R032 pointwise minimality,
+  and R033–R034 give a norm-attaining outward-safe ray.
+  Distinct safe secant endpoints are proposed in
+  AdmissibleSecantPairs.lean, pending the next Lean build.
+  The two-point quotient limit and the unrestricted
+  nonconvex upper bound are still open.
 - **M05 — Domain theorem: in progress.** The convex
   finite-difference theorem (R030) and Cartesian-box
   center-margin certificate (R031) are both verified.
@@ -1044,11 +1076,13 @@ The substantive library is in `NewtonianLipschitz/`:
   [CartesianBoxSharp](NewtonianLipschitz/CartesianBoxSharp.lean),
   [DerivativeCoefficientMinimality][derivative-minimality],
   [DerivativeAttainingDirection][derivative-direction],
-  [AdmissibleCriticalDirection][admissible-critical].
+  [AdmissibleCriticalDirection][admissible-critical],
+  [AdmissibleSecantPairs][admissible-secant].
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
 [derivative-direction]: NewtonianLipschitz/DerivativeAttainingDirection.lean
 [admissible-critical]: NewtonianLipschitz/AdmissibleCriticalDirection.lean
+[admissible-secant]: NewtonianLipschitz/AdmissibleSecantPairs.lean
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.

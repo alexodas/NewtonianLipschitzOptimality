@@ -75,9 +75,10 @@ bound on convex domains with positive Cartesian
 clearance. R031 verifies the Cartesian-box center-margin
 corollary. R032 proves C3 is the least universal
 pointwise derivative-norm coefficient. R033 constructs
-a direction attaining the physical derivative action.
-An admissible outward ray is proposed in
-`AdmissibleCriticalDirection.lean`, pending CI.
+an attaining direction; R034 certifies an outward
+orientation whose forward ray stays outside the unit
+safety cube. Distinct admissible secant pairs are
+proposed in `AdmissibleSecantPairs.lean`, pending CI.
 
 **Outstanding evidence:** An admissible finite-difference
 minimality witness, a global two-point bound across

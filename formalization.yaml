@@ -2,7 +2,7 @@
   "version": "v0.4",
   "project": {
     "name": "NewtonianLipschitzOptimality",
-    "description": "Research in progress: Lean 4 verification of exact Newtonian inverse-square point-source sensitivity in the Cartesian supremum norm. The exact scalar C3 is proved (R016–R017); the physical derivative-norm bound, exact attainment and universal derivative minimality are proved (R024–R032); R033 constructs an attaining direction. R030–R031 prove convex-domain and certified Cartesian-box finite-difference bounds. An outward admissible sharp ray is proposed pending CI; global nonconvex two-point inequality and optimality remain open. Possible uses include rigorous dynamics, validated dynamics, interval arithmetic, computational astrophysics (Barnes–Hut/FMM), Coulomb modeling, AMR, GPU/HPC, planetary-defense uncertainty propagation, space situational awareness and certified Cartesian N-body methods. No deployment, stability, accuracy or performance improvement and no Palomar submission are claimed.",
+    "description": "Research in progress: Lean 4 verification of sharp Cartesian-supremum-norm Newtonian point-source sensitivity. Verified results include exact scalar C3 (R016–R017), derivative upper bound and pointwise minimality (R024–R032), convex/Cartesian-box finite differences (R030–R031), and a norm-attaining outward ray respecting unit cubical clearance (R033–R034). A constructive distinct admissible secant-pair theorem is proposed, awaiting CI. The global two-point inequality for arbitrary safe points outside nonconvex forbidden cubes and its optimality remain unproved. Prospective areas: rigorous dynamics, validated dynamics, interval arithmetic, Barnes–Hut/FMM astrophysics, Coulomb modeling, AMR, GPU/HPC, planetary-defense uncertainty propagation, space situational awareness and certified Cartesian N-body methods. No performance or Palomar submission claims.",
     "authors": [
       "Alessandro Odasso"
     ],
@@ -19,7 +19,7 @@
   },
   "sources": [],
   "status": {
-    "scope": "Verified R016–R017 determine the exact scalar C3; R024–R029 prove the derivative norm estimate and its attainment; R030–R031 establish convex and Cartesian-box two-point bounds; R032 proves universal pointwise derivative-norm minimality; R033 gives an attaining physical derivative direction. AdmissibleCriticalDirection.lean proposes a direction whose positive ray respects the unit Cartesian cube clearance, awaiting CI. The admissible limiting finite-difference optimality proof and global nonconvex N-source upper bound remain open. Two Palomar targets are planned only; Comparator selection is empty.",
+    "scope": "R016–R017 establish exact C3; R024–R029 establish the physical Cartesian derivative bound and its attainment; R030–R031 establish convex and Cartesian-box two-point bounds; R032 establishes least derivative-norm coefficient; R033–R034 establish a derivative-attaining direction oriented along a ray outside unit cubical exclusion. AdmissibleSecantPairs.lean proposes distinct, clearance-admissible endpoints and exact step separation but is pending CI. The admissible finite-difference quotient lower bound and global nonconvex N-source upper bound remain unproved. Palomar theorem pair remains planning-only; Comparator is inactive.",
     "sorry_count": 0,
     "sorry_in_definitions": 0,
     "axioms": [
@@ -43,7 +43,7 @@
     "notes": "Alessandro Odasso, a non-mathematician interested in assessing LLMs in scientific research, initiated and directs the project. GPT-6 assists with the initial project structure and formal mathematical work."
   },
   "fidelity": {
-    "divergences": "The pointwise sharp derivative norm and a direction attaining C3 (R033) are Lean-verified; a proposed outward admissible ray awaits CI. The convex finite-difference bounds (R030–R031) are verified, but the global nonconvex two-point theorem and optimality are not. Possible parameter substitution in box-based codes requires compatibility review; numerical accuracy, unchanged stability, reduced subdivisions, runtimes and overflow avoidance are not guaranteed or demonstrated. The decimal approximation is not Lean-certified."
+    "divergences": "Lean verifies R033 directional attainment and R034 outward ray cubical clearance. The distinct admissible secant-pair theorem remains proposed until CI; the limiting finite-difference lower bound and global nonconvex two-point bound/optimality remain unproved. C3 decimal digits are not Lean-certified. No performance gains, preservation of stability or software deployment have been demonstrated."
   },
   "review": {
     "status": "self-assessed",
