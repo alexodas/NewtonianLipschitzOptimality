@@ -8,14 +8,26 @@ and its Lipschitz bounds in the Cartesian supremum norm.
 The objective is to prove the smallest universal sensitivity coefficient
 under explicit positive-clearance and geometric domain assumptions.
 
-**Already proved:** the exact field and Fréchet derivative,
-coefficients 10 and 7, the scalar candidate maximum, its
-Cartesian derivative operator-norm bound, and an exact
-Jacobian row-sum attainment witness (R027–R028).
+**Verified in Lean:** R016–R017 determine the exact
+critical root and scalar formula defining C3. R024–R025
+prove the physical Newtonian Jacobian row-sum bound in
+the Cartesian maximum norm, including positive clearance.
+R026–R027 transfer it to the actual Frechet derivative
+and its induced operator norm. R028 exhibits an explicit
+unit-Cartesian-norm displacement where a Jacobian row sum
+attains C3. Earlier results R001–R015 and R018–R023
+establish the field, calculus, conservative estimates
+and the intermediate algebraic reductions.
 
-**Not yet proved:** the global two-point inequality with the
-candidate coefficient, its optimality, and a Lipschitz
-bound on nonconvex domains.
+**Proposed but not yet verified in Lean:** equality of
+the actual derivative operator norm with C3 at the
+critical diagonal displacement. The proof is in
+`JacobianOperatorWitness.lean` and awaits the next build.
+
+**Still unproved:** a matching admissible finite-difference
+lower bound, the candidate two-point bound on convex safe
+domains, and the universal two-point inequality with
+optimality on the nonconvex exterior of safety cubes.
 
 Alessandro Odasso directs the research. He is not a mathematician and
 uses this project to study the capabilities and limits of
@@ -126,10 +138,12 @@ Euclidean clearance. The sharp candidate C3 instead uses
 clearance in the Cartesian maximum norm. These are
 different geometric assumptions.
 
-Lean verifies scalar maximization, the candidate Jacobian
-row bound and the true directional Frechet derivative
-bound at nonzero displacements (R016–R026).
-The induced derivative operator-norm bound is proved (R027).
+Lean verifies the exact scalar maximum (R016–R017),
+a universal pointwise Jacobian row-sum bound (R024–R025),
+and the induced Cartesian Frechet operator-norm estimate
+(R026–R027). The diagonal Jacobian witness attains the
+same row-sum coefficient exactly (R028). The proposed
+matching operator-norm equality is pending Lean validation.
 The **nonconvex complement** of the forbidden cubes
 requires a separate argument for arbitrary pairs of points,
 including those whose connecting segment crosses a
@@ -749,32 +763,26 @@ Cartesian operator norm at positive clearance (R027).
 
 - **M01 — Foundation: complete.** Exact field, derivative,
   norm bridges, clearance, and bounds 10 and 7 (R001–R010).
-- **M02 — Jacobian reduction: in progress.** Row algebra
-  (R011), exact Jacobian (R013), normalized row estimates
-  (R014–R015, R018–R019), sign/scale invariances (R020)
-  and cyclic/Y-Z axis transformations (R021) are proved.
-  Positive X scaling (R022), maximal Y and Z (R023),
-  and arbitrary coordinate signs (R024) are verified.
-  The complete coordinate row-sum reduction is acquired.
-- **M03 — Sharp upper bound: in progress.** Cubic facts
-  (R012), exact root (R016), scalar maximum (R017),
-  normalized rows (R018–R019) and sign/scale transfer
-  (R020), maximal-axis reductions (R022–R023)
-  and all signed-coordinate row bounds (R024) are proved.
-  The Pi-norm and positive-clearance transfer is
-  verified (R025). Directional matrix and Frechet
-  derivative bounds are verified (R026). The induced
-  operator norm and positive-clearance estimate are also
-  verified (R027). The critical diagonal row-sum
-  witness is also verified (R028). An exact lower
-  bound and equality for the induced derivative operator
-  norm are proposed in JacobianOperatorWitness.lean,
-  pending the full Lean build. Global optimality and
-  nonconvex two-point bounds remain open.
+- **M02 — Jacobian reduction: complete for pointwise
+  row sums.** The exact Jacobian (R013), normalized row
+  algebra (R014–R015, R018–R019), symmetries (R020–R021),
+  dominant-axis estimates (R022–R023) and arbitrary
+  signed coordinates (R024) have been verified. R025
+  expresses the result in the Cartesian norm.
+- **M03 — Sharp upper bound: complete pointwise, open
+  for global finite differences.** The exact scalar
+  maximum (R016–R017), Cartesian Jacobian row estimates
+  (R024–R025) and induced Frechet derivative norm bound
+  (R026–R027) are verified. R028 attains the row-sum
+  bound at the critical diagonal. The operator-norm
+  equality is proposed in JacobianOperatorWitness.lean
+  and still awaits CI validation. Two-point bounds
+  across nonconvex safety cubes remain unproved.
 - **M04 — Optimality: in progress.** The exact diagonal
-  row witness is verified (R028). Operator-norm equality
-  is proposed but awaits Lean; an admissible two-point
-  lower bound and global upper bound remain separate.
+  row witness (R028) is verified; derivative operator-norm
+  equality is proposed but not yet validated. An admissible
+  finite-difference lower-bound witness and the global
+  upper bound are separate, unproved obligations.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
 - **M06 — Scientific and archival validation: open.** The

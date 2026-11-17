@@ -79,7 +79,6 @@ theorem NewtonianPointSource.unitAxis_fderiv_opNorm_ge_candidateMaximum :
     _ ≤ ‖A *ᵥ h‖ := hcoordinate
     _ = ‖(fderiv ℝ c.accelerationField x) h‖ := by
       rw [c.accelerationField_fderiv_eq_jacobianMatrix x h hx]
-      rfl
     _ ≤ ‖fderiv ℝ c.accelerationField x‖ * ‖h‖ :=
       (fderiv ℝ c.accelerationField x).le_opNorm h
     _ ≤ ‖fderiv ℝ c.accelerationField x‖ * 1 :=
@@ -103,9 +102,11 @@ theorem NewtonianPointSource.unitAxis_fderiv_opNorm_eq_candidateMaximum :
   apply le_antisymm
   · have hup :=
       c.accelerationField_fderiv_opNorm_le_candidateMaximum x hx
-    simpa only [hnorm, one_pow, div_one, one_mul,
-      NewtonianPointSource.unitAxis_gravitationalParameter_eq_one]
-      using hup
+    have hmu : c.gravitationalParameter = 1 := by
+      change NewtonianPointSource.unitAxis.gravitationalParameter = 1
+      exact NewtonianPointSource.unitAxis_gravitationalParameter_eq_one
+    rw [hnorm, one_pow, div_one, one_mul, hmu, one_mul] at hup
+    exact hup
   · exact NewtonianPointSource.unitAxis_fderiv_opNorm_ge_candidateMaximum
 
 end NewtonianLipschitz
