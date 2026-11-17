@@ -1302,10 +1302,11 @@ A complete Lean build checks the formal statements as encoded.
 It is different from **independent kernel checking**, scientific
 peer review, physical validation, and proof of originality.
 
-The **global nonconvex upper bound and full optimality theorem**
-remain unproved, even though the scalar C3 maximum and the
-universal two-point coefficient lower bound are Lean-verified.
-Preserve exact assumptions, norms, source links, and uncertainty.
+The global nonconvex upper bound and full optimality are
+**not yet Lean-verified theorems**, even though the scalar
+C3 maximum and universal two-point coefficient lower bound
+have been proved. Preserve exact assumptions, norms, source
+links, and uncertainty.
 
 Keep cumulative **mathematical** results here; keep the build and
 task chronology in the pull request, not in the results catalog.
