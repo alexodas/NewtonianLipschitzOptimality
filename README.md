@@ -8,9 +8,9 @@ and its Lipschitz bounds in the Cartesian supremum norm.
 The objective is to prove the smallest universal sensitivity coefficient
 under explicit positive-clearance and geometric domain assumptions.
 
-**Already proved:** the exact field and Fréchet derivative, conservative
-coefficients 10 and 7, algebraic row reductions, and the physical Jacobian
-matrix.
+**Already proved:** the exact field and Fréchet derivative,
+conservative coefficients 10 and 7, the exact scalar maximum,
+normalized Jacobian row bounds, and sign/scale invariances.
 
 **Not yet proved:** the sharp coefficient, its optimality, and a global
 Lipschitz bound on nonconvex domains.
@@ -38,8 +38,42 @@ Each theorem must state its clearance and geometric hypotheses.
 Derivative bounds extend to suitable **convex** domains; the
 **nonconvex exterior of a cube** requires a separate argument.
 
-The numerical candidate is `C3 ≈ 2.5775644212`. Its exact value and
-optimality are **not yet Lean-verified theorems**.
+The exact scalar value `C3 = candidateMaximum` is defined and its
+one-variable maximality proved in Lean. Its identification as a
+**universal sharp Lipschitz constant** and its optimality are
+**not yet Lean-verified theorems**.
+
+## Main theorem target — gravitational variation outside cubes
+
+Consider `N >= 1` Newtonian point masses `0 <= m_k <= Mmax` at
+positions `a_k`, with `G > 0` and cube half-side `d > 0`.
+A point `x` is safe when `norm_inf(x-a_k) >= d` for every
+body: it lies outside the **interior** of every forbidden cube.
+The cube boundaries are included in the safe set.
+
+Write `g(x) = -G * sum_k m_k*(x-a_k)/norm_2(x-a_k)^3`,
+where `norm_2` is Euclidean and `norm_inf` is the largest
+absolute Cartesian coordinate.
+
+**Conjectured global inequality, not yet proved in Lean:**
+For any two safe points `x` and `y`,
+
+`norm_inf(g(x)-g(y)) <= (C3*G*Mmax*N/d^3)*norm_inf(x-y)`.
+
+The proposed exact coefficient is
+`C3 = candidateCoefficient(candidateCriticalPoint)`,
+numerically `C3 ≈ 2.5775644212`. The critical point is the
+unique root in `[9/50,1/5]` of `2*t^3-8*t^2-4*t+1=0`.
+
+**Separate optimality claim:** No smaller universal `C3` works
+for all admissible configurations. This also awaits proof.
+
+**Status:** The scalar maximum, normalized Jacobian rows, and
+sign/scale identities are Lean-verified (R016–R020). They do
+**not** yet establish the global two-point inequality on the
+nonconvex exterior of cubes, nor its optimality. The
+worst local derivative is expected at cube faces, but
+this is not yet a global finite-difference theorem.
 
 ## Why the result may matter — intended audience
 
@@ -342,37 +376,59 @@ non-unit spatial scaling are not yet covered.
 **Source:**
 [NormalizedSharpBound.lean](NewtonianLipschitz/NormalizedSharpBound.lean).
 
+### R020 — Sign invariance and cubic scaling of the Jacobian
+
+For the exact Newtonian Jacobian, replacing each coordinate
+by its absolute value leaves every absolute matrix entry,
+and hence every absolute row sum, unchanged.
+
+For positive `c` and nonzero `x`, the physical Jacobian
+at `c*x` equals `c^(-3)` times the Jacobian at `x`.
+
+**Why useful:** Provides the sign and scale bridges needed
+to extend the verified normalized row bound R019.
+**Limit:** Coordinate permutations and the unrestricted
+Jacobian bound remain to be proved. No global two-point
+inequality or optimality follows from this result alone.
+
+**Lean:** `euclideanRadius_coordinateAbs`,
+`newtonianJacobianMatrix_rowSum_coordinateAbs`,
+`newtonianJacobianMatrix_entry_positive_smul`.
+**Source:**
+[JacobianSymmetries.lean](NewtonianLipschitz/JacobianSymmetries.lean).
+
 ## Direct proof strategy
 
-The next objective is the sharp coefficient, not another
-intermediate constant.
+The scalar maximization and normalized Jacobian rows are
+proved. The remaining obligations are:
 
-1. Extend the verified first-row formula (R014) to the other rows.
-2. Establish the global sign and coordinate-permutation reduction.
-3. Reduce the upper bound to
-   `f(t)=(2+6*t-2*t^2)/(1+2*t^2)^(5/2)` for `0 <= t <= 1`.
-4. Prove that the appropriate root of
-   `2*t^3-8*t^2-4*t+1=0` exists and gives the exact maximum.
-5. Prove that this exact maximum is a universal Jacobian bound.
-6. **Separately prove optimality** with a direction and limiting
-   difference quotient excluding every smaller constant.
-7. Transfer the sharp result to convex safe domains. Handle
-   nonconvex global domains as a separate theorem.
+1. Prove coordinate-permutation invariance and combine it
+   with sign/scale transfer (R019–R020).
+2. Prove the sharp Jacobian row-sum bound at every nonzero
+   displacement, with `norm_inf` clearance.
+3. Deduce the Cartesian supremum operator-norm bound for
+   the actual Fréchet derivative.
+4. **Separately prove optimality**, with a matching witness
+   and limiting difference quotient.
+5. Derive a sharp Lipschitz theorem on suitable convex
+   safe domains.
+6. Address pairs across the **nonconvex** cubical exclusions
+   directly; only then establish the main global theorem
+   and its `N`-source mass-sum consequence.
 
 ## Roadmap
 
 - **M01 — Foundation: complete.** Exact field, derivative,
   norm bridges, clearance, and bounds 10 and 7 (R001–R010).
 - **M02 — Jacobian reduction: in progress.** Row algebra
-  (R011), exact Jacobian (R013), and normalized row bounds
-  (R014–R015, R018–R019) are proved. Symmetry, sign and
-  scale transfer to arbitrary points remain open.
-- **M03 — Sharp upper bound: in progress.** Cubic
-  facts (R012), the exact root (R016), the scalar maximum
-  (R017), and all normalized row bounds (R018–R019)
-  are proved. Sign and scaling invariance are proposed
-  in JacobianSymmetries.lean and await the full build.
-  The unrestricted 3D inequality remains open.
+  (R011), exact Jacobian (R013), normalized rows (R014–R015,
+  R018–R019) and sign/scale identities (R020) are proved.
+  Coordinate permutations remain to be formalized.
+- **M03 — Sharp upper bound: in progress.** Cubic facts
+  (R012), exact root (R016), scalar maximum (R017),
+  normalized rows (R018–R019) and sign/scale transfer
+  (R020) are proved. The unrestricted 3D derivative
+  and nonconvex two-point bounds remain open.
 - **M04 — Optimality: open.** A matching witness.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
