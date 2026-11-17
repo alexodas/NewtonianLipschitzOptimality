@@ -29,6 +29,7 @@ needed = [
     "NewtonianLipschitz/JacobianOperatorWitness.lean",
     "NewtonianLipschitz/ConvexSharp.lean",
     "NewtonianLipschitz/CartesianBoxSharp.lean",
+    "NewtonianLipschitz/DerivativeCoefficientMinimality.lean",
     "NewtonianLipschitz/BaselineBounds.lean", "NewtonianLipschitz/ConvexBaseline.lean",
     "NewtonianLipschitz/ImprovedBounds.lean", "NewtonianLipschitz/ConvexImproved.lean",
     "NewtonianLipschitz/JacobianRows.lean",
@@ -65,7 +66,7 @@ if manifest.get("name") != config.get("name"):
 expected_imports = {
     "NewtonianLipschitz.lean": [
         "NewtonianLipschitz.Derivative", "NewtonianLipschitz.Clearance",
-        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ScalarMaximum", "NewtonianLipschitz.NormalizedSharpBound", "NewtonianLipschitz.JacobianSymmetries", "NewtonianLipschitz.JacobianPermutations", "NewtonianLipschitz.JacobianNormalization", "NewtonianLipschitz.JacobianAxisBounds", "NewtonianLipschitz.JacobianSignedBounds", "NewtonianLipschitz.JacobianCartesianBound", "NewtonianLipschitz.JacobianOperatorAction", "NewtonianLipschitz.JacobianOperatorNorm", "NewtonianLipschitz.JacobianSharpWitness", "NewtonianLipschitz.JacobianOperatorWitness", "NewtonianLipschitz.ConvexSharp", "NewtonianLipschitz.CartesianBoxSharp", "NewtonianLipschitz.ConvexBaseline",
+        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ScalarMaximum", "NewtonianLipschitz.NormalizedSharpBound", "NewtonianLipschitz.JacobianSymmetries", "NewtonianLipschitz.JacobianPermutations", "NewtonianLipschitz.JacobianNormalization", "NewtonianLipschitz.JacobianAxisBounds", "NewtonianLipschitz.JacobianSignedBounds", "NewtonianLipschitz.JacobianCartesianBound", "NewtonianLipschitz.JacobianOperatorAction", "NewtonianLipschitz.JacobianOperatorNorm", "NewtonianLipschitz.JacobianSharpWitness", "NewtonianLipschitz.JacobianOperatorWitness", "NewtonianLipschitz.ConvexSharp", "NewtonianLipschitz.CartesianBoxSharp", "NewtonianLipschitz.DerivativeCoefficientMinimality", "NewtonianLipschitz.ConvexBaseline",
         "NewtonianLipschitz.ConvexImproved", "NewtonianLipschitz.JacobianRows",
         "NewtonianLipschitz.JacobianMatrix",
     ],
@@ -119,6 +120,9 @@ expected_imports = {
     ],
     "NewtonianLipschitz/CartesianBoxSharp.lean": [
         "NewtonianLipschitz.ConvexSharp"
+    ],
+    "NewtonianLipschitz/DerivativeCoefficientMinimality.lean": [
+        "NewtonianLipschitz.CartesianBoxSharp"
     ],
     "NewtonianLipschitz/BaselineBounds.lean": ["NewtonianLipschitz.Derivative"],
     "NewtonianLipschitz/ConvexBaseline.lean": ["NewtonianLipschitz.BaselineBounds", "NewtonianLipschitz.Clearance"],

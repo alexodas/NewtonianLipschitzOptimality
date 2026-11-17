@@ -2,7 +2,7 @@
   "version": "v0.4",
   "project": {
     "name": "NewtonianLipschitzOptimality",
-    "description": "Research in progress: Lean 4 verification of the Cartesian-supremum-norm sensitivity coefficient C3 for the exact three-dimensional Newtonian point-source field. The exact scalar maximum (R016–R017), pointwise derivative-norm bound and sharp witness (R027–R029), and finite-difference inequality on convex safe domains (R030) are Lean-verified. A Cartesian-box clearance corollary is proposed, awaiting CI. The global two-point inequality for arbitrary safe endpoints outside nonconvex forbidden cubes, and its optimality, remain unproved. Prospective applications include rigorous dynamics, interval arithmetic, computational astrophysics (Barnes–Hut/FMM), Coulomb simulation, adaptive mesh refinement, GPU/HPC, planetary-defense uncertainty propagation, space situational awareness and certified Cartesian N-body methods. No measured performance improvement or Palomar submission is claimed.",
+    "description": "Research in progress: Lean 4 verification of the Cartesian-supremum-norm sensitivity coefficient C3 for the exact 3D Newtonian point-source field. The exact scalar maximum (R016–R017), pointwise derivative-norm bound and sharp witness (R027–R029), convex-domain two-point bound (R030), and Cartesian-box center-margin certificate (R031) are Lean-verified. Quantified minimality for derivative norms is proposed pending Lean validation; global two-point inequality and optimality for arbitrary endpoints outside nonconvex safety cubes remain unproved. Potential audiences: rigorous dynamics, interval arithmetic, computational astrophysics (Barnes–Hut/FMM), Coulomb simulation, adaptive mesh refinement, GPU/HPC, planetary-defense uncertainty propagation, space situational awareness and certified Cartesian N-body. No performance improvement or Palomar submission is claimed.",
     "authors": [
       "Alessandro Odasso"
     ],
@@ -19,7 +19,7 @@
   },
   "sources": [],
   "status": {
-    "scope": "Verified R016–R017 establish exact scalar C3; R024–R027 prove the physical Cartesian Jacobian and Fréchet operator-norm bounds; R028–R029 prove exact derivative-norm attainment; R030 proves the physical finite-difference inequality on convex sets with positive Cartesian clearance. CartesianBoxSharp.lean proposes a box center-margin corollary but awaits the next Lean build. Global nonconvex two-point optimality and an admissible lower-bound witness remain open. Two planned Palomar theorem targets are not selected in Comparator, and no submission is claimed.",
+    "scope": "R016–R017 verify exact scalar C3; R024–R029 prove the Jacobian and physical Fréchet derivative operator-norm bound with a sharp equality witness; R030–R031 verify two-point sensitivity on convex safe domains and center-certified Cartesian boxes. DerivativeCoefficientMinimality.lean proposes a quantified least-coefficient theorem for pointwise derivative norms, awaiting CI. Admissible two-point minimality and global nonconvex N-source bounds remain unproved. Palomar theorem pair is documented only; Comparator selection is empty and no submission is claimed.",
     "sorry_count": 0,
     "sorry_in_definitions": 0,
     "axioms": [
@@ -43,7 +43,7 @@
     "notes": "Alessandro Odasso, a non-mathematician interested in assessing LLMs in scientific research, initiated and directs the project. GPT-6 assists with the initial project structure and formal mathematical work."
   },
   "fidelity": {
-    "divergences": "Exact scalar C3 and the sharp derivative-norm equality are Lean-verified, as is the convex-domain finite-difference bound R030. The proposed Cartesian-box corollary remains unverified pending CI. The global two-point nonconvex safety-cube theorem and its minimality are open. C3 decimal digits are not Lean-certified; no runtime speedup, overflow prevention or software integration is demonstrated."
+    "divergences": "Exact C3, pointwise derivative-norm attainment, convex two-point bounds and the Cartesian-box certificate are verified. Quantified minimality of C3 for universal derivative-norm bounds is proposed and not yet CI-verified. Neither the global two-point inequality on nonconvex safety-cube exteriors nor its optimality is proved. Decimal digits are not Lean-certified; performance claims remain unmeasured."
   },
   "review": {
     "status": "self-assessed",

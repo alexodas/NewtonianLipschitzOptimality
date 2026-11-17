@@ -11,8 +11,8 @@ under explicit positive-clearance and geometric domain assumptions.
 The coefficient C3 is defined by an exact scalar
 maximization and is attained by the operator norm of
 the physical Newtonian derivative. It also gives a
-proved finite-difference bound on **convex** domains
-with positive Cartesian clearance. The main research
+proved finite-difference bound on **convex** domains,
+including Cartesian boxes with explicit clearance. The main research
 objective is the best universal two-point bound
 outside nonconvex source-centered safety cubes.
 
@@ -158,7 +158,8 @@ and the induced Frechet derivative norm bound (R026–R027).
 The critical diagonal witness attains both the Jacobian
 row sum (R028) and the derivative operator norm (R029).
 The candidate also controls finite differences on convex
-Cartesian-safe domains (R030).
+Cartesian-safe domains (R030), including certified
+Cartesian boxes (R031).
 The **nonconvex complement** of the forbidden cubes
 requires a separate argument for arbitrary pairs of points,
 including those whose connecting segment crosses a
@@ -209,8 +210,8 @@ applications, not validated performance or safety claims.
   or operational safety.
 
 **Present limitation:** R027–R029 prove the sharp
-pointwise derivative norm and its attainment; R030
-proves a convex-domain finite-difference bound.
+pointwise derivative norm and its attainment; R030–R031
+prove convex-domain and Cartesian-box bounds.
 The global two-point estimate across the nonconvex
 exterior of forbidden cubes is **unproved**.
 Reusing a precomputed scalar has negligible arithmetic
@@ -232,17 +233,17 @@ as verified in the permanent mathematical ledger below.
   and actual Frechet derivative operator-norm bounds.
 - R028–R029 exhibit an explicit physical configuration
   where the derivative operator norm **equals C3**.
-- R030 proves the candidate **finite-difference bound
-  on convex domains** with positive Cartesian clearance.
+- R030–R031 prove **finite-difference bounds** with C3
+  on convex safe domains and certified Cartesian boxes.
 - R001–R015 and R018–R023 document the foundational
   field, regularity, conservative estimates, and the
   verified algebraic reductions.
 
 **Proposed but not yet verified in Lean:**
 
-- `CartesianBoxSharp.lean` derives a two-point bound
-  inside a Cartesian sup-norm box from its center
-  clearance certificate and the verified convex theorem.
+- `DerivativeCoefficientMinimality.lean` formalizes
+  that every universal Cartesian derivative-norm
+  coefficient must be at least C3, using R029.
 
 **Still unproved:**
 
@@ -858,20 +859,53 @@ Minimality of the global coefficient is still unproved.
 **Source:**
 [ConvexSharp.lean](NewtonianLipschitz/ConvexSharp.lean).
 
+### R031 — Sharp two-point bound on a certified Cartesian box
+
+Let `B = ball_inf(anchor,rho)` be an open Cartesian
+box, namely a metric ball for the supremum norm.
+For `d > 0`, suppose the center-margin condition holds:
+
+```text
+d + rho <= norm_inf(anchor).
+```
+
+Lean proves `norm_inf(z) >= d` for every `z in B`.
+Consequently, the actual Newtonian point-source field
+satisfies for every `x,y in B`:
+
+```text
+norm_inf(g(x)-g(y))
+  <= (mu*C3/d^3) * norm_inf(x-y).
+```
+
+**Why useful:** Converts the verified convex-domain
+estimate R030 into an explicit, checkable Cartesian
+box certificate applicable to spatial enclosures.
+**Limit:** The claim concerns two points within the
+same certified convex box and one point source.
+It does not extend automatically to arbitrary safe
+points separated by a nonconvex forbidden region.
+
+**Lean:** `cartesianBox_clearance_of_center_margin`,
+`NewtonianPointSource.accelerationField_norm_sub_le_candidateMaximum_box`.
+**Source:**
+[CartesianBoxSharp.lean](NewtonianLipschitz/CartesianBoxSharp.lean).
+
 ## Direct proof strategy
 
 The candidate controls the true derivative (R027),
 is attained at the critical diagonal (R029), and
-bounds finite differences on convex safe sets (R030).
+bounds finite differences on convex safe sets and
+certified Cartesian boxes (R030–R031).
 
-1. Make R030 operational on Cartesian sup-norm boxes
-   with a center-margin clearance certificate.
-2. Prove a matching admissible two-point lower-bound
+1. Formalize the minimality of C3 among all universal
+   Cartesian derivative-norm coefficients.
+2. Prove a matching admissible **two-point** lower-bound
    witness near the critical displacement.
 3. Investigate arbitrary endpoints outside forbidden
    cubes: their joining segment may be unsafe.
-4. Only then complete the global multi-source theorem
-   and universal optimality intended for Palomar.
+4. Complete the global multi-source upper bound and
+   its separate optimality theorem for Palomar.
 
 ## Roadmap
 
@@ -889,15 +923,16 @@ bounds finite differences on convex safe sets (R030).
   R028–R029 prove its attainment. R030 proves the
   actual finite-difference bound on convex safe domains.
   The unrestricted nonconvex bound remains unproved.
-- **M04 — Optimality: in progress.** R029 proves C3 is
-  attained as the actual derivative operator norm.
-  An admissible two-point lower-bound witness and
-  universal global upper bound are still unproved.
+- **M04 — Optimality: in progress.** R029 proves exact
+  attainment of the physical derivative operator norm.
+  The quantified least-coefficient theorem is proposed
+  in DerivativeCoefficientMinimality.lean, pending CI.
+  The admissible two-point lower bound and global upper
+  bound remain separate, unproved obligations.
 - **M05 — Domain theorem: in progress.** The convex
-  finite-difference theorem is verified (R030).
-  A Cartesian-box center-margin corollary is proposed
-  in CartesianBoxSharp.lean and awaits the full build.
-  Global bounds across nonconvex cubes are still open.
+  finite-difference theorem (R030) and Cartesian-box
+  center-margin certificate (R031) are both verified.
+  Global bounds across nonconvex cubes remain open.
 - **M06 — Scientific and archival validation: open.** The
   planned Palomar pair is the exact formula for C3 and its
   global optimality (see [PALOMAR.md](PALOMAR.md)).
@@ -934,7 +969,9 @@ The substantive library is in `NewtonianLipschitz/`:
   [JacobianSharpWitness](NewtonianLipschitz/JacobianSharpWitness.lean),
   [JacobianOperatorWitness](NewtonianLipschitz/JacobianOperatorWitness.lean),
   [ConvexSharp](NewtonianLipschitz/ConvexSharp.lean),
-  [CartesianBoxSharp](NewtonianLipschitz/CartesianBoxSharp.lean).
+  [CartesianBoxSharp](NewtonianLipschitz/CartesianBoxSharp.lean),
+  [DerivativeCoefficientMinimality](
+  NewtonianLipschitz/DerivativeCoefficientMinimality.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
