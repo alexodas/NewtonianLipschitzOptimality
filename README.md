@@ -156,6 +156,81 @@ these algebraic identities alone.
 `NewtonianPointSource.finiteDifferentialAcceleration_cons` ·
 **Source:** [`FiniteSources.lean`](NewtonianLipschitz/FiniteSources.lean).
 
+<!-- RESULT:R009 -->
+### R009 — Improved conservative Cartesian derivative coefficient 7
+
+Using the dimension-three inequality `‖h‖₂ ≤ 2 ‖h‖∞`,
+the exact Newtonian Fréchet derivative satisfies
+`‖Dgμ(x) h‖∞ ≤ (7 M / d³) ‖h‖∞` whenever `d > 0`
+is a Euclidean source clearance and `M` bounds the nonnegative
+gravitational parameter.
+
+**Why useful:** Strengthens the explicit estimate R005 without imposing
+an assumed force-derivative bound. **Limit:** The coefficient **7 is
+not optimal**; it is a consequence of a nonsharp norm conversion.
+
+**Lean:** `euclideanRadius_le_two_mul_cartesian_norm`,
+`NewtonianPointSource.accelerationField_fderiv_norm_le_seven_of_clearance` ·
+**Sources:** [`Norms.lean`](NewtonianLipschitz/Norms.lean),
+[`ImprovedBounds.lean`](NewtonianLipschitz/ImprovedBounds.lean).
+
+<!-- RESULT:R010 -->
+### R010 — Improved convex-domain Lipschitz coefficient 7
+
+The exact Newtonian field satisfies a Cartesian-supremum-norm Lipschitz
+estimate with coefficient `7 M / d³` on any convex spatial domain
+with uniform positive Euclidean clearance. The unit-source version
+also applies to suitably separated Cartesian anchor balls.
+
+**Why useful:** Converts R009 into a bound on finite force
+differences. **Limit:** Depends on convexity and is neither sharp nor
+a global estimate on arbitrary pairs in the nonconvex cube exterior.
+
+**Lean:** `NewtonianPointSource.accelerationField_lipschitzOnWith_seven`,
+`NewtonianPointSource.unitAxis_lipschitzOnWith_anchor_seven` ·
+**Source:** [`ConvexImproved.lean`](NewtonianLipschitz/ConvexImproved.lean).
+
+<!-- RESULT:R011 -->
+### R011 — Dominant Jacobian-row numerator and diagonal reduction
+
+For normalized nonnegative coordinates `(1,u,v)`, with
+`0 ≤ u,v ≤ 1`, the algebraic numerator associated with the
+maximal coordinate dominates the two lateral absolute-row
+numerators. At fixed value of `u²+v²`, that numerator is bounded
+above by its value on the diagonal `u=v=t`.
+
+**Why useful:** Reduces a central algebraic part of the proposed
+three-dimensional sharp-bound proof to one scalar variable.
+**Limit:** This is a comparison of the **defined algebraic row
+numerators**, not yet a theorem identifying the full physical Jacobian
+operator norm or its global maximum.
+
+**Lean:** `lateralRowNumerator_le_dominant`,
+`lateralRowNumerator_swapped_le_dominant`,
+`dominantRowNumerator_le_diagonal` ·
+**Source:** [`JacobianRows.lean`](NewtonianLipschitz/JacobianRows.lean).
+
+<!-- RESULT:R012 -->
+### R012 — Stationary-polynomial sign and uniqueness properties
+
+The candidate cubic `p(t)=2t³−8t²−4t+1` is strictly
+decreasing on `[0,1]` and has opposite signs at
+`t=9/50` and `t=1/5`. Consequently, it has at most
+one zero on the unit interval.
+
+**Why useful:** Supplies exact algebraic facts for identifying
+the prospective maximizing parameter without relying on a
+floating-point estimate. **Limit:** These declarations do **not**
+yet prove existence of a critical root, show that the proposed
+one-variable coefficient is maximized there, or establish an
+optimal force Lipschitz bound.
+
+**Lean:** `stationaryCubic_pos_at_nine_fiftieths`,
+`stationaryCubic_neg_at_one_fifth`,
+`stationaryCubic_strictAntiOn_unitInterval`,
+`stationaryCubic_root_unique_on_unitInterval` ·
+**Source:** [`CubicCandidate.lean`](NewtonianLipschitz/CubicCandidate.lean).
+
 ## Direct proof strategy
 
 The **shortest proof-directed route** is to bound the exact Cartesian
@@ -184,9 +259,9 @@ milestone unless it directly resolves a dependency of the sharp proof.
 
 | Milestone | Mathematical / verification obligation | Status |
 |---|---|---|
-| **M01 — Foundation** | Exact physical field, Fréchet derivative, norm bridges and conservative convex-domain certificate | **Completed; R001–R008** |
-| **M02 — Jacobian reduction** | Exact row formula, coordinate/sign symmetry, dominant row and diagonal reduction at fixed radius | **In progress**; partial algebraic lemmas pending CI |
-| **M03 — Sharp upper bound** | Prove the maximum of `f(t)`, existence and uniqueness of its critical root, and the resulting sharp universal derivative coefficient | **Open** |
+| **M01 — Foundation** | Exact physical field, Fréchet derivative, norm bridges and conservative convex-domain certificates (10 and 7) | **Completed; R001–R010** |
+| **M02 — Jacobian reduction** | Relate exact Jacobian to row numerators, establish sign/permutation symmetry and diagonal reduction | **In progress**; row-numerator and diagonal algebra proved (R011), operator-norm bridge still open |
+| **M03 — Sharp upper bound** | Prove existence of the cubic root, identify the maximum of `f(t)` and derive the exact supremum-operator bound | **Open**; sign and uniqueness lemmas proved (R012) |
 | **M04 — Optimality** | Produce a matching directional derivative / nearby-point witness excluding every smaller coefficient | **Open** |
 | **M05 — Domain theorem** | Apply the sharp coefficient on precisely quantified convex safe domains; investigate nonconvex exterior bounds separately | **Open** |
 | **M06 — Scientific and archival validation** | Audit theorem ledger, proofs, assumptions, references, novelty, Palomar metadata, standalone Comparator and full CI before merge | **Open** |
@@ -210,10 +285,10 @@ mathematical results. Review the entire README before merging.
 - `NewtonianLipschitz/FiniteSources.lean` — finite exact differential-force sums.
 - `NewtonianLipschitz/BaselineBounds.lean` — explicit conservative derivative estimates recovered from existing checked mathematics.
 - `NewtonianLipschitz/ConvexBaseline.lean` — nonoptimal Lipschitz bounds on convex safe domains.
-- `NewtonianLipschitz/ImprovedBounds.lean` — proposed new conservative derivative coefficient 7, pending CI.
-- `NewtonianLipschitz/ConvexImproved.lean` — convex-domain companion coefficient 7, pending CI.
-- `NewtonianLipschitz/JacobianRows.lean` — dominant-row and diagonal-reduction algebra toward the exact coefficient, pending CI.
-- `NewtonianLipschitz/CubicCandidate.lean` — exact definitions for an unproved optimization candidate.
+- `NewtonianLipschitz/ImprovedBounds.lean` — verified conservative derivative coefficient 7 (R009).
+- `NewtonianLipschitz/ConvexImproved.lean` — verified convex-domain coefficient 7 (R010).
+- `NewtonianLipschitz/JacobianRows.lean` — proved algebraic dominant-row and diagonal reduction (R011), not yet the full operator norm.
+- `NewtonianLipschitz/CubicCandidate.lean` — candidate definitions and proved cubic sign/uniqueness properties (R012); maximization remains open.
 - `NewtonianLipschitz.lean` — substantive library entry point.
 - `lean-toolchain`, `lakefile.toml`, `lake-manifest.json` — pinned Lean 4 / Mathlib environment.
 - `.github/workflows/lean.yml` — full Lean build and source/documentation checks.
