@@ -54,6 +54,7 @@ for audience in ("CAPD", "planetary defense", "space situational awareness", "Ba
 # The acquired-results section is a cumulative mathematical catalog.
 # It must never be turned into an activity log or silently renumbered.
 import re
+section_start = "## Results acquired — cumulative mathematical ledger"
 if "## Status" in readme and section_start in readme:
     if readme.index("## Status") >= readme.index(section_start):
         issues.append("Mathematical status must precede the acquired-results ledger")
@@ -67,7 +68,6 @@ if "## Status" in readme and section_start in readme:
     )):
         issues.append("Detailed proof status belongs in the Status section")
 
-section_start = "## Results acquired — cumulative mathematical ledger"
 section_end = "## Direct proof strategy"
 if section_start in readme and section_end in readme:
     catalog = readme.split(section_start, 1)[1].split(section_end, 1)[0]
