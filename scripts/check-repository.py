@@ -70,7 +70,7 @@ expected_imports = {
     "NewtonianLipschitz/ImprovedBounds.lean": ["NewtonianLipschitz.BaselineBounds"],
     "NewtonianLipschitz/ConvexImproved.lean": ["NewtonianLipschitz.ImprovedBounds", "NewtonianLipschitz.Clearance"],
     "NewtonianLipschitz/JacobianRows.lean": ["Mathlib"],
-    "NewtonianLipschitz/JacobianMatrix.lean": ["NewtonianLipschitz.Derivative"],
+    "NewtonianLipschitz/JacobianMatrix.lean": ["NewtonianLipschitz.Derivative", "NewtonianLipschitz.JacobianRows"],
     "Challenge.lean": ["Mathlib"],
     "Solution.lean": ["NewtonianLipschitz"],
 }

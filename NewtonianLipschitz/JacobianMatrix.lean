@@ -1,6 +1,7 @@
 module
 
 public import NewtonianLipschitz.Derivative
+public import NewtonianLipschitz.JacobianRows
 
 public section
 
@@ -96,5 +97,112 @@ theorem NewtonianPointSource.accelerationField_fderiv_eq_jacobianMatrix
   rw [c.accelerationField_fderiv_full x h hx,
     newtonianJacobianMatrix_mulVec c.gravitationalParameter x h hx,
     toPhysicalVec3_inner_eq_dotProduct]
+
+/-!
+## Direct connection with the dominant row numerator
+
+This is a concrete bridge, not merely a definition of an algebraic
+candidate: all entries below are entries of the actual Newtonian
+Jacobian matrix proved equal to the Fréchet derivative above.
+-/
+
+/-- Cartesian entries of the exact point-source Jacobian. -/
+theorem newtonianJacobianMatrix_entry
+    (μ : ℝ) (x : Vec3) (i j : Fin 3) :
+    newtonianJacobianMatrix μ x i j =
+      (μ / euclideanRadius x ^ 5) *
+        (3 * x i * x j -
+          euclideanRadius x ^ 2 * (if i = j then 1 else 0)) := by
+  simp only [newtonianJacobianMatrix, Matrix.smul_apply,
+    Matrix.sub_apply, Matrix.vecMulVec_apply, Matrix.one_apply,
+    smul_eq_mul]
+  ring
+
+/-- Nonnegative-octant normalization with first coordinate one. -/
+def normalizedVector (u v : ℝ) : Vec3 :=
+  ![(1 : ℝ), u, v]
+
+@[simp] theorem normalizedVector_zero (u v : ℝ) :
+    normalizedVector u v 0 = 1 := by
+  rfl
+
+@[simp] theorem normalizedVector_one (u v : ℝ) :
+    normalizedVector u v 1 = u := by
+  rfl
+
+@[simp] theorem normalizedVector_two (u v : ℝ) :
+    normalizedVector u v 2 = v := by
+  rfl
+
+/-- Square of the physical Euclidean radius of the normalized vector. -/
+theorem normalizedVector_radius_sq (u v : ℝ) :
+    euclideanRadius (normalizedVector u v) ^ 2 =
+      1 + u ^ 2 + v ^ 2 := by
+  rw [euclideanRadius_eq_coordinates]
+  change Real.sqrt ((1 : ℝ) ^ 2 + u ^ 2 + v ^ 2) ^ 2 =
+    1 + u ^ 2 + v ^ 2
+  rw [Real.sq_sqrt (by positivity : 0 ≤ (1 : ℝ) ^ 2 + u ^ 2 + v ^ 2)]
+  ring
+
+/-- Exact diagonal entry of the maximal-coordinate row. -/
+theorem newtonianJacobianMatrix_normalized_zero_zero
+    (μ u v : ℝ) :
+    newtonianJacobianMatrix μ (normalizedVector u v) 0 0 =
+      (μ / euclideanRadius (normalizedVector u v) ^ 5) *
+        (2 - u ^ 2 - v ^ 2) := by
+  rw [newtonianJacobianMatrix_entry, normalizedVector_radius_sq]
+  norm_num
+  ring
+
+/-- First off-diagonal entry of the maximal-coordinate row. -/
+theorem newtonianJacobianMatrix_normalized_zero_one
+    (μ u v : ℝ) :
+    newtonianJacobianMatrix μ (normalizedVector u v) 0 1 =
+      (μ / euclideanRadius (normalizedVector u v) ^ 5) *
+        (3 * u) := by
+  rw [newtonianJacobianMatrix_entry]
+  norm_num
+
+/-- Second off-diagonal entry of the maximal-coordinate row. -/
+theorem newtonianJacobianMatrix_normalized_zero_two
+    (μ u v : ℝ) :
+    newtonianJacobianMatrix μ (normalizedVector u v) 0 2 =
+      (μ / euclideanRadius (normalizedVector u v) ^ 5) *
+        (3 * v) := by
+  rw [newtonianJacobianMatrix_entry]
+  norm_num
+
+/-- The sum of absolute values in the *actual matrix's* first row
+is the previously defined dominant numerator divided by the fifth
+power of the physical Euclidean radius. -/
+theorem newtonianJacobianMatrix_normalized_firstRow_abs_sum
+    (μ u v : ℝ) (hμ : 0 ≤ μ)
+    (hu0 : 0 ≤ u) (hu1 : u ≤ 1)
+    (hv0 : 0 ≤ v) (hv1 : v ≤ 1) :
+    (∑ j : Fin 3,
+      |newtonianJacobianMatrix μ (normalizedVector u v) 0 j|) =
+      (μ / euclideanRadius (normalizedVector u v) ^ 5) *
+        dominantRowNumerator u v := by
+  have hr : 0 ≤ euclideanRadius (normalizedVector u v) := by
+    rw [euclideanRadius_eq_physical_norm]
+    exact norm_nonneg _
+  have hk :
+      0 ≤ μ / euclideanRadius (normalizedVector u v) ^ 5 :=
+    div_nonneg hμ (pow_nonneg hr _)
+  have hu_prod : 0 ≤ (1 - u) * (1 + u) :=
+    mul_nonneg (by linarith) (by linarith)
+  have hv_prod : 0 ≤ (1 - v) * (1 + v) :=
+    mul_nonneg (by linarith) (by linarith)
+  have hdiag : 0 ≤ 2 - u ^ 2 - v ^ 2 := by
+    nlinarith [hu_prod, hv_prod]
+  rw [Fin.sum_univ_three,
+    newtonianJacobianMatrix_normalized_zero_zero,
+    newtonianJacobianMatrix_normalized_zero_one,
+    newtonianJacobianMatrix_normalized_zero_two]
+  rw [abs_of_nonneg (mul_nonneg hk hdiag),
+    abs_of_nonneg (mul_nonneg hk (mul_nonneg (by norm_num) hu0)),
+    abs_of_nonneg (mul_nonneg hk (mul_nonneg (by norm_num) hv0))]
+  unfold dominantRowNumerator
+  ring
 
 end NewtonianLipschitz

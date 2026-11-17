@@ -231,6 +231,24 @@ optimal force Lipschitz bound.
 `stationaryCubic_root_unique_on_unitInterval` ·
 **Source:** [`CubicCandidate.lean`](NewtonianLipschitz/CubicCandidate.lean).
 
+<!-- RESULT:R013 -->
+### R013 — Exact symmetric Cartesian Jacobian of Newtonian acceleration
+
+At every nonzero source separation, the full Fréchet derivative of
+the exact Newtonian field acts as the symmetric Cartesian matrix
+`μ/‖x‖₂⁵ · (3xxᵀ − ‖x‖₂² I)`. The equality holds for every
+Cartesian direction, using the physical Euclidean inner product.
+
+**Why useful:** Identifies the actual operator to be optimized
+for a sharp Cartesian supremum-norm sensitivity coefficient.
+**Limit:** Matrix identification and symmetry do not alone
+establish its induced operator norm or prove sharpness.
+
+**Lean:** `NewtonianPointSource.accelerationField_fderiv_eq_jacobianMatrix`,
+`newtonianJacobianMatrix_symmetric`,
+`newtonianJacobianMatrix_mulVec` ·
+**Source:** [`JacobianMatrix.lean`](NewtonianLipschitz/JacobianMatrix.lean).
+
 ## Direct proof strategy
 
 The **shortest proof-directed route** is to bound the exact Cartesian
@@ -260,7 +278,7 @@ milestone unless it directly resolves a dependency of the sharp proof.
 | Milestone | Mathematical / verification obligation | Status |
 |---|---|---|
 | **M01 — Foundation** | Exact physical field, Fréchet derivative, norm bridges and conservative convex-domain certificates (10 and 7) | **Completed; R001–R010** |
-| **M02 — Jacobian reduction** | Relate the exact Jacobian to the row numerators, establish sign/permutation symmetry and complete diagonal reduction | **In progress**; algebra proved (R011), matrix-derivative identity proposed (pending CI), induced operator-norm bridge open |
+| **M02 — Jacobian reduction** | Relate the exact Jacobian to row numerators, establish sign/permutation symmetry and complete diagonal reduction | **In progress**; exact matrix identity proved (R013); normalized first-row bridge proposed (pending CI); remaining global row/operator-norm bridge open |
 | **M03 — Sharp upper bound** | Prove existence of the cubic root, identify the maximum of `f(t)` and derive the exact supremum-operator bound | **Open**; sign and uniqueness lemmas proved (R012) |
 | **M04 — Optimality** | Produce a matching directional derivative / nearby-point witness excluding every smaller coefficient | **Open** |
 | **M05 — Domain theorem** | Apply the sharp coefficient on precisely quantified convex safe domains; investigate nonconvex exterior bounds separately | **Open** |
@@ -288,7 +306,7 @@ mathematical results. Review the entire README before merging.
 - `NewtonianLipschitz/ImprovedBounds.lean` — verified conservative derivative coefficient 7 (R009).
 - `NewtonianLipschitz/ConvexImproved.lean` — verified convex-domain coefficient 7 (R010).
 - `NewtonianLipschitz/JacobianRows.lean` — proved algebraic dominant-row and diagonal reduction (R011), not yet the full operator norm.
-- `NewtonianLipschitz/JacobianMatrix.lean` — exact Cartesian matrix action of the physical Newtonian derivative, pending Lean verification.
+- `NewtonianLipschitz/JacobianMatrix.lean` — verified exact symmetric Jacobian matrix and its action (R013); additional normalized-row formula pending CI.
 - `NewtonianLipschitz/CubicCandidate.lean` — candidate definitions and proved cubic sign/uniqueness properties (R012); maximization remains open.
 - `NewtonianLipschitz.lean` — substantive library entry point.
 - `lean-toolchain`, `lakefile.toml`, `lake-manifest.json` — pinned Lean 4 / Mathlib environment.
