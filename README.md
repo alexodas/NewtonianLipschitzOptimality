@@ -606,8 +606,9 @@ row sums with Cartesian supremum-norm clearance (R025).
   (R020), maximal-axis reductions (R022–R023)
   and all signed-coordinate row bounds (R024) are proved.
   The Pi-norm and positive-clearance transfer is
-  verified (R025). The transfer to directional matrix
-  action and the Frechet derivative remains open.
+  verified (R025). Directional matrix and Frechet
+  derivative bounds are proposed in
+  JacobianOperatorAction.lean, pending the full Lean build.
   Operator-norm, optimality and nonconvex bounds remain open.
 - **M04 — Optimality: open.** A matching witness.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
@@ -640,7 +641,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [JacobianNormalization](NewtonianLipschitz/JacobianNormalization.lean),
   [JacobianAxisBounds](NewtonianLipschitz/JacobianAxisBounds.lean),
   [JacobianSignedBounds](NewtonianLipschitz/JacobianSignedBounds.lean),
-  [JacobianCartesianBound](NewtonianLipschitz/JacobianCartesianBound.lean).
+  [JacobianCartesianBound](NewtonianLipschitz/JacobianCartesianBound.lean),
+  [JacobianOperatorAction](NewtonianLipschitz/JacobianOperatorAction.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
