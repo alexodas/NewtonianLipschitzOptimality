@@ -128,7 +128,7 @@ theorem dominantRowNumerator_le_diagonal (u v : ℝ) :
   exact dominantRowNumerator_le_diagonal_of_sq u v (diagonalParameter u v) ht hsq
 
 /-- Completing two squares produces a simple rational quadratic cap.
-This is a numerator inequality, not yet a Lipschitz estimate. -/
+This is only a numerator inequality; the later R030 theorem proves a physical finite-difference estimate on convex safe domains. -/
 theorem dominantRowNumerator_le_quadratic (u v : ℝ) :
     dominantRowNumerator u v ≤
       (13 : ℝ) / 5 + ((13 : ℝ) / 2) * (u ^ 2 + v ^ 2) := by
