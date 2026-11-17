@@ -2,7 +2,7 @@
   "version": "v0.4",
   "project": {
     "name": "NewtonianLipschitzOptimality",
-    "description": "Research in progress: Lean 4 verification of sharp Cartesian-supremum-norm Newtonian point-source sensitivity. Verified results include exact scalar C3 (R016–R017), derivative upper bound and pointwise minimality (R024–R032), convex/Cartesian-box finite differences (R030–R031), and a norm-attaining outward ray respecting unit cubical clearance (R033–R034). A constructive distinct admissible secant-pair theorem is proposed, awaiting CI. The global two-point inequality for arbitrary safe points outside nonconvex forbidden cubes and its optimality remain unproved. Prospective areas: rigorous dynamics, validated dynamics, interval arithmetic, Barnes–Hut/FMM astrophysics, Coulomb modeling, AMR, GPU/HPC, planetary-defense uncertainty propagation, space situational awareness and certified Cartesian N-body methods. No performance or Palomar submission claims.",
+    "description": "Research in progress: Lean 4 verification of sharp Cartesian-supremum-norm Newtonian point-source sensitivity. Verified results include exact scalar C3 (R016–R017), derivative upper bound and pointwise minimality (R024–R032), convex/Cartesian-box finite differences (R030–R031), an attaining outward-safe ray (R033–R034), and distinct admissible secant pairs of exact step length (R035). The limiting secant quotient, the global two-point bound on the nonconvex complement of forbidden cubes, and its optimality remain unproved. Prospective areas: rigorous dynamics, validated dynamics, interval arithmetic, Barnes–Hut/FMM astrophysics, Coulomb modeling, AMR, GPU/HPC, planetary-defense uncertainty propagation, space situational awareness and certified Cartesian N-body methods. No performance or Palomar submission claims.",
     "authors": [
       "Alessandro Odasso"
     ],
@@ -19,7 +19,7 @@
   },
   "sources": [],
   "status": {
-    "scope": "R016–R017 establish exact C3; R024–R029 establish the physical Cartesian derivative bound and its attainment; R030–R031 establish convex and Cartesian-box two-point bounds; R032 establishes least derivative-norm coefficient; R033–R034 establish a derivative-attaining direction oriented along a ray outside unit cubical exclusion. AdmissibleSecantPairs.lean proposes distinct, clearance-admissible endpoints and exact step separation but is pending CI. The admissible finite-difference quotient lower bound and global nonconvex N-source upper bound remain unproved. Palomar theorem pair remains planning-only; Comparator is inactive.",
+    "scope": "R016–R017 establish exact C3; R024–R029 establish the physical Cartesian derivative bound and attainment; R030–R031 prove convex and Cartesian-box finite-difference estimates; R032 proves minimality among derivative-norm coefficients; R033–R034 prove an outward-safe norm-attaining direction; R035 proves a unit attaining direction yields distinct admissible secant endpoints separated by exactly the positive step. The limiting finite-difference quotient and global nonconvex N-source upper bound remain unproved. The completed PR #1 was merged into main, but Palomar's planned theorem pair is not selected in Comparator; no submission is claimed.",
     "sorry_count": 0,
     "sorry_in_definitions": 0,
     "axioms": [
@@ -43,7 +43,7 @@
     "notes": "Alessandro Odasso, a non-mathematician interested in assessing LLMs in scientific research, initiated and directs the project. GPT-6 assists with the initial project structure and formal mathematical work."
   },
   "fidelity": {
-    "divergences": "Lean verifies R033 directional attainment and R034 outward ray cubical clearance. The distinct admissible secant-pair theorem remains proposed until CI; the limiting finite-difference lower bound and global nonconvex two-point bound/optimality remain unproved. C3 decimal digits are not Lean-certified. No performance gains, preservation of stability or software deployment have been demonstrated."
+    "divergences": "Lean has verified R035: the critical direction has unit norm and yields distinct unit-clearance-admissible endpoints with exactly known separation. It does not verify the limit of physical secant quotients or the global nonconvex two-point inequality and optimality. C3 decimal digits are not Lean-certified. Stability, accuracy and performance gains are not demonstrated. Merging source into main is not independent Comparator validation."
   },
   "review": {
     "status": "self-assessed",
