@@ -5,408 +5,188 @@ and its Lipschitz bounds in the Cartesian supremum norm.
 
 ## Executive summary
 
-The project separates **two mathematical questions**.
-The first, already Lean-verified, determines the exact
-**optimal local steepness** of the Newtonian field in the
-Cartesian supremum norm: its coefficient is C3, obtained
-from an exact scalar maximization and attained by the
-physical derivative. The first planned Palomar statement
-records the exact scalar formula, supported by the
-separately verified local optimality results.
+This project proves sharp Lipschitz estimates for the **exact
+three-dimensional Newtonian gravitational field**. The gravitational
+law uses **Euclidean distance**, whereas excluded regions and the
+sensitivity inequality use the **Cartesian supremum norm**.
 
-The second question is **global**: does the same sharp
-coefficient C3 bound the force difference between *any*
-two safe points outside a nonconvex source-centered cube,
-even when their connecting segment is unsafe?
-**R047 now proves the global C3 upper bound for the
-exact Newtonian field of one source**. Together with
-R037's necessary two-point lower bound, this identifies
-C3 as the exact optimal universal one-source coefficient.
-For multiple sources, **R048 now proves an unconditional
-N*M*C3/d³ finite-source upper bound** for the existing
-exact nonlinear differential-acceleration sum, as well
-as a formal **if and only if** characterizing the sharp
-one-source coefficient. The intended complete physical
-G/mass/source-position Palomar declaration and
-independent Comparator validation remain outstanding.
+There are two principal mathematical results.
 
-The [Status](#status) section distinguishes verified
-results from current proposals and open problems.
-The [mathematical ledger](#results-acquired--cumulative-mathematical-ledger)
-contains the complete cumulative proof record.
+1. The exact coefficient \(C_3\) is determined by the unique root
+   of a cubic polynomial in a rational interval; an associated
+   one-variable function attains its maximum there.
+2. The **same coefficient** is the optimal universal global
+   Lipschitz factor for Newtonian point-source gravity outside
+   source-centered Cartesian safety cubes, even though the allowed
+   region is generally **nonconvex**. A corresponding upper bound
+   holds for any finite collection of nonnegative masses.
 
-Alessandro Odasso directs the research. He is not a mathematician and
-uses this project to study the capabilities and limits of
-large language models (LLMs) in scientific research. GPT-6 assists
-with mathematical reasoning, Lean proof development, and verification.
+The sharp global upper bound for one source was formally proved in
+R047, and R048 established exact one-source optimality and an
+unconditional finite-source estimate. The standalone Palomar
+Challenge and Solution express the two principal results without
+depending on the project's definitions in the Challenge; their
+independent Comparator check is a separate verification step.
+
+Alessandro Odasso directs the research and the mathematical questions.
+GPT-6 assisted with analysis and Lean proof authoring. Kernel
+compilation, independent comparison, scholarly novelty and external
+review are distinct matters.
 
 ## Main theorem target — gravitational variation outside cubes
 
-### Plain-language statement (research goal)
+### Plain-language statement
 
-Imagine **N point masses** in three-dimensional space, with
-Cartesian axes **X, Y, and Z**. Each mass is surrounded by
-an axis-aligned **safety cube** of side length 2d.
-The interior of each cube is forbidden, while its surface
-and the points outside it are allowed.
+Imagine any finite number \(N\) of point masses at arbitrary positions
+in three-dimensional space. Around each mass draw a cube whose sides
+are parallel to the X, Y and Z axes, with half-side length \(d>0\).
+The interior of each cube is excluded, but the boundary is allowed.
 
-There are **two different questions** about how much
-the gravitational acceleration can change.
+Choose any two observation points \(P,Q\) **outside every excluded
+cube**. The straight line from \(P\) to \(Q\) need not stay outside:
+it may pass through a forbidden region.
 
-**First question — What is the greatest local steepness?
-(Proved.)** Stand at one allowed position and consider an
-arbitrarily small movement. How rapidly can the force
-change, relative to the largest change of any one
-Cartesian coordinate? Lean proves an exact universal
-answer, called **C3**. Its value is approximately
-**2.5775644212**, obtained from an exact root of a cubic
-equation (R016–R017). The physical derivative obeys
-this bound everywhere with the specified clearance
-(R024–R027); at a particular point on the cube surface
-it **attains** the bound (R028–R029). R032 proves that
-no smaller coefficient works for all such local
-derivative estimates. Thus C3 is the **optimal local
-coefficient**, not merely a plausible estimate.
-The first planned Palomar theorem specifies its exact
-scalar characterization, supported by these local results.
+The first theorem answers a local optimization problem. It determines
+the exact dimensionless coefficient \(C_3\) from a cubic equation,
+not merely from a decimal numerical search. The physical Newtonian
+derivative attains this coefficient in the Cartesian supremum norm,
+so no smaller universal local bound is possible.
 
-**Second question — Does the same optimal coefficient
-control any two allowed points? (Proved for one source.)**
-Choose two points P and Q outside the interior of the
-cube surrounding a single mass. Their straight connecting
-segment may pass **through the forbidden cube**, so the
-ordinary derivative bound cannot simply be integrated
-along that unsafe segment.
+The second theorem answers the stronger **global** question. For a
+single mass, the force difference between *any* such two safe points
+obeys the same \(C_3\) coefficient, even if their joining segment is
+unsafe. This is a proved result, not a conjecture. For multiple
+masses the exact force differences add, and the coefficient becomes
+\(N G M C_3/d^3\) when the gravitational constant is \(G\) and each
+mass is between zero and \(M\).
 
-R047 proves that the proposed bound **does hold for
-every such pair**. Its geometric idea is simple:
-when P and Q share a safe coordinate halfspace, the
-connecting segment is safe; when their safe coordinates
-lie on different axes, R040 constructs two safe legs.
-R042–R046 establish a stronger derivative estimate
-with coefficient **5/4** along movements parallel
-to a safe coordinate plane. R047 integrates that
-estimate along a genuinely safe leg and obtains
-an actual **5/4 force-difference bound** for any
-pair with one fixed safe coordinate. Applying R043's
-verified case split, the two-leg case has coefficient
-at most **5/2**, strictly below C3.
+The constant is **universally optimal**: a smaller dimensionless
+coefficient would already fail for a suitable pair of safe points
+with one unit source. This does **not** assert that a fixed
+many-body arrangement, or every value of \(N\), attains the bound.
 
-Consequently, for a point source with gravitational
-parameter mu and cube half-side d>0, Lean proves
+The central idea behind the nonconvex theorem is geometric. On any
+plane where one Cartesian coordinate is fixed outside its safety
+interval, the physical field has a stronger tangential derivative
+bound \(5/4\). Integrating along a safe planar segment gives a
+real two-point force bound. When the two endpoints lie on
+different safe faces, a two-step bridge yields coefficient \(5/2\),
+which is strictly below \(C_3\). Other endpoint configurations are
+handled by safe halfspaces or by a long-separation estimate.
+The construction **never differentiates across a forbidden region**.
 
-```text
-norm_inf(g_mu(P)-g_mu(Q))
-    <= (mu*C3/d^3)*norm_inf(P-Q)
-```
+### Formal mathematical statements
 
-for **all** safe P and Q, including pairs whose
-straight segment is unsafe. R037 had already shown
-that no smaller universal coefficient could work,
-so the **optimal one-source global coefficient is C3**.
-This is not merely a local derivative statement.
+For \(v=(v_X,v_Y,v_Z)\), distinguish
 
-**What about N sources?** R048 now combines the
-proved one-source bound R047 with R041's exact
-finite-source summation to obtain a **direct,
-unconditional Lean theorem** for the nonlinear
-sum of accelerations, with coefficient
-`N*M*C3/d³` when each source's gravitational
-parameter is at most M. It also verifies an
-exact **if and only if**: for the unit one-source
-cube, a coefficient K works for every safe pair
-precisely when K >= C3.
+\[
+\|v\|_2=\sqrt{v_X^2+v_Y^2+v_Z^2},
+\qquad
+\|v\|_\infty=\max(|v_X|,|v_Y|,|v_Z|).
+\]
 
-The remaining work is not another search for a
-global constant. It is to express the complete
-physical formulation in terms of G, individual
-masses, source positions, admissible multiplicities
-and universal optimality, and to prepare the two
-final Palomar declarations for independent
-Comparator verification. The full planned
-Palomar submission is **not yet completed**.
+The **first theorem**, the exact scalar maximization, takes the
+unique \(t_*\in[9/50,1/5]\) solving
 
-### Formal mathematical statement
+\[
+2t_*^3-8t_*^2-4t_*+1=0.
+\]
 
-Each point has three coordinates:
-P = (P_X, P_Y, P_Z) and Q = (Q_X, Q_Y, Q_Z).
-Here **P and Q are points**, not coordinate axes.
+Then, for
+\[
+f(t)=\frac{2+6t-2t^2}{(1+2t^2)^{5/2}},
+\]
+the exact coefficient is
+\[
+C_3=f(t_*)=\max_{0\leq t\leq1} f(t)
+\approx 2.5775644212.
+\]
+The decimal is illustrative; the Lean theorem specifies the
+coefficient exactly and does not certify a decimal interval.
 
-For a vector v = (v_X, v_Y, v_Z), define:
-
-- The **Euclidean norm**, used in Newton's gravitational law:
-  norm_2(v) = sqrt(v_X^2 + v_Y^2 + v_Z^2).
-- The **Cartesian maximum norm**, used for safety cubes and
-  the variation bound:
-  norm_inf(v) = max(|v_X|, |v_Y|, |v_Z|).
-
-Let N >= 1 be the number of bodies, G > 0 the gravitational
-constant, and d > 0 the cube half-side. The bodies have
-positions a_1,...,a_N and masses 0 <= m_k <= Mmax.
-
-The two points are **safe** if, for every body k,
-
-- norm_inf(P-a_k) >= d and norm_inf(Q-a_k) >= d.
-
-Thus P and Q lie outside every open forbidden cube,
-with cube boundaries included in the safe region.
-
-Their total gravitational acceleration is
-
-$$
-g(P) = -G\sum_{k=1}^{N}
-\frac{m_k(P-a_k)}{\|P-a_k\|_2^3},
-$$
-
-and analogously for Q.
-
-Write Delta X, Delta Y, Delta Z for the coordinate differences
-of P-Q, and Delta g_X, Delta g_Y, Delta g_Z for the components
-of g(P)-g(Q).
-
-**Main conjecture — global nonconvex two-point bound
-(not yet proved in Lean):**
-
-$$
-\max\bigl(|\Delta g_X|,|\Delta g_Y|,|\Delta g_Z|\bigr)
-\le
-C_3\frac{G M_{\max}N}{d^3}
-\max\bigl(|\Delta X|,|\Delta Y|,|\Delta Z|\bigr).
-$$
-
-Equivalently, in compact notation,
-
-$$
+For the **second theorem**, let the masses \(m_k\) satisfy
+\(0\leq m_k\leq M\), with source centers \(a_k\), \(G\geq0\),
+\(M\geq0\), and \(d>0\). Write
+\[
+g(P)=-G\sum_{k=1}^{N}
+  \frac{m_k(P-a_k)}{\|P-a_k\|_2^3}.
+\]
+Require for every source \(k\)
+\[
+\|P-a_k\|_\infty\geq d,\qquad
+\|Q-a_k\|_\infty\geq d.
+\]
+The exact **global** estimate is
+\[
+\boxed{\displaystyle
 \|g(P)-g(Q)\|_\infty
-\le \frac{C_3 G M_{\max}N}{d^3}\|P-Q\|_\infty.
-$$
+\le \frac{N G M C_3}{d^3}\|P-Q\|_\infty.}
+\]
+There is **no assumption** that \([P,Q]\) avoids the cubes.
 
-**Exact value of C3 (proved in R016–R017):** In Lean,
-`candidateMaximum = candidateCoefficient candidateCriticalPoint`.
-The parameter `t_star = candidateCriticalPoint` is the
-unique real root in `[9/50, 1/5]` of
+For the unit source (\(N=G=M=d=1\), centered at zero),
+a real number \(K\) bounds all admissible two-point
+force differences precisely when \(K\geq C_3\).
+Thus \(C_3\) is the least coefficient valid
+**universally across the stated family**, already
+forced by the one-source case.
 
-```text
-2*t_star^3 - 8*t_star^2 - 4*t_star + 1 = 0.
-```
-
-The exact coefficient is
-
-$
-C_3 = \frac{2+6t_*-2t_*^2}{(1+2t_*^2)^{5/2}}.
-$
-
-The approximation `2.5775644212` is **not yet a
-Lean-certified decimal enclosure**.
-
-**Two-point lower bound (proved for one source, R036–R037):**
-No constant smaller than C3 can bound every pair of
-unit-cube-admissible displacements for the unit Newtonian
-source. R036 proves the limiting quotient along actual
-admissible pairs; R037 forces any universal two-point
-coefficient to be at least C3. This does **not** prove
-that C3 is itself a global upper bound. Sharpness of a
-global bound is conditional on proving that upper bound.
+The formal Challenge states both the scalar result
+and the global finite-source bound with this exact
+one-source minimality claim. Positivity and clearance
+hypotheses are explicit. It does not claim a fixed
+many-source configuration achieves the coefficient.
 
 ## Mathematical question
 
-Newton's law uses the **Euclidean norm** norm_2, whereas
-the proposed sensitivity inequality uses norm_inf to measure
-variations along the three Cartesian axes X, Y, and Z.
+A pointwise derivative bound on a **nonconvex** domain does not,
+by itself, control arbitrary two-point differences with the same
+coefficient: the connecting segment could cross the excluded cube.
+The proof therefore must exploit the structure of Newtonian gravity,
+not simply apply a convex-domain mean-value theorem.
 
-The previously proved coefficients 10 and 7 require
-Euclidean clearance. The sharp candidate C3 instead uses
-clearance in the Cartesian maximum norm. These are
-different geometric assumptions.
-
-Lean verifies the exact scalar maximum (R016–R017),
-a pointwise Cartesian Jacobian bound (R024–R025),
-and the induced Frechet derivative norm bound (R026–R027).
-The critical diagonal witness attains both the Jacobian
-row sum (R028) and the derivative operator norm (R029).
-The candidate also controls finite differences on convex
-Cartesian-safe domains (R030), including certified
-Cartesian boxes (R031).
-The **nonconvex complement** of the forbidden cubes
-requires a separate argument for arbitrary pairs of points,
-including those whose connecting segment crosses a
-forbidden region.
+The formal development derives the exact Cartesian Jacobian,
+optimizes its row sums, proves an admissible secant lower bound,
+establishes the tangential \(5/4\) estimate on all safe coordinate
+planes, and integrates it along safe segments. These arguments
+combine to identify the sharp global coefficient.
 
 ## Why the result may matter — intended audience
 
-The intended readers work with Cartesian boxes, adaptive
-computations or **certified numerical enclosures** for
-inverse-square point-source forces. These are potential
-applications, not validated performance or safety claims.
-
-- **Computational astrophysicists and N-body developers:**
-  Cartesian tree codes (Barnes–Hut, octrees) and the Fast
-  Multipole Method (FMM) could use a tight force-sensitivity
-  bound within rigorously justified error budgets. The
-  formula alone does not certify fewer subdivisions or
-  bound a particular tree or multipole approximation error.
-- **Computational chemists and biophysicists:**
-  Coulomb point-charge forces share the inverse-square
-  vector kernel with Newtonian gravity, up to the source
-  coefficients and signs. A mathematically appropriate
-  bound may aid electrostatic simulations in 3D boxes.
-  Charges, screening, periodic boundaries and softened
-  potentials require separate treatment.
-- **Interval arithmetic and validated dynamics specialists:**
-  CAPD, VNODE-LP and COSY Infinity users could incorporate
-  an exact coefficient in interval or Taylor-model
-  enclosures with certified separation from singularities.
-  Benefits for wrapping, validated orbital trajectories
-  or planetary defense require application-level proofs.
-- **Numerical analysts and adaptive mesh refinement (AMR)
-  developers:** A Cartesian supremum-norm derivative
-  bound could support local error control and conservative
-  mesh or time-step decisions on suitable safe domains.
-  Actual accuracy and runtime gains remain unmeasured.
-- **GPU and high-performance-computing developers:**
-  The dimensionless constant can be stored once, without
-  solving the cubic at runtime. A bound expressed with
-  `norm_inf` may suit Cartesian block calculations, but
-  the physical force still uses Euclidean radii; no
-  elimination of squared-distance overflow or performance
-  speedup is established.
-- **Planetary defense, aerospace and space situational awareness:**
-  Certified sensitivity estimates may contribute to
-  conjunction analyses and uncertainty propagation.
-  The coefficient does not itself certify a collision probability
-  or operational safety.
-
-**Geometry and practical adoption:** More elaborate
-polyhedral exclusion regions may offer more tailored
-bounds, potentially closer to spherical-clearance models.
-For existing Cartesian-box codes, replacing a conservative
-parameter with the precomputed C3 may tighten certified
-error budgets without changing spatial data structures,
-provided the proved domain and clearance conditions apply.
-This does not guarantee improved numerical accuracy,
-unchanged code stability or any runtime gain; these
-require application-level analysis and benchmarking.
-
-**Present limitation:** R047 proves the sharp
-global C3 bound for one Newtonian source on the full
-nonconvex cube exterior. Together with R037's lower
-bound, its universal one-source coefficient is optimal.
-R041 provides a formally checked finite-source lifting
-implication, whose one-source premise R047 now proves.
-A fully assembled unconditional physical N-source
-Palomar theorem and independent Comparator check
-are not yet complete. Adopting the bound in real
-software still requires checking the model, clearance
-and domain hypotheses.
-No measured algorithmic improvement is claimed.
+The estimate is relevant to mathematical analysis of singular
+inverse-square fields and to **validated numerical calculations**
+using Cartesian boxes or octrees, including rigorous gravitational
+N-body bounds. It can supply a physically exact, dimensionless
+sensitivity coefficient when source clearance is certified.
+It does not, by itself, verify any particular integrator, tree
+approximation, collision probability, convergence rate, or
+computational speedup.
 
 ## Status
 
-This section describes the current proof boundary.
-Only results that passed the full Lean build are listed
-as verified in the permanent mathematical ledger below.
+**Lean-verified mathematical results:** R016–R017 prove exact
+existence, uniqueness and scalar maximality of \(C_3\).
+R024–R032 establish physical derivative bounds and sharpness.
+R033–R037 prove admissible secants and the necessary global
+lower bound. R038–R046 provide safe-pair geometry and the
+tangential physical derivative estimate. R047 proves the
+unconditional global one-source bound, and R048 proves an
+exact one-source optimality equivalence and unconditional
+finite-source bounds for the physical nonlinear sum model.
 
-**Verified in Lean:**
+**Palomar comparison:** The two standalone statements are
+selected in \`comparator.json\`. The Challenge imports Mathlib
+only; the Solution connects the explicit physical statement
+to the verified mathematical development. Their separate
+Comparator and independent-kernel execution must be reported
+from the actual run, not inferred from an ordinary Lean build.
 
-- R016–R017 determine the exact critical root and scalar
-  candidate C3, including its maximality.
-- R024–R027 establish the Cartesian Jacobian row-sum
-  and actual Frechet derivative operator-norm bounds.
-- R028–R029 exhibit an explicit physical configuration
-  where the derivative operator norm **equals C3**.
-- R032 proves that **no smaller universal coefficient**
-  works for the Newtonian derivative operator norm.
-- R033–R035 establish an attaining direction, an
-  outward admissible ray, and distinct safe pairs
-  with exactly known Cartesian separation.
-- R030–R031 prove **finite-difference bounds** with C3
-  on convex safe domains and certified Cartesian boxes.
-- R036 proves that the **actual admissible secant quotients**
-  converge to C3 along an outward unit direction.
-- R037 proves that any universal two-point coefficient
-  valid outside the unit safety cube must be at least C3.
-- R038 proves the **global two-point C3 upper estimate**
-  for one source whenever two safe endpoints have Cartesian
-  separation at least the positive clearance d, with no
-  requirement that their connecting segment be safe.
-- R039 proves that the same estimate holds for two endpoints
-  in a **common safe supporting halfspace**, regardless of
-  separation. Together R038–R039 cover far or common-face
-  pairs, but not all safe pairs.
-- R040 constructs a **coordinate bridge** between endpoints
-  supported by different safe axes. It gives two convex-safe
-  hops of length at most the original separation and thus a
-  **nonsharp 2*C3 bound**, even if the direct segment is unsafe.
-- R041 proves a **conditional** lifting of the one-source
-  global C3 assertion to an N-source differential-force
-  bound with coefficient N*M*C3/d³. The missing one-source
-  premise is **now proved by R047**; R048 assembles
-  an unconditional N-source bound for the existing
-  exact differential-acceleration model.
-- R042 certifies exact **safe-plane tangential algebra**:
-  a fifth-power radial denominator estimate, two normalized
-  row-numerator bounds supporting a prospective 5/4 estimate,
-  and the strict scalar inequality **C3 > 5/2**.
-  Its conclusions are algebraic; R044 adds a physical
-  normalized derivative result.
-- R043 proves a **conditional geometric reduction** from
-  the 5/4 safe-plane force-difference estimate to the
-  global one-source C3 inequality for all safe endpoints.
-  R047 has now **proved that safe-plane premise** and
-  applied the reduction unconditionally.
-- R044 proves the **genuine physical Newtonian derivative**
-  satisfies the 5/4 tangential directional estimate on the
-  normalized plane x0=1 with u,v>=0; it uses exact physical
-  Jacobian entries and the scalar certificates from R042.
-  R045 extends it to arbitrary signs and scales on axis 0.
-- R045 proves the **physical 5/4 tangential derivative
-  bound at arbitrary signed displacements** with
-  `d <= abs(x_0)`, `d > 0` and `h_0 = 0`.
-  It preserves the exact factor `mu/d³`; R046
-  extends the estimate to the other two axes.
-- R046 proves the **genuine physical 5/4 tangential
-  derivative bound on any safe Cartesian coordinate
-  plane**, with arbitrary signed positions and
-  clearance d > 0.
-- R047 integrates R046 along safe-plane segments,
-  proves the actual **5/4 two-point force estimate**,
-  discharges the R043 premise and establishes the
-  **unconditional sharp global C3 upper bound for
-  one Newtonian source**, including unsafe chords.
-- R048 combines R037 and R047 into a formal **iff**
-  characterizing exactly all global unit-source
-  coefficients K with `C3 <= K`. It also turns
-  R041 into **unconditional** finite-source bounds
-  with coefficients `sum(mu_k)*C3/d³` and
-  `N*M*C3/d³` for the existing nonlinear model.
-- R001–R015 and R018–R023 document the foundational
-  field, regularity, conservative estimates, and the
-  verified algebraic reductions.
-
-**Proposed but not yet verified in Lean:**
-
-The **existing finite-source differential-acceleration
-model** now has a directly stated unconditional
-upper estimate (R048). The **final N-source Palomar
-theorem**, including the intended explicit
-gravitational constant G, physical mass/source-position
-interface and universal-optimality statement, still
-needs to be assembled and independently checked.
-R048's verified results do not constitute a
-completed Comparator submission. No proposed
-result is counted as verified in the cumulative
-mathematical ledger.
-
-**Still unproved:**
-
-- The final N-source theorem in the complete
-  physical `G`, masses and source-position
-  parameterization, with a matching universal
-  optimality claim that checks all relevant
-  positivity and multiplicity hypotheses.
-- Independent Comparator validation of the two
-  selected Palomar theorem declarations, and external
-  mathematical review.
+**Scope and limitations:** \(G\geq0\) and nonnegative masses
+are used. The coefficient is optimal over the whole
+family of admissible configurations, not asserted as attained
+for every individual multi-source configuration. No
+literature-wide priority, external mathematical peer review,
+application-level benchmark or Palomar registration is claimed.
 
 ## Results acquired — cumulative mathematical ledger
 
