@@ -31,9 +31,11 @@ bound uses the **Cartesian supremum norm**:
 
 `norm_inf (g_mu(x)-g_mu(y)) <= (C*mu/d^3)*norm_inf (x-y)`.
 
-The positive Euclidean clearance d, admissible points, and shape of
-the safe domain must be quantified in each theorem. A pointwise derivative
-bound extends to suitable **convex** safe domains; the
+The existing coefficients 10 and 7 use positive Euclidean
+clearance d. The sharp candidate C3 concerns positive
+**Cartesian supremum-norm clearance**, a different assumption.
+Each theorem must state its clearance and geometric hypotheses.
+Derivative bounds extend to suitable **convex** domains; the
 **nonconvex exterior of a cube** requires a separate argument.
 
 The numerical candidate is `C3 ≈ 2.5775644212`. Its exact value and
@@ -299,6 +301,25 @@ Jacobian over all nonzero three-dimensional displacements.
 `candidateMaximum`.
 **Source:** [ScalarMaximum.lean](NewtonianLipschitz/ScalarMaximum.lean).
 
+
+### R018 — Candidate maximum bounds the normalized first Jacobian row
+
+For `mu >= 0` and `0 <= u,v <= 1`, the absolute
+first-row sum of the physical Jacobian at `(1,u,v)`
+is at most `mu*candidateMaximum`, with the exact scalar
+maximum defined and proved in R017.
+
+**Why useful:** Applies the scalar maximum to the actual
+Jacobian of the Newtonian field.
+**Limit:** Other rows and arbitrarily signed or scaled
+three-dimensional points still require separate proofs.
+
+**Lean:** `newtonianJacobianMatrix_normalized_firstRow_le_candidateMaximum`,
+`diagonalParameter_mem_unitInterval`,
+`normalizedVector_radius_eq_diagonal`.
+**Source:**
+[NormalizedSharpBound.lean](NewtonianLipschitz/NormalizedSharpBound.lean).
+
 ## Direct proof strategy
 
 The next objective is the sharp coefficient, not another
@@ -325,10 +346,10 @@ intermediate constant.
   and diagonal bound (R015) are proved. Other rows and
   global operator-norm symmetries remain to be established.
 - **M03 — Sharp upper bound: in progress.** The cubic
-  facts (R012), exact root (R016), and scalar maximum (R017)
-  are proved. A normalized first-row bound is proposed
-  in NormalizedSharpBound.lean and awaits CI. The full
-  universal 3D Jacobian inequality remains open.
+  facts (R012), exact root (R016), scalar maximum (R017),
+  and normalized first-row bound (R018) are proved.
+  A second-row bound is proposed, pending the full build.
+  The third row and unrestricted 3D bound remain open.
 - **M04 — Optimality: open.** A matching witness.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.

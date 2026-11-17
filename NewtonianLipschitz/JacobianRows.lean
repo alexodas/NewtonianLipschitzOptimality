@@ -34,6 +34,12 @@ at the same normalized point. -/
 def lateralRowNumerator (u v : ℝ) : ℝ :=
   |2 * u ^ 2 - 1 - v ^ 2| + 3 * u * (1 + v)
 
+/-- Exported exact formula for the lateral-row numerator. -/
+theorem lateralRowNumerator_eq (u v : ℝ) :
+    lateralRowNumerator u v =
+      |2 * u ^ 2 - 1 - v ^ 2| + 3 * u * (1 + v) := by
+  rfl
+
 /-- The row indexed by a maximal absolute Cartesian coordinate dominates
 a lateral row, in the normalized positive octant. -/
 theorem lateralRowNumerator_le_dominant

@@ -83,4 +83,100 @@ theorem newtonianJacobianMatrix_normalized_firstRow_le_candidateMaximum
     _ ≤ μ * candidateMaximum :=
       mul_le_mul_of_nonneg_left hmax hμ
 
+
+/-!
+## The second row of the physical normalized Jacobian
+
+This is one of the two lateral rows. The comparison uses the
+previously checked algebraic row-dominance lemma.
+-/
+
+/-- Exact entry in row one and column zero. -/
+theorem newtonianJacobianMatrix_normalized_one_zero
+    (μ u v : ℝ) :
+    newtonianJacobianMatrix μ (normalizedVector u v) 1 0 =
+      (μ / euclideanRadius (normalizedVector u v) ^ 5) *
+        (3 * u) := by
+  rw [newtonianJacobianMatrix_entry]
+  norm_num <;> ring
+
+/-- Exact diagonal entry in the second row. -/
+theorem newtonianJacobianMatrix_normalized_one_one
+    (μ u v : ℝ) :
+    newtonianJacobianMatrix μ (normalizedVector u v) 1 1 =
+      (μ / euclideanRadius (normalizedVector u v) ^ 5) *
+        (2 * u ^ 2 - 1 - v ^ 2) := by
+  rw [newtonianJacobianMatrix_entry, normalizedVector_radius_sq]
+  simp only [normalizedVector_one, ite_true]
+  ring
+
+/-- Exact entry in row one and column two. -/
+theorem newtonianJacobianMatrix_normalized_one_two
+    (μ u v : ℝ) :
+    newtonianJacobianMatrix μ (normalizedVector u v) 1 2 =
+      (μ / euclideanRadius (normalizedVector u v) ^ 5) *
+        (3 * u * v) := by
+  rw [newtonianJacobianMatrix_entry]
+  norm_num <;> ring
+
+/-- Exact absolute sum of the second Jacobian row. -/
+theorem newtonianJacobianMatrix_normalized_secondRow_abs_sum
+    (μ u v : ℝ) (hμ : 0 ≤ μ)
+    (hu0 : 0 ≤ u) (hv0 : 0 ≤ v) :
+    (∑ j : Fin 3,
+      |newtonianJacobianMatrix μ (normalizedVector u v) 1 j|) =
+      (μ / euclideanRadius (normalizedVector u v) ^ 5) *
+        lateralRowNumerator u v := by
+  have hr : 0 ≤ euclideanRadius (normalizedVector u v) := by
+    rw [euclideanRadius_eq_physical_norm]
+    exact norm_nonneg _
+  have hk : 0 ≤ μ / euclideanRadius (normalizedVector u v) ^ 5 :=
+    div_nonneg hμ (pow_nonneg hr _)
+  have h3u : 0 ≤ 3 * u :=
+    mul_nonneg (by norm_num) hu0
+  have h3uv : 0 ≤ 3 * u * v :=
+    mul_nonneg h3u hv0
+  rw [Fin.sum_univ_three,
+    newtonianJacobianMatrix_normalized_one_zero,
+    newtonianJacobianMatrix_normalized_one_one,
+    newtonianJacobianMatrix_normalized_one_two]
+  rw [abs_of_nonneg (mul_nonneg hk h3u),
+    abs_of_nonneg (mul_nonneg hk h3uv),
+    abs_mul, abs_of_nonneg hk]
+  rw [lateralRowNumerator_eq]
+  ring
+
+/-- The second physical row satisfies the exact scalar candidate
+bound in the nonnegative normalized octant. -/
+theorem newtonianJacobianMatrix_normalized_secondRow_le_candidateMaximum
+    (μ u v : ℝ) (hμ : 0 ≤ μ)
+    (hu0 : 0 ≤ u) (hu1 : u ≤ 1)
+    (hv0 : 0 ≤ v) (hv1 : v ≤ 1) :
+    (∑ j : Fin 3,
+      |newtonianJacobianMatrix μ (normalizedVector u v) 1 j|) ≤
+      μ * candidateMaximum := by
+  have hr : 0 ≤ euclideanRadius (normalizedVector u v) := by
+    rw [euclideanRadius_eq_physical_norm]
+    exact norm_nonneg _
+  have hk : 0 ≤ μ / euclideanRadius (normalizedVector u v) ^ 5 :=
+    div_nonneg hμ (pow_nonneg hr _)
+  calc
+    (∑ j : Fin 3,
+      |newtonianJacobianMatrix μ (normalizedVector u v) 1 j|)
+        = (μ / euclideanRadius (normalizedVector u v) ^ 5) *
+            lateralRowNumerator u v :=
+          newtonianJacobianMatrix_normalized_secondRow_abs_sum
+            μ u v hμ hu0 hv0
+    _ ≤ (μ / euclideanRadius (normalizedVector u v) ^ 5) *
+          dominantRowNumerator u v :=
+        mul_le_mul_of_nonneg_left
+          (lateralRowNumerator_le_dominant u v hu0 hu1 hv0 hv1) hk
+    _ = (∑ j : Fin 3,
+          |newtonianJacobianMatrix μ (normalizedVector u v) 0 j|) :=
+        (newtonianJacobianMatrix_normalized_firstRow_abs_sum
+          μ u v hμ hu0 hu1 hv0 hv1).symm
+    _ ≤ μ * candidateMaximum :=
+        newtonianJacobianMatrix_normalized_firstRow_le_candidateMaximum
+          μ u v hμ hu0 hu1 hv0 hv1
+
 end NewtonianLipschitz
