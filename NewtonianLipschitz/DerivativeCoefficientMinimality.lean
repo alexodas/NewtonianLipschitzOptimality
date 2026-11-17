@@ -13,9 +13,10 @@ Evaluating an arbitrary proposed universal pointwise bound
 at this single unit-clearance witness forces its coefficient
 to be at least candidateMaximum.
 
-This is a formal minimality theorem for derivative estimates,
-not yet a minimality result for global two-point inequalities
-outside nonconvex source-centered safety cubes.
+This is a formal minimality theorem for pointwise derivative
+estimates. R037 separately proves the necessary global
+two-point coefficient lower bound; the global nonconvex
+C3 upper estimate remains open.
 -/
 
 namespace NewtonianLipschitz
