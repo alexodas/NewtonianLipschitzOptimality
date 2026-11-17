@@ -58,8 +58,10 @@ domains with uniform Cartesian clearance.
 
 **The global conjecture below is stronger:** it covers
 all safe endpoints, even when their connecting segment
-passes through a forbidden cube. Its universal upper
-bound and optimality are **not yet proved**.
+passes through a forbidden cube. Its universal **upper
+bound is not yet proved**. R036–R037 establish the
+separate necessary lower bound for any proposed universal
+coefficient, using physically admissible secants.
 
 ### Formal mathematical statement
 
@@ -134,12 +136,14 @@ $
 The approximation `2.5775644212` is **not yet a
 Lean-certified decimal enclosure**.
 
-**Separate global optimality conjecture:** No smaller
-universal coefficient can replace C3 for all admissible
-point-source configurations. R029 proves optimality for
-the **pointwise derivative bound**, but establishing
-minimality for the two-point inequality still requires
-an admissible finite-difference witness.
+**Two-point lower bound (proved for one source, R036–R037):**
+No constant smaller than C3 can bound every pair of
+unit-cube-admissible displacements for the unit Newtonian
+source. R036 proves the limiting quotient along actual
+admissible pairs; R037 forces any universal two-point
+coefficient to be at least C3. This does **not** prove
+that C3 is itself a global upper bound. Sharpness of a
+global bound is conditional on proving that upper bound.
 
 ## Mathematical question
 
@@ -251,6 +255,10 @@ as verified in the permanent mathematical ledger below.
   with exactly known Cartesian separation.
 - R030–R031 prove **finite-difference bounds** with C3
   on convex safe domains and certified Cartesian boxes.
+- R036 proves that the **actual admissible secant quotients**
+  converge to C3 along an outward unit direction.
+- R037 proves that any universal two-point coefficient
+  valid outside the unit safety cube must be at least C3.
 - R001–R015 and R018–R023 document the foundational
   field, regularity, conservative estimates, and the
   verified algebraic reductions.
@@ -258,13 +266,11 @@ as verified in the permanent mathematical ledger below.
 **Proposed but not yet verified in Lean:**
 
 No additional Lean theorem is staged in this
-documentation-only update. The next planned proof
-will address limiting secant difference quotients.
+documentation-only update. The next research task is
+the global, nonconvex one-source upper bound (issue #4).
 
 **Still unproved:**
 
-- An admissible finite-difference lower-bound witness
-  establishing minimality for the two-point constant.
 - A universal C3 bound for arbitrary endpoints outside
   forbidden cubes, even if the joining segment is unsafe;
   the **nonconvex complement** requires separate analysis.
@@ -956,7 +962,8 @@ for a future local difference-quotient argument and
 a route toward optimality of finite-difference bounds.
 **Limit:** R033 alone gives no clearance certificate;
 R034–R035 supply that geometry and distinct safe pairs.
-Global two-point minimality is still unproved.
+R033 alone does not give two-point minimality; R036–R037
+establish its lower-bound implication.
 
 **Lean:**
 `NewtonianPointSource.unitAxis_fderiv_exists_attaining_direction`.
@@ -1035,21 +1042,77 @@ bound is established by these geometric witnesses.
 **Source:**
 [AdmissibleSecantPairs.lean][admissible-secant].
 
+
+### R036 — Exact right-hand limit of admissible Newtonian secants
+
+At the critical displacement `x_star=(1,t_star,t_star)`
+for the unit Newtonian source, Lean proves the existence
+of a unit Cartesian direction `h` such that, for every
+`s>0`, the endpoints `x_star` and `x_star+s*h`
+remain outside the forbidden unit cube, are distinct,
+and are exactly `s` apart in the supremum norm.
+
+Along these **actual physical finite differences**, Lean proves
+
+```text
+lim_(s -> 0+) norm_inf((g(x_star+s*h)-g(x_star))/s) = C3.
+```
+
+The proof uses the noncollision differentiability of the
+Newtonian field and the sharp derivative-action witness.
+
+**Why useful:** Supplies the admissible finite-difference
+limit required for a universal coefficient lower bound.
+**Limit:** This limit does not give an upper estimate
+for arbitrary pairs whose connecting segments are unsafe.
+
+**Lean:**
+`NewtonianPointSource.unitAxis_exists_safe_secant_quotient_limit`.
+**Source:** [AdmissibleSecantPairs.lean][admissible-secant].
+
+### R037 — Minimality necessary for any global two-point coefficient
+
+Lean proves that if `K` satisfies, for **every**
+`x,y : Vec3` with `norm_inf(x)>=1` and `norm_inf(y)>=1`,
+
+```text
+norm_inf(g_unit(x)-g_unit(y)) <= K * norm_inf(x-y),
+```
+
+then `C3<=K`. Consequently a strictly smaller
+`K<C3` cannot satisfy this universal two-point
+inequality even for the single unit-parameter source.
+The proof bounds R036's secants by `K`, and passes
+to their right-hand limit.
+
+**Why useful:** Closes the missing lower-bound side of
+the unit-source two-point optimality problem.
+**Limit:** The **global upper bound with C3** is not
+established; neither the arbitrary-clearance multi-source
+upper theorem nor Comparator is complete.
+
+**Lean:**
+`candidateMaximum_le_of_universal_safe_secant_bound`,
+`candidateMaximum_no_smaller_universal_safe_secant_bound`.
+**Source:** [AdmissibleSecantPairs.lean][admissible-secant].
+
 ## Direct proof strategy
 
 The derivative bound (R027) is attained (R029)
-and minimal for universal derivative estimates (R032).
-R033–R035 produce admissible sharp secant pairs, while
+and minimal for derivative estimates (R032).
+R033–R037 close the **admissible two-point lower bound**;
 R030–R031 cover convex safe domains and boxes.
 
-1. Prove the limiting **two-point** quotient equals
-   C3 along the unit outward direction of R035.
-2. Deduce that no smaller constant bounds all
-   admissible finite differences, even for one source.
-3. Analyze safe endpoints outside nonconvex cubes,
-   even when their connecting segment crosses a cube.
-4. Prove the multi-source global upper bound and
-   its separate optimality theorem for Palomar.
+1. Establish or refute the one-source global upper bound
+   for endpoints on different safety-cube faces.
+2. Use homogeneity to normalize the positive clearance;
+   analyze common-face cases via R030, and long separations
+   via pointwise field magnitude. The remaining short,
+   cross-face pairs require a **new rigorous estimate**.
+3. Only after that proof, lift the upper bound to
+   arbitrary source positions and finite-source sums.
+4. Prepare the two Palomar statements and Comparator
+   without assuming that an upper bound follows from R037.
 
 ## Roadmap
 
@@ -1067,12 +1130,12 @@ R030–R031 cover convex safe domains and boxes.
   R028–R029 prove its attainment. R030 proves the
   actual finite-difference bound on convex safe domains.
   The unrestricted nonconvex bound remains unproved.
-- **M04 — Optimality: in progress.** R029 proves
-  derivative-norm attainment, R032 pointwise minimality,
-  and R033–R035 provide an outward-safe attaining
-  direction and distinct admissible secant pairs.
-  The limiting difference quotient, two-point
-  minimality and the global nonconvex bound are open.
+- **M04 — Two-point lower bound: complete for the unit
+  source.** R029 proves derivative-norm attainment,
+  R032 pointwise minimality, R033–R035 supply admissible
+  secants, and R036–R037 establish the actual secant
+  limit and necessary lower bound C3. The full
+  nonconvex **upper** bound is still open.
 - **M05 — Domain theorem: in progress.** The convex
   finite-difference theorem (R030) and Cartesian-box
   center-margin certificate (R031) are both verified.
@@ -1082,8 +1145,8 @@ R030–R031 cover convex safe domains and boxes.
   global optimality (see [PALOMAR.md](PALOMAR.md)).
   The second theorem, independent Comparator, references
   and final review before any Palomar submission remain
-  outstanding. PR #1 has been merged into `main`; new
-  research changes proceed through separate reviews.
+  outstanding. PRs #1–#3 have been merged into `main`;
+  further research changes proceed through separate reviews.
 
 ## Repository structure and reproducibility
 
