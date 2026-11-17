@@ -970,8 +970,9 @@ The substantive library is in `NewtonianLipschitz/`:
   [JacobianOperatorWitness](NewtonianLipschitz/JacobianOperatorWitness.lean),
   [ConvexSharp](NewtonianLipschitz/ConvexSharp.lean),
   [CartesianBoxSharp](NewtonianLipschitz/CartesianBoxSharp.lean),
-  [DerivativeCoefficientMinimality](
-  NewtonianLipschitz/DerivativeCoefficientMinimality.lean).
+  [DerivativeCoefficientMinimality][derivative-minimality].
+
+[derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
