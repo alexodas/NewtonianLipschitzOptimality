@@ -14,6 +14,7 @@ public import NewtonianLipschitz.JacobianSignedBounds
 public import NewtonianLipschitz.JacobianCartesianBound
 public import NewtonianLipschitz.JacobianOperatorAction
 public import NewtonianLipschitz.JacobianOperatorNorm
+public import NewtonianLipschitz.JacobianSharpWitness
 public import NewtonianLipschitz.ConvexBaseline
 public import NewtonianLipschitz.ConvexImproved
 public import NewtonianLipschitz.JacobianRows

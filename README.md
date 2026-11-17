@@ -128,8 +128,8 @@ different geometric assumptions.
 Lean verifies scalar maximization, the candidate Jacobian
 row bound and the true directional Frechet derivative
 bound at nonzero displacements (R016–R026).
-The induced operator-norm estimate remains open. Moreover,
-the **nonconvex complement** of the forbidden cubes
+The induced derivative operator-norm bound is proved (R027).
+The **nonconvex complement** of the forbidden cubes
 requires a separate argument for arbitrary pairs of points,
 including those whose connecting segment crosses a
 forbidden region.
@@ -417,7 +417,7 @@ numerical approximation.
 
 **Why useful:** Determines $C_3$ by an exact equation
 rather than merely proposing a numerical constant.
-Later results R018–R026 apply it to the physical Jacobian
+Later results R018–R027 apply it to the physical Jacobian
 and the pointwise directional derivative upper bound.
 **Limit:** Maximizing $f$ does not establish that $C_3$
 is the smallest coefficient for the global two-point
@@ -634,20 +634,49 @@ and optimality are not established.
 **Source:**
 [JacobianOperatorAction.lean](NewtonianLipschitz/JacobianOperatorAction.lean).
 
+### R027 — Candidate bound for the true Frechet operator norm
+
+Lean proves the candidate upper bound on the **induced
+Cartesian supremum operator norm** of the actual point-source
+Frechet derivative, for every nonzero source displacement x:
+
+```text
+norm(fderiv accelerationField x)
+  <= mu*candidateMaximum / norm_inf(x)^3.
+```
+
+Under positive Cartesian clearance `norm_inf(x) >= d > 0`,
+the same norm is at most `mu*candidateMaximum/d^3`.
+The gravitational parameter `mu` is nonnegative.
+
+**Why useful:** Completes the rigorous passage from the
+physical Jacobian's row estimates (R024–R025) through its
+directional action (R026) to the derivative operator norm.
+**Limit:** An upper bound alone does not prove optimality.
+It also does not imply a two-point Lipschitz bound for
+arbitrary points outside the nonconvex safety cubes.
+
+**Lean:**
+`NewtonianPointSource.accelerationField_fderiv_opNorm_le_candidateMaximum`,
+`NewtonianPointSource.accelerationField_fderiv_opNorm_le_clearance`.
+**Source:**
+[JacobianOperatorNorm.lean](NewtonianLipschitz/JacobianOperatorNorm.lean).
+
 ## Direct proof strategy
 
-The candidate bounds the true directional Frechet
-derivative action in the Cartesian supremum norm (R026).
+The exact candidate bounds the true Frechet derivative's
+Cartesian operator norm at positive clearance (R027).
 
-1. Derive the induced operator norm from R026 and prove
-   its bound under positive Cartesian clearance.
-2. **Separately prove optimality** using a matching witness
-   and a limiting difference quotient.
-3. Establish finite-difference bounds on suitable
-   convex safe domains.
-4. Analyze pairs of points across nonconvex cubical
-   exclusions directly. The global `N`-source theorem
-   remains a separate mathematical objective.
+1. Establish an exact Jacobian row-sum witness at the
+   critical diagonal displacement, then prove a matching
+   operator-norm lower bound.
+2. **Prove optimality separately**, using a limiting
+   finite-difference quotient at the witness.
+3. Establish finite-difference bounds on suitable convex
+   safe domains.
+4. Analyze arbitrary pairs of points outside nonconvex
+   cubical exclusions directly. The global `N`-source
+   theorem remains a separate mathematical objective.
 
 ## Roadmap
 
@@ -668,10 +697,14 @@ derivative action in the Cartesian supremum norm (R026).
   The Pi-norm and positive-clearance transfer is
   verified (R025). Directional matrix and Frechet
   derivative bounds are verified (R026). The induced
-  operator norm and clearance version are proposed in
-  JacobianOperatorNorm.lean, awaiting the full Lean build.
+  operator norm and positive-clearance estimate are also
+  verified (R027). The diagonal row-sum witness is
+  proposed in JacobianSharpWitness.lean, pending CI.
   Optimality and nonconvex bounds remain open.
-- **M04 — Optimality: open.** A matching witness.
+- **M04 — Optimality: open.** A diagonal row-sum
+  witness is proposed but not yet verified; proving
+  operator-norm equality and a finite-difference
+  lower bound will be separate steps.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
 - **M06 — Scientific and archival validation: open.** Proof
@@ -704,7 +737,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [JacobianSignedBounds](NewtonianLipschitz/JacobianSignedBounds.lean),
   [JacobianCartesianBound](NewtonianLipschitz/JacobianCartesianBound.lean),
   [JacobianOperatorAction](NewtonianLipschitz/JacobianOperatorAction.lean),
-  [JacobianOperatorNorm](NewtonianLipschitz/JacobianOperatorNorm.lean).
+  [JacobianOperatorNorm](NewtonianLipschitz/JacobianOperatorNorm.lean),
+  [JacobianSharpWitness](NewtonianLipschitz/JacobianSharpWitness.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
