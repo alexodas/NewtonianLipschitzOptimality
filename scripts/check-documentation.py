@@ -65,13 +65,13 @@ for document_name, content in (
     ("README.md", readme),
     ("PALOMAR.md", palomar_notes),
 ):
-    if re.search(r"\\b(?:current|present|active).{0,45}\\bPR\\s*#\\d+", content, re.I):
+    if re.search(r"\b(?:current|present|active).{0,45}\bPR\s*#\d+", content, re.I):
         issues.append(f"{document_name} contains a transient active-PR claim")
 if "**Proposed but not yet verified in Lean:**" in readme and "**Still unproved:**" in readme:
     proposed = readme.split("**Proposed but not yet verified in Lean:**", 1)[1].split(
         "**Still unproved:**", 1
     )[0]
-    if re.search(r"\\bR\\d{3}\\s+is now Lean-verified\\b", proposed):
+    if re.search(r"\bR\d{3}\s+is now Lean-verified\b", proposed):
         issues.append("Proposed-status block misplaces a verified result")
 if "R040" not in readme.split("**Verified in Lean:**", 1)[1].split(
     "**Proposed but not yet verified in Lean:**", 1
