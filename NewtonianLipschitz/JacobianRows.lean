@@ -23,6 +23,12 @@ at the normalized point (1,u,v) in the nonnegative octant. -/
 def dominantRowNumerator (u v : ℝ) : ℝ :=
   2 - u ^ 2 - v ^ 2 + 3 * (u + v)
 
+/-- Public expression for the dominant numerator, usable from sealed
+Lean modules that cannot unfold a separately compiled definition. -/
+theorem dominantRowNumerator_eq (u v : ℝ) :
+    dominantRowNumerator u v = 2 - u ^ 2 - v ^ 2 + 3 * (u + v) := by
+  rfl
+
 /-- Numerator of the second absolute Jacobian row sum
 at the same normalized point. -/
 def lateralRowNumerator (u v : ℝ) : ℝ :=

@@ -151,7 +151,7 @@ theorem newtonianJacobianMatrix_normalized_zero_zero
       (μ / euclideanRadius (normalizedVector u v) ^ 5) *
         (2 - u ^ 2 - v ^ 2) := by
   rw [newtonianJacobianMatrix_entry, normalizedVector_radius_sq]
-  norm_num
+  simp only [normalizedVector_zero, if_pos rfl]
   ring
 
 /-- First off-diagonal entry of the maximal-coordinate row. -/
@@ -202,7 +202,7 @@ theorem newtonianJacobianMatrix_normalized_firstRow_abs_sum
   rw [abs_of_nonneg (mul_nonneg hk hdiag),
     abs_of_nonneg (mul_nonneg hk (mul_nonneg (by norm_num) hu0)),
     abs_of_nonneg (mul_nonneg hk (mul_nonneg (by norm_num) hv0))]
-  unfold dominantRowNumerator
+  rw [dominantRowNumerator_eq]
   ring
 
 end NewtonianLipschitz
