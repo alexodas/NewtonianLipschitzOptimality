@@ -90,30 +90,36 @@ in a common positive or negative safe supporting
 halfspace, and combines these two cases. R040 gives
 a constructive safe two-hop path for endpoints on
 different active axes and a verified **nonsharp
-2*C3** two-point bound in that case. The sharp
+2*C3** two-point bound in that case. R041 verifies
+the **conditional** deduction of the exact finite-source
+bound with coefficient `N*M*C3/d³` from the still-open
+one-source global C3 hypothesis. The sharp
 global nonconvex **C3 upper bound** remains open
 for short cross-face pairs.
 
-**Outstanding evidence:** A sharp upper bound (or a
-rigorous refutation) for short one-source cross-face
-pairs that share no safe coordinate halfspace; then
-scaling, source translation and finite-source lifting,
-and the complete universal optimality theorem. R037
-proves the necessary lower bound, while R038–R039
-prove only two sufficient cases of the sharp global
-upper estimate; R040 has the larger coefficient 2*C3,
-so cannot close this gap.
+**Outstanding evidence:** The sharp global upper
+bound (or a rigorous refutation) for **short
+one-source cross-face pairs** without any shared safe
+coordinate halfspace. R037 supplies the necessary
+two-point lower bound, R038–R039 the proved sharp
+upper subcases, and R040 only a nonsharp 2*C3
+estimate. R041 already proves that a valid one-source
+global C3 estimate *would imply* the exact finite-source
+N*M*C3/d³ bound for the existing nonlinear differential
+acceleration model. The single-source premise is still
+unproved; the full physical-source parametrization,
+matching Palomar declarations and independent
+Comparator verification remain outstanding.
 
-**Repository stage:** R001–R040 have passed the
-full Lean build and are incorporated in `main`, with
-their exact mathematical statements, utilities and
-limitations recorded in the cumulative README ledger.
-R040 is a verified **nonsharp** bound; the global C3
-upper estimate remains unproved. This paragraph
-describes verified content rather than the transient
-status of any pull request. Neither compilation nor
-merge constitutes independent Comparator validation or
-a Palomar submission.
+**Repository stage:** R001–R040 are integrated in
+`main`. R041 is Lean-verified on its research branch
+as an explicit **conditional implication**; no claim
+is made that its global single-source hypothesis is
+proved. The cumulative README ledger records its
+exact statement, utility and limitation. No temporary
+PR status is used as a mathematical result.
+Neither compilation nor merge constitutes independent
+Comparator validation or a Palomar submission.
 
 ## Conditions before actual submission
 
