@@ -358,15 +358,28 @@ the sharp coefficient, or its optimality.
 
 ### R016 — Exact existence and uniqueness of the critical cubic root
 
-The cubic `2*t^3-8*t^2-4*t+1` has exactly one root in
-the rational interval `[9/50,1/5]`. Lean defines the exact
-real `candidateCriticalPoint` and proves its polynomial
-equation and enclosure, without a numerical approximation.
+Lean proves that there is exactly one real number
+$t_* \in [9/50,1/5]$ satisfying the equation
 
-**Why useful:** Defines the candidate maximizing parameter
-mathematically instead of assigning a rounded decimal.
-**Limit:** Root existence does not itself prove scalar
-maximization or the universal Lipschitz coefficient.
+$
+2t_*^3 - 8t_*^2 - 4t_* + 1 = 0.
+$
+
+This number is the **critical parameter** for the proposed
+sharp coefficient. In Lean it is called
+`candidateCriticalPoint`. The interval gives a rigorous
+rational enclosure, without using any floating-point value.
+
+For orientation, $t_* \approx 0.1848316796$. This decimal
+is a numerical approximation, **not a Lean-certified
+decimal enclosure**; the exact root and its uniqueness
+are what Lean formally verifies.
+
+**Why useful:** Identifies the precise algebraic parameter
+that R017 proves maximizes the candidate coefficient.
+**Limit:** A unique stationary root does not by itself
+prove maximality or any global gravitational Lipschitz
+inequality; these are separate mathematical obligations.
 
 **Lean:** `stationaryCubic_exists_root_bracket`,
 `stationaryCubic_existsUnique_root_bracket`,
@@ -375,23 +388,45 @@ maximization or the universal Lipschitz coefficient.
 
 ### R017 — Exact maximum of the scalar candidate coefficient
 
-Let `t_star` be the unique real root from R016.
-For every `0 <= t <= 1`, Lean proves the exact bound
+Define the following dimensionless scalar function:
 
-`candidateCoefficient(t) <= candidateCoefficient(t_star)`.
+$
+f(t) = \frac{2+6t-2t^2}{(1+2t^2)^{5/2}},
+\qquad 0 \le t \le 1.
+$
 
-The proof differentiates the exact square-root expression,
-uses the sign of the stationary cubic, and establishes the
-maximum without treating a decimal approximation as an axiom.
+Let $t_*$ be the **unique root** specified in R016.
+Lean proves that $f(t) \le f(t_*)$ for every $t \in [0,1]$.
+Thus the exact candidate gravitational coefficient is
 
-**Why useful:** Determines the exact maximal value of the
-one-variable function arising from the diagonal reduction.
-**Limit:** It is not yet a universal bound on the Newtonian
-Jacobian over all nonzero three-dimensional displacements.
+$
+\boxed{C_3 = f(t_*) =
+\frac{2+6t_*-2t_*^2}{(1+2t_*^2)^{5/2}}}.
+$
+
+Numerically, $C_3 \approx 2.5775644212$. This decimal
+is **not yet certified as an interval in Lean**: the
+Lean-verified result is the exact formula and the proof
+that it is the maximum of $f$ on $[0,1]$.
+
+In Lean the function is `candidateCoefficient` and the
+exact maximum is `candidateMaximum`. The proof computes
+the derivative of $f$, analyzes the stationary cubic from
+R016, and establishes the maximum without assuming any
+numerical approximation.
+
+**Why useful:** Determines $C_3$ by an exact equation
+rather than merely proposing a numerical constant.
+Later results R018–R026 apply it to the physical Jacobian
+and the pointwise directional derivative upper bound.
+**Limit:** Maximizing $f$ does not establish that $C_3$
+is the smallest coefficient for the global two-point
+gravitational inequality outside nonconvex safety cubes.
+A matching optimality proof is still required.
 
 **Lean:** `candidateCoefficient_hasDerivAt`,
 `candidateCoefficient_le_at_criticalPoint`,
-`candidateMaximum`.
+`candidateMaximum`, `candidateMaximum_eq`.
 **Source:** [ScalarMaximum.lean](NewtonianLipschitz/ScalarMaximum.lean).
 
 
