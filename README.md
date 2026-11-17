@@ -39,7 +39,6 @@ renumbering earlier ones. Each entry states the theorem's content, its use
 and limitations, and its exact Lean source. Work in progress, CI chronology,
 and research milestones belong outside this section.
 
-<!-- RESULT:R001 -->
 ### R001 — Exact Euclidean radius and Cartesian norm bridge
 
 The Euclidean radius of a Cartesian three-vector equals the norm of its
@@ -55,7 +54,6 @@ not produce a sharp force coefficient.
 **Sources:** [`Basic.lean`](NewtonianLipschitz/Basic.lean),
 [`Norms.lean`](NewtonianLipschitz/Norms.lean).
 
-<!-- RESULT:R002 -->
 ### R002 — Differentiability of the exact Newtonian field away from collision
 
 The actual three-dimensional inverse-cube Newtonian acceleration is
@@ -68,7 +66,6 @@ singularity is claimed.
 **Lean:** `NewtonianPointSource.accelerationField_contDiffAt` ·
 **Source:** [`Smoothness.lean`](NewtonianLipschitz/Smoothness.lean).
 
-<!-- RESULT:R003 -->
 ### R003 — Exact Fréchet derivative of Newtonian acceleration
 
 At each nonzero separation, the full directional Fréchet derivative of
@@ -83,7 +80,6 @@ does not establish its optimal uniform bound.
 **Lean:** `NewtonianPointSource.accelerationField_fderiv_full` ·
 **Source:** [`Derivative.lean`](NewtonianLipschitz/Derivative.lean).
 
-<!-- RESULT:R004 -->
 ### R004 — Explicit inverse-power bounds from positive clearance
 
 A positive Euclidean source clearance and a gravitational-parameter cap
@@ -98,7 +94,6 @@ clearance are hypotheses, not inferred physical measurements.
 `NewtonianPointSource.inverse_fifth_derivative_coefficient_le` ·
 **Source:** [`BaselineBounds.lean`](NewtonianLipschitz/BaselineBounds.lean).
 
-<!-- RESULT:R005 -->
 ### R005 — Conservative Cartesian derivative coefficient 10
 
 The exact three-dimensional Newtonian field satisfies the directional
@@ -111,7 +106,6 @@ bound for the exact field. **Limit:** The coefficient **10 is not optimal**.
 **Lean:** `NewtonianPointSource.accelerationField_fderiv_norm_le_ten_of_clearance` ·
 **Source:** [`BaselineBounds.lean`](NewtonianLipschitz/BaselineBounds.lean).
 
-<!-- RESULT:R006 -->
 ### R006 — Convex-domain Lipschitz certificate for the exact field
 
 On any convex spatial set with uniform positive Euclidean clearance,
@@ -126,7 +120,6 @@ exterior of a cube, and the coefficient is not sharp.
 **Lean:** `NewtonianPointSource.accelerationField_lipschitzOnWith_of_clearance` ·
 **Source:** [`ConvexBaseline.lean`](NewtonianLipschitz/ConvexBaseline.lean).
 
-<!-- RESULT:R007 -->
 ### R007 — Geometric clearance certified by a Cartesian anchor
 
 A sufficiently separated anchor gives a quantitative positive
@@ -140,7 +133,6 @@ assumed; no source history or observed trajectory is certified.
 **Lean:** `clearance_on_anchor_ball` ·
 **Source:** [`Clearance.lean`](NewtonianLipschitz/Clearance.lean).
 
-<!-- RESULT:R008 -->
 ### R008 — Algebra of exact finite-source differential-force sums
 
 The exact nonlinear differential force from a finite list of point
@@ -156,7 +148,6 @@ these algebraic identities alone.
 `NewtonianPointSource.finiteDifferentialAcceleration_cons` ·
 **Source:** [`FiniteSources.lean`](NewtonianLipschitz/FiniteSources.lean).
 
-<!-- RESULT:R009 -->
 ### R009 — Improved conservative Cartesian derivative coefficient 7
 
 Using the dimension-three inequality `‖h‖₂ ≤ 2 ‖h‖∞`,
@@ -174,7 +165,6 @@ not optimal**; it is a consequence of a nonsharp norm conversion.
 **Sources:** [`Norms.lean`](NewtonianLipschitz/Norms.lean),
 [`ImprovedBounds.lean`](NewtonianLipschitz/ImprovedBounds.lean).
 
-<!-- RESULT:R010 -->
 ### R010 — Improved convex-domain Lipschitz coefficient 7
 
 The exact Newtonian field satisfies a Cartesian-supremum-norm Lipschitz
@@ -190,7 +180,6 @@ a global estimate on arbitrary pairs in the nonconvex cube exterior.
 `NewtonianPointSource.unitAxis_lipschitzOnWith_anchor_seven` ·
 **Source:** [`ConvexImproved.lean`](NewtonianLipschitz/ConvexImproved.lean).
 
-<!-- RESULT:R011 -->
 ### R011 — Dominant Jacobian-row numerator and diagonal reduction
 
 For normalized nonnegative coordinates `(1,u,v)`, with
@@ -210,7 +199,6 @@ operator norm or its global maximum.
 `dominantRowNumerator_le_diagonal` ·
 **Source:** [`JacobianRows.lean`](NewtonianLipschitz/JacobianRows.lean).
 
-<!-- RESULT:R012 -->
 ### R012 — Stationary-polynomial sign and uniqueness properties
 
 The candidate cubic `p(t)=2t³−8t²−4t+1` is strictly
@@ -231,7 +219,6 @@ optimal force Lipschitz bound.
 `stationaryCubic_root_unique_on_unitInterval` ·
 **Source:** [`CubicCandidate.lean`](NewtonianLipschitz/CubicCandidate.lean).
 
-<!-- RESULT:R013 -->
 ### R013 — Exact symmetric Cartesian Jacobian of Newtonian acceleration
 
 At every nonzero source separation, the full Fréchet derivative of

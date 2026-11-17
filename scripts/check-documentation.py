@@ -13,11 +13,11 @@ required = [
     "Planetary defense", "space situational awareness",
     "Barnes–Hut", "does not itself certify a collision probability",
     "## Results acquired — cumulative mathematical ledger",
-    "<!-- RESULT:R001 -->",
-    "<!-- RESULT:R008 -->",
-    "<!-- RESULT:R009 -->", "<!-- RESULT:R010 -->",
-    "<!-- RESULT:R011 -->", "<!-- RESULT:R012 -->",
-    "<!-- RESULT:R013 -->",
+    "### R001 —",
+    "### R008 —",
+    "### R009 —", "### R010 —",
+    "### R011 —", "### R012 —",
+    "### R013 —",
     "## Direct proof strategy",
     "M01 — Foundation", "M02 — Jacobian reduction", "M03 — Sharp upper bound",
     "M04 — Optimality", "M05 — Domain theorem", "M06 — Scientific and archival validation",
@@ -52,7 +52,7 @@ section_start = "## Results acquired — cumulative mathematical ledger"
 section_end = "## Direct proof strategy"
 if section_start in readme and section_end in readme:
     catalog = readme.split(section_start, 1)[1].split(section_end, 1)[0]
-    matches = list(re.finditer(r"<!-- RESULT:R(\d{3}) -->", catalog))
+    matches = list(re.finditer(r"^### R(\d{3}) — ", catalog, re.M))
     numbers = [int(m.group(1)) for m in matches]
     if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 13:
         issues.append("Results must be cumulative, contiguous, and retain R001–R013")

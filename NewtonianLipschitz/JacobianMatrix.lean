@@ -151,7 +151,7 @@ theorem newtonianJacobianMatrix_normalized_zero_zero
       (μ / euclideanRadius (normalizedVector u v) ^ 5) *
         (2 - u ^ 2 - v ^ 2) := by
   rw [newtonianJacobianMatrix_entry, normalizedVector_radius_sq]
-  simp only [normalizedVector_zero, if_pos rfl]
+  simp only [normalizedVector_zero, ite_true]
   ring
 
 /-- First off-diagonal entry of the maximal-coordinate row. -/
