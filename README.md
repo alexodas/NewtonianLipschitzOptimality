@@ -233,6 +233,8 @@ as verified in the permanent mathematical ledger below.
   and actual Frechet derivative operator-norm bounds.
 - R028–R029 exhibit an explicit physical configuration
   where the derivative operator norm **equals C3**.
+- R032 proves that **no smaller universal coefficient**
+  works for the Newtonian derivative operator norm.
 - R030–R031 prove **finite-difference bounds** with C3
   on convex safe domains and certified Cartesian boxes.
 - R001–R015 and R018–R023 document the foundational
@@ -241,9 +243,9 @@ as verified in the permanent mathematical ledger below.
 
 **Proposed but not yet verified in Lean:**
 
-- `DerivativeCoefficientMinimality.lean` formalizes
-  that every universal Cartesian derivative-norm
-  coefficient must be at least C3, using R029.
+- `DerivativeAttainingDirection.lean` constructs
+  an explicit direction at the critical displacement
+  on which the true derivative action attains C3.
 
 **Still unproved:**
 
@@ -891,20 +893,48 @@ points separated by a nonconvex forbidden region.
 **Source:**
 [CartesianBoxSharp.lean](NewtonianLipschitz/CartesianBoxSharp.lean).
 
+### R032 — Least universal Cartesian derivative-norm coefficient
+
+For any real `K`, Lean proves that if, for all Newtonian
+point sources with nonnegative gravitational parameter
+`mu` and every nonzero Cartesian displacement `x`,
+
+```text
+norm_operator(fderiv accelerationField x)
+  <= mu*K/norm_inf(x)^3,
+```
+
+then necessarily `C3 <= K`. In particular, every
+`K < C3` fails as a universal pointwise bound.
+The proof evaluates the assumed estimate at the
+unit-parameter critical diagonal witness of R029.
+
+**Why useful:** Establishes the quantified **minimality**
+of C3 for all universal Cartesian derivative-norm
+estimates, rather than just displaying equality.
+**Limit:** It does not yet prove minimality for a global
+two-point estimate on nonconvex cubical exteriors.
+
+**Lean:** `candidateMaximum_le_of_universal_fderiv_opNorm_bound`,
+`candidateMaximum_no_smaller_universal_fderiv_bound`.
+**Source:**
+[DerivativeCoefficientMinimality.lean][derivative-minimality].
+
 ## Direct proof strategy
 
-The candidate controls the true derivative (R027),
-is attained at the critical diagonal (R029), and
-bounds finite differences on convex safe sets and
-certified Cartesian boxes (R030–R031).
+The candidate bounds the derivative (R027), attains
+its operator norm at the critical point (R029),
+and is least among all universal derivative-norm
+coefficients (R032). R030–R031 prove convex-set
+and Cartesian-box finite-difference estimates.
 
-1. Formalize the minimality of C3 among all universal
-   Cartesian derivative-norm coefficients.
-2. Prove a matching admissible **two-point** lower-bound
-   witness near the critical displacement.
-3. Investigate arbitrary endpoints outside forbidden
-   cubes: their joining segment may be unsafe.
-4. Complete the global multi-source upper bound and
+1. Construct a direction of exact derivative action
+   attainment at the critical displacement.
+2. Prove an admissible **two-point** lower bound via
+   a limiting finite-difference quotient.
+3. Investigate arbitrary endpoints outside nonconvex
+   safety cubes, including segments that cross them.
+4. Prove the global multi-source inequality and
    its separate optimality theorem for Palomar.
 
 ## Roadmap
@@ -923,12 +953,13 @@ certified Cartesian boxes (R030–R031).
   R028–R029 prove its attainment. R030 proves the
   actual finite-difference bound on convex safe domains.
   The unrestricted nonconvex bound remains unproved.
-- **M04 — Optimality: in progress.** R029 proves exact
-  attainment of the physical derivative operator norm.
-  The quantified least-coefficient theorem is proposed
-  in DerivativeCoefficientMinimality.lean, pending CI.
-  The admissible two-point lower bound and global upper
-  bound remain separate, unproved obligations.
+- **M04 — Optimality: in progress.** R029 verifies
+  exact attainment of the operator norm, and R032
+  proves minimality among universal derivative bounds.
+  A saturating direction is proposed in
+  DerivativeAttainingDirection.lean, pending Lean.
+  An admissible two-point lower bound and the global
+  nonconvex inequality remain unproved.
 - **M05 — Domain theorem: in progress.** The convex
   finite-difference theorem (R030) and Cartesian-box
   center-margin certificate (R031) are both verified.
@@ -970,9 +1001,11 @@ The substantive library is in `NewtonianLipschitz/`:
   [JacobianOperatorWitness](NewtonianLipschitz/JacobianOperatorWitness.lean),
   [ConvexSharp](NewtonianLipschitz/ConvexSharp.lean),
   [CartesianBoxSharp](NewtonianLipschitz/CartesianBoxSharp.lean),
-  [DerivativeCoefficientMinimality][derivative-minimality].
+  [DerivativeCoefficientMinimality][derivative-minimality],
+  [DerivativeAttainingDirection][derivative-direction].
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
+[derivative-direction]: NewtonianLipschitz/DerivativeAttainingDirection.lean
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.

@@ -73,9 +73,10 @@ of the physical derivative operator norm at C3.
 R030 establishes the candidate finite-difference
 bound on convex domains with positive Cartesian
 clearance. R031 verifies the Cartesian-box center-margin
-corollary. A quantified minimality theorem for the
-pointwise derivative coefficient is proposed in
-`DerivativeCoefficientMinimality.lean`, pending CI.
+corollary. R032 proves C3 is the least universal
+pointwise derivative-norm coefficient. An explicit
+saturating direction is proposed in
+`DerivativeAttainingDirection.lean`, pending CI.
 
 **Outstanding evidence:** An admissible finite-difference
 minimality witness, a global two-point bound across
