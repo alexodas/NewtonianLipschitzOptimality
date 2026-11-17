@@ -33,13 +33,24 @@ theorem candidateCoefficient_hasDerivAt (x : ℝ) :
     convert
       (((hasDerivAt_id x).const_mul (6 : ℝ)).sub
         (((hasDerivAt_id x).pow 2).const_mul (2 : ℝ))).const_add
-        (2 : ℝ) using 1 <;> ring
+        (2 : ℝ) using 1
+    · funext y
+      change (2 : ℝ) + 6 * y - 2 * y ^ 2 =
+        2 + (y * 6 - y ^ 2 * 2)
+      ring
+    · change (6 : ℝ) - x * 4 = 6 - x * 4
+      rfl
   have hb :
       HasDerivAt (fun y : ℝ => 1 + 2 * y ^ 2)
         (4 * x) x := by
     convert
       (((hasDerivAt_id x).pow 2).const_mul (2 : ℝ)).const_add
-        (1 : ℝ) using 1 <;> ring
+        (1 : ℝ) using 1
+    · funext y
+      change (1 : ℝ) + 2 * y ^ 2 = 1 + y ^ 2 * 2
+      ring
+    · change x * 4 = x * 4
+      rfl
   have hs :
       HasDerivAt (fun y : ℝ => Real.sqrt (1 + 2 * y ^ 2))
         (4 * x / (2 * r)) x := by
