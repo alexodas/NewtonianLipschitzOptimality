@@ -278,6 +278,27 @@ maximization or the universal Lipschitz coefficient.
 `candidateCriticalPoint_spec`.
 **Source:** [CubicCandidate.lean](NewtonianLipschitz/CubicCandidate.lean).
 
+### R017 — Exact maximum of the scalar candidate coefficient
+
+Let `t_star` be the unique real root from R016.
+For every `0 <= t <= 1`, Lean proves the exact bound
+
+`candidateCoefficient(t) <= candidateCoefficient(t_star)`.
+
+The proof differentiates the exact square-root expression,
+uses the sign of the stationary cubic, and establishes the
+maximum without treating a decimal approximation as an axiom.
+
+**Why useful:** Determines the exact maximal value of the
+one-variable function arising from the diagonal reduction.
+**Limit:** It is not yet a universal bound on the Newtonian
+Jacobian over all nonzero three-dimensional displacements.
+
+**Lean:** `candidateCoefficient_hasDerivAt`,
+`candidateCoefficient_le_at_criticalPoint`,
+`candidateMaximum`.
+**Source:** [ScalarMaximum.lean](NewtonianLipschitz/ScalarMaximum.lean).
+
 ## Direct proof strategy
 
 The next objective is the sharp coefficient, not another
@@ -304,10 +325,10 @@ intermediate constant.
   and diagonal bound (R015) are proved. Other rows and
   global operator-norm symmetries remain to be established.
 - **M03 — Sharp upper bound: in progress.** The cubic
-  properties (R012) and critical root (R016) are proved.
-  Scalar maximization is proposed in ScalarMaximum.lean,
-  pending the full Lean build. The universal 3D bound
-  remains open.
+  facts (R012), exact root (R016), and scalar maximum (R017)
+  are proved. A normalized first-row bound is proposed
+  in NormalizedSharpBound.lean and awaits CI. The full
+  universal 3D Jacobian inequality remains open.
 - **M04 — Optimality: open.** A matching witness.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
@@ -332,7 +353,8 @@ The substantive library is in `NewtonianLipschitz/`:
 - Sharp-bound work: [JacobianRows](NewtonianLipschitz/JacobianRows.lean),
   [JacobianMatrix](NewtonianLipschitz/JacobianMatrix.lean),
   [CubicCandidate](NewtonianLipschitz/CubicCandidate.lean),
-  [ScalarMaximum](NewtonianLipschitz/ScalarMaximum.lean).
+  [ScalarMaximum](NewtonianLipschitz/ScalarMaximum.lean),
+  [NormalizedSharpBound](NewtonianLipschitz/NormalizedSharpBound.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
