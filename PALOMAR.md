@@ -68,11 +68,12 @@ the theorem must prove **both**:
    to prove this lower-bound part.
 
 **Verified progress:** R027 proves the pointwise
-operator-norm upper bound. R028 proves the exact
-diagonal Jacobian row equality, and R029 proves
-equality of the induced Frechet operator norm with C3.
-A candidate finite-difference bound on convex safe
-domains is proposed in `ConvexSharp.lean`, pending CI.
+operator-norm bound; R028–R029 prove exact attainment
+of the physical derivative operator norm at C3.
+R030 establishes the candidate finite-difference
+bound on convex domains with positive Cartesian
+clearance. A Cartesian-box center-margin corollary
+is proposed in `CartesianBoxSharp.lean`, pending CI.
 
 **Outstanding evidence:** An admissible finite-difference
 minimality witness, a global two-point bound across

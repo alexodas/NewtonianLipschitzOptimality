@@ -13,13 +13,17 @@ required = [
     "CAPD", "VNODE-LP", "COSY Infinity",
     "Planetary defense", "space situational awareness",
     "Barnes–Hut", "does not itself certify a collision probability",
+        "## Status",
+    "**Verified in Lean:**",
+    "**Proposed but not yet verified in Lean:**",
+    "**Still unproved:**",
     "## Results acquired — cumulative mathematical ledger",
     "### R001 —",
     "### R008 —",
     "### R009 —", "### R010 —",
     "### R011 —", "### R012 —",
     "### R013 —",
-    "### R014 —", "### R015 —", "### R016 —", "### R017 —", "### R018 —", "### R019 —", "### R020 —", "### R021 —", "### R022 —", "### R023 —", "### R024 —", "### R025 —", "### R026 —", "### R027 —", "### R028 —", "### R029 —",
+    "### R014 —", "### R015 —", "### R016 —", "### R017 —", "### R018 —", "### R019 —", "### R020 —", "### R021 —", "### R022 —", "### R023 —", "### R024 —", "### R025 —", "### R026 —", "### R027 —", "### R028 —", "### R029 —", "### R030 —",
     "## Direct proof strategy",
     "M01 — Foundation", "M02 — Jacobian reduction", "M03 — Sharp upper bound",
     "M04 — Optimality", "M05 — Domain theorem", "M06 — Scientific and archival validation",
@@ -50,14 +54,27 @@ for audience in ("CAPD", "planetary defense", "space situational awareness", "Ba
 # The acquired-results section is a cumulative mathematical catalog.
 # It must never be turned into an activity log or silently renumbered.
 import re
+if "## Status" in readme and section_start in readme:
+    if readme.index("## Status") >= readme.index(section_start):
+        issues.append("Mathematical status must precede the acquired-results ledger")
+    executive = readme.split("## Executive summary", 1)[1].split(
+        "## Main theorem target", 1
+    )[0]
+    if any(token in executive for token in (
+        "**Verified in Lean:**",
+        "**Proposed but not yet verified in Lean:**",
+        "**Still unproved:**",
+    )):
+        issues.append("Detailed proof status belongs in the Status section")
+
 section_start = "## Results acquired — cumulative mathematical ledger"
 section_end = "## Direct proof strategy"
 if section_start in readme and section_end in readme:
     catalog = readme.split(section_start, 1)[1].split(section_end, 1)[0]
     matches = list(re.finditer(r"^### R(\d{3}) — ", catalog, re.M))
     numbers = [int(m.group(1)) for m in matches]
-    if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 29:
-        issues.append("Results must be cumulative, contiguous, and retain R001–R029")
+    if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 30:
+        issues.append("Results must be cumulative, contiguous, and retain R001–R030")
     for idx, match in enumerate(matches):
         block = catalog[match.end():matches[idx+1].start() if idx+1 < len(matches) else len(catalog)]
         if not all(tag in block for tag in ("**Why useful:**", "**Limit:**", "**Lean:**")):
