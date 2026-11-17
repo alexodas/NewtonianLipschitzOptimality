@@ -94,9 +94,14 @@ different active axes and a verified **nonsharp
 the **conditional** deduction of the exact finite-source
 bound with coefficient `N*M*C3/d³` from the still-open
 one-source global C3 proposition
-`oneSourceGlobalCandidateBound`. The sharp
-global nonconvex **C3 upper bound** remains open
-for short cross-face pairs.
+`oneSourceGlobalCandidateBound`. R042 certifies
+exact scalar radial-denominator and tangential
+row-numerator inequalities supporting a proposed
+5/4 derivative factor, and proves **C3 > 5/2**
+without decimal approximations. The link to the
+actual physical Jacobian and the nonconvex **C3
+upper bound** remain unproved for short cross-face
+pairs.
 
 **Outstanding evidence:** The sharp global upper
 bound (or a rigorous refutation) for **short
@@ -104,7 +109,10 @@ one-source cross-face pairs** without any shared safe
 coordinate halfspace. R037 supplies the necessary
 two-point lower bound, R038–R039 the proved sharp
 upper subcases, and R040 only a nonsharp 2*C3
-estimate. R041 already proves that a valid one-source
+estimate. R042 supplies only the algebraic certificates
+for a proposed tangential 5/4 estimate; their transfer
+to the actual Jacobian, and integration on safe planes,
+are outstanding. R041 already proves that a valid one-source
 global C3 estimate *would imply* the exact finite-source
 N*M*C3/d³ bound for the existing nonlinear differential
 acceleration model. The single-source premise is still
@@ -112,11 +120,12 @@ unproved; the full physical-source parametrization,
 matching Palomar declarations and independent
 Comparator verification remain outstanding.
 
-**Repository stage:** R001–R041 have passed complete
+**Repository stage:** R001–R042 have passed complete
 Lean builds, and the permanent README ledger records
 their exact statements and limitations. R041 is verified
-only as a **conditional implication**; its one-source
-global C3 premise remains open. This description does
+only as a **conditional implication**; R042 establishes
+scalar inequalities, not the physical tangential
+estimate. The one-source global C3 premise remains open. This description does
 not depend on the transient state of a pull request.
 Neither compilation nor merge constitutes independent
 Comparator validation or a Palomar submission.

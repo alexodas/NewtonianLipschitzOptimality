@@ -101,6 +101,10 @@ coefficient would need to be characterized separately.
 R041 proves the exact **conditional** lifting from a
 one-source global C3 estimate to an N-source bound,
 but it does **not** prove its one-source premise.
+R042 certifies the underlying tangential polynomial
+inequalities and a strict exact gap C3 > 5/2, but the
+link to the **physical** derivative and the needed
+finite-difference estimate is not yet certified.
 The missing sharp case concerns nearby points on
 different safe cube faces. The full second Palomar
 theorem is therefore **not yet established**, and
@@ -321,6 +325,11 @@ as verified in the permanent mathematical ledger below.
   statement, *if established*, implies the sharp finite-source
   differential-force bound with coefficient N*M*C3/d³.
   The premise is stated explicitly and remains unproved.
+- R042 certifies exact **safe-plane tangential algebra**:
+  a fifth-power radial denominator estimate, two normalized
+  row-numerator bounds supporting a prospective 5/4 estimate,
+  and the strict scalar inequality **C3 > 5/2**.
+  The physical tangential derivative bound is **not yet proved**.
 - R001–R015 and R018–R023 document the foundational
   field, regularity, conservative estimates, and the
   verified algebraic reductions.
@@ -333,11 +342,17 @@ cube faces (issue #4). It may be proved or
 refuted by a rigorous counterexample. R041 proves
 only a conditional N-source implication and does
 not settle its unproved one-source premise.
+R042 proves the scalar inequalities needed by a proposed
+safe-plane tangent estimate, but does **not** yet prove
+that estimate for the actual Newtonian derivative.
 No proposed result is counted as verified in
 the cumulative mathematical ledger.
 
 **Still unproved:**
 
+- The **physical 5/4 tangential derivative estimate**
+  along a safe coordinate plane, its finite-difference
+  integration, and the sharp cross-face consequence.
 - A universal C3 bound for arbitrary endpoints outside
   forbidden cubes, even if the joining segment is unsafe;
   the **nonconvex complement** requires separate analysis.
@@ -1341,6 +1356,56 @@ independent Comparator verification.
 `NewtonianPointSource.finiteDifferentialAcceleration_norm_le_length_mul_of_oneSourceGlobal`.
 **Source:** [ConditionalFiniteSource.lean][conditional-finite-source].
 
+### R042 — Safe-plane tangential algebra and exact C3 margin
+
+For arbitrary real normalized coordinates u,v, put
+t = u²+v² ≥ 0. Lean verifies the exact denominator
+certificate
+
+```text
+12*t <= (1+t)^5.
+```
+
+Its proof expands the difference into a sum of
+nonnegative square and power terms. Lean also proves
+the squared first-row numerator estimate
+
+```text
+(3*(u+v))^2 <= (5/4)^2 * (1+t)^5
+```
+
+and, for u,v ≥ 0, the lateral tangential numerator estimate
+
+```text
+abs(2*u^2-1-v^2) + 3*u*v <= (5/4)*(1+t)^2.
+```
+
+The third lateral row follows from exchanging u and v.
+Finally, **C3 > 5/2** is proved without decimal estimates,
+by evaluating the previously verified exact candidate
+coefficient at t = 1/5 and bounding its square root using
+a rational comparison.
+
+**Why useful:** Supplies Lean-checked scalar inequalities
+for a prospective **5/4 bound on the physical Newtonian
+derivative restricted to directions parallel to a safe
+coordinate plane**. A two-hop argument with this
+tangential factor would yield a cross-face coefficient
+5/2, strictly below C3.
+
+**Limit:** The result is **algebraic only**: it does
+not yet establish the 5/4 bound for the actual physical
+Jacobian, integrate that bound along safe planes, or
+prove an unrestricted one-source/N-source global C3
+inequality. The second Palomar theorem remains open.
+
+**Lean:**
+`tangential_denominator_fifth_power_ge_twelve`,
+`tangential_first_row_squared_le_five_four`,
+`tangential_lateral_row_le_five_four_quadratic`,
+`candidateMaximum_gt_five_halves`.
+**Source:** [TangentialAlgebra.lean][tangential-algebra].
+
 ## Direct proof strategy
 
 The derivative bound (R027) is attained (R029)
@@ -1443,7 +1508,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [LongSeparation][long-separation],
   [CommonSafeFace][common-safe-face],
   [CrossFaceTwoHop][cross-face-two-hop],
-  [ConditionalFiniteSource][conditional-finite-source].
+  [ConditionalFiniteSource][conditional-finite-source],
+  [TangentialAlgebra][tangential-algebra].
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
@@ -1454,6 +1520,7 @@ The substantive library is in `NewtonianLipschitz/`:
 [common-safe-face]: NewtonianLipschitz/CommonSafeFace.lean
 [cross-face-two-hop]: NewtonianLipschitz/CrossFaceTwoHop.lean
 [conditional-finite-source]: NewtonianLipschitz/ConditionalFiniteSource.lean
+[tangential-algebra]: NewtonianLipschitz/TangentialAlgebra.lean
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
 The Lean 4 toolchain and Mathlib revision are pinned.
