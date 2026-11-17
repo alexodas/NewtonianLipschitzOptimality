@@ -62,6 +62,9 @@ passes through a forbidden cube. Its universal **upper
 bound is not yet proved**. R036–R037 establish the
 separate necessary lower bound for any proposed universal
 coefficient, using physically admissible secants.
+R038 proves the proposed upper bound for sufficiently separated
+safe pairs; R039 proves it for safe pairs that share a supporting
+coordinate halfspace. Short cross-face pairs remain open.
 
 ### Formal mathematical statement
 
@@ -259,15 +262,24 @@ as verified in the permanent mathematical ledger below.
   converge to C3 along an outward unit direction.
 - R037 proves that any universal two-point coefficient
   valid outside the unit safety cube must be at least C3.
+- R038 proves the **global two-point C3 upper estimate**
+  for one source whenever two safe endpoints have Cartesian
+  separation at least the positive clearance d, with no
+  requirement that their connecting segment be safe.
+- R039 proves that the same estimate holds for two endpoints
+  in a **common safe supporting halfspace**, regardless of
+  separation. Together R038–R039 cover far or common-face
+  pairs, but not all safe pairs.
 - R001–R015 and R018–R023 document the foundational
   field, regularity, conservative estimates, and the
   verified algebraic reductions.
 
 **Proposed but not yet verified in Lean:**
 
-No additional Lean theorem is staged in this
-documentation-only update. The next research task is
-the global, nonconvex one-source upper bound (issue #4).
+No additional proof is claimed beyond R039. The next
+research task is a rigorous bound or counterexample for
+short, cross-face pairs in the nonconvex cube exterior
+(issue #4).
 
 **Still unproved:**
 
@@ -1096,23 +1108,91 @@ upper theorem nor Comparator is complete.
 `candidateMaximum_no_smaller_universal_safe_secant_bound`.
 **Source:** [AdmissibleSecantPairs.lean][admissible-secant].
 
+### R038 — Sharp global upper estimate for long safe separations
+
+For a single Newtonian point source with
+gravitational parameter μ ≥ 0 and any positive Cartesian
+clearance d, Lean proves that admissible points x,y with
+
+```text
+d <= norm_inf(x),  d <= norm_inf(y),
+d <= norm_inf(x-y)
+```
+
+satisfy the physical finite-difference inequality
+
+```text
+norm_inf(g(x)-g(y))
+  <= (μ*C3/d^3)*norm_inf(x-y).
+```
+
+The proof shows `norm_inf(g(z)) <= μ/d²` at each
+safe endpoint, uses `C3 >= 2`, and applies the
+triangle inequality. The connecting segment may
+cross the forbidden cube.
+
+**Why useful:** Handles all sufficiently far safe pairs
+without convexity, and isolates smaller separations.
+**Limit:** This does not treat pairs with
+`norm_inf(x-y)<d` merely from endpoint clearance.
+
+**Lean:**
+`candidateMaximum_ge_two`,
+`NewtonianPointSource.accelerationField_norm_le_of_cartesian_clearance`,
+`NewtonianPointSource.accelerationField_norm_sub_le_candidateMaximum_long`.
+**Source:** [LongSeparation.lean][long-separation].
+
+### R039 — Common safe supporting face and far-or-face reduction
+
+For positive clearance d, Lean proves that the
+positive and negative coordinate supporting halfspaces
+
+```text
+{z | d <= z_i},    {z | z_i <= -d}
+```
+
+are convex, and every point in either halfspace has
+Cartesian clearance at least d. Applying R030 gives
+the same physical C3 finite-difference inequality
+whenever two endpoints share one such halfspace.
+
+An additional Lean theorem combines R038 and R039:
+the bound holds if **either** `d <= norm_inf(x-y)`
+**or** there exists a coordinate i such that
+`d <= x_i,y_i` or `x_i,y_i <= -d`.
+
+**Why useful:** Certifies another nonconvex-domain case
+for arbitrarily close pairs and reduces the unresolved
+global problem to short pairs with no shared safe
+supporting halfspace.
+**Limit:** The residual cross-face case, arbitrary
+source-position lifting, finite-source upper estimate
+and independent Comparator remain unproved.
+
+**Lean:**
+`cartesianPositiveSafeHalfspace_convex`,
+`cartesianNegativeSafeHalfspace_convex`,
+`NewtonianPointSource.accelerationField_norm_sub_le_candidateMaximum_common_face`,
+`NewtonianPointSource.accelerationField_norm_sub_le_candidateMaximum_far_or_common_face`.
+**Source:** [CommonSafeFace.lean][common-safe-face].
+
 ## Direct proof strategy
 
 The derivative bound (R027) is attained (R029)
 and minimal for derivative estimates (R032).
-R033–R037 close the **admissible two-point lower bound**;
-R030–R031 cover convex safe domains and boxes.
+R033–R037 close the **admissible two-point lower bound**.
+R038 covers long separations, and R039 covers common
+safe supporting halfspaces.
 
-1. Establish or refute the one-source global upper bound
-   for endpoints on different safety-cube faces.
-2. Use homogeneity to normalize the positive clearance;
-   analyze common-face cases via R030, and long separations
-   via pointwise field magnitude. The remaining short,
-   cross-face pairs require a **new rigorous estimate**.
-3. Only after that proof, lift the upper bound to
-   arbitrary source positions and finite-source sums.
-4. Prepare the two Palomar statements and Comparator
-   without assuming that an upper bound follows from R037.
+1. Prove or refute the remaining **short cross-face**
+   case with `norm_inf(x-y)<d`, with no common
+   supporting halfspace and potentially unsafe segment.
+2. Complete the global one-source upper bound only
+   after closing that remaining case.
+3. Then lift the bound to arbitrary source positions
+   and finite-source sums, checking scaling hypotheses.
+4. Finally prepare the two Palomar statements and
+   Comparator without assuming the remaining upper bound.
 
 ## Roadmap
 
@@ -1136,17 +1216,20 @@ R030–R031 cover convex safe domains and boxes.
   secants, and R036–R037 establish the actual secant
   limit and necessary lower bound C3. The full
   nonconvex **upper** bound is still open.
-- **M05 — Domain theorem: in progress.** The convex
-  finite-difference theorem (R030) and Cartesian-box
-  center-margin certificate (R031) are both verified.
-  Global bounds across nonconvex cubes remain open.
+- **M05 — Domain theorem: in progress.** In addition to
+  convex and box bounds (R030–R031), R038 proves the
+  nonconvex bound for safe pairs separated by at least
+  d and R039 handles any common safe supporting face.
+  Only the short cross-face one-source upper bound and
+  its eventual multi-source extension remain open.
 - **M06 — Scientific and archival validation: open.** The
   planned Palomar pair is the exact formula for C3 and its
   global optimality (see [PALOMAR.md](PALOMAR.md)).
   The second theorem, independent Comparator, references
   and final review before any Palomar submission remain
-  outstanding. PRs #1–#3 have been merged into `main`;
-  further research changes proceed through separate reviews.
+  outstanding. PRs #1–#3 and #5–#6 have been merged
+  into `main`; further research uses one active PR
+  with verification before merge.
 
 ## Repository structure and reproducibility
 
@@ -1182,12 +1265,16 @@ The substantive library is in `NewtonianLipschitz/`:
   [DerivativeCoefficientMinimality][derivative-minimality],
   [DerivativeAttainingDirection][derivative-direction],
   [AdmissibleCriticalDirection][admissible-critical],
-  [AdmissibleSecantPairs][admissible-secant].
+  [AdmissibleSecantPairs][admissible-secant],
+  [LongSeparation][long-separation],
+  [CommonSafeFace][common-safe-face].
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
 [derivative-direction]: NewtonianLipschitz/DerivativeAttainingDirection.lean
 [admissible-critical]: NewtonianLipschitz/AdmissibleCriticalDirection.lean
 [admissible-secant]: NewtonianLipschitz/AdmissibleSecantPairs.lean
+[long-separation]: NewtonianLipschitz/LongSeparation.lean
+[common-safe-face]: NewtonianLipschitz/CommonSafeFace.lean
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
@@ -1215,9 +1302,11 @@ A complete Lean build checks the formal statements as encoded.
 It is different from **independent kernel checking**, scientific
 peer review, physical validation, and proof of originality.
 
-The conjectural sharp coefficient and optimality remain
-**not yet Lean-verified theorems**. Preserve exact assumptions,
-norms, source links, and uncertainty.
+The global nonconvex upper bound and full optimality are
+**not yet Lean-verified theorems**, even though the scalar
+C3 maximum and universal two-point coefficient lower bound
+have been proved. Preserve exact assumptions, norms, source
+links, and uncertainty.
 
 Keep cumulative **mathematical** results here; keep the build and
 task chronology in the pull request, not in the results catalog.

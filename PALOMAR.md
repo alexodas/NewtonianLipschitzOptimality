@@ -83,22 +83,31 @@ right-hand limit of **physical** finite-difference quotients
 along that admissible direction. R037 proves that every
 coefficient valid for all unit-cube-safe two-point
 differences of the unit source must be at least C3.
-The global nonconvex **upper bound** remains open.
+R038 proves the C3 upper estimate for safe endpoints
+separated by at least the clearance d without requiring
+a safe segment. R039 proves it for any two endpoints
+in a common positive or negative safe supporting
+halfspace, and combines these two cases. The global
+nonconvex **upper bound** remains open for short
+cross-face pairs.
 
-**Outstanding evidence:** A global one-source upper bound
-for all admissible pairs across nonconvex forbidden cubes;
-scaling and finite-source lifting; and the complete
-universal optimality theorem are not yet proved. The
-necessary lower bound of R037 is verified, but does
-not independently establish the proposed global estimate.
+**Outstanding evidence:** A sharp upper bound (or a
+rigorous refutation) for short one-source cross-face
+pairs that share no safe coordinate halfspace; then
+scaling, source translation and finite-source lifting,
+and the complete universal optimality theorem. R037
+proves the necessary lower bound, while R038–R039
+prove only two sufficient cases of the global upper
+estimate.
 
-**Repository stage:** PRs #1, #2 and #3 have been merged
-into `main`. R035 and R036–R037 have passed their Lean
-Actions. The present documentation change synchronizes
-the research ledger and Palomar preparation notes; it
-adds no new Lean theorem. Neither merge nor compilation
-is an independent Comparator validation or Palomar
-submission.
+**Repository stage:** PRs #1–#3 and #5–#6 are merged
+into `main`. R038 passed its Lean Action on PR #6,
+and R039 passed the full Lean build on the current
+single active PR #7. R038–R039 are being registered
+in the permanent mathematical ledger together with
+R039's proof source. Neither merge nor compilation
+constitutes independent Comparator validation or
+a Palomar submission.
 
 ## Conditions before actual submission
 

@@ -2,7 +2,7 @@
   "version": "v0.4",
   "project": {
     "name": "NewtonianLipschitzOptimality",
-    "description": "Research in progress: Lean 4 verification of sharp Cartesian-supremum-norm Newtonian point-source sensitivity. Verified results include exact scalar C3 (R016–R017), derivative upper bound and pointwise minimality (R024–R032), convex/Cartesian-box finite differences (R030–R031), an attaining outward-safe ray (R033–R034), distinct admissible secant pairs (R035), the exact admissible right-hand finite-difference limit (R036), and the necessary universal two-point lower bound for the unit source (R037). The global nonconvex two-point upper bound and its N-source extension remain unproved. Prospective areas: rigorous dynamics, validated dynamics, interval arithmetic, Barnes–Hut/FMM astrophysics, Coulomb modeling, AMR, GPU/HPC, planetary-defense uncertainty propagation, space situational awareness and certified Cartesian N-body methods. No performance or Palomar submission claims.",
+    "description": "Research in progress: Lean 4 verification of sharp Cartesian-supremum-norm Newtonian point-source sensitivity. Verified results include exact scalar C3 (R016–R017), derivative upper bound and pointwise minimality (R024–R032), convex/Cartesian-box finite differences (R030–R031), an attaining outward-safe ray (R033–R034), distinct admissible secant pairs (R035), the exact admissible right-hand finite-difference limit (R036), the necessary universal two-point lower bound for the unit source (R037), the nonconvex bound for safe long separations (R038), and the nonconvex bound for endpoints with a common supporting safe halfspace (R039). The global nonconvex upper bound for short cross-face pairs and the complete N-source theorem remain unproved. Prospective areas: rigorous dynamics, validated dynamics, interval arithmetic, Barnes–Hut/FMM astrophysics, Coulomb modeling, AMR, GPU/HPC, planetary-defense uncertainty propagation, space situational awareness and certified Cartesian N-body methods. No performance or Palomar submission claims.",
     "authors": [
       "Alessandro Odasso"
     ],
@@ -19,7 +19,7 @@
   },
   "sources": [],
   "status": {
-    "scope": "R016–R017 establish exact C3; R024–R029 establish the physical Cartesian derivative bound and attainment; R030–R031 prove convex/Cartesian-box finite differences; R032 proves derivative-norm coefficient minimality; R033–R035 give outward-safe sharp secants. R036 proves the actual limiting Newtonian secant quotient equals C3 along admissible unit steps. R037 proves that no smaller coefficient can bound all safe two-point differences even for the single unit source. The upper bound for arbitrary safe endpoints across forbidden cubes and its multi-source extension are still unproved. PRs #1–#3 have been merged into main; no theorem is selected in Comparator and no submission is claimed.",
+    "scope": "R016–R017 certify exact scalar C3; R024–R032 the sharp physical derivative bounds, convex finite differences and derivative coefficient minimality; R033–R037 establish outward-safe secants, the physical secant limit and the necessary universal unit-source two-point coefficient lower bound. R038 establishes the physical C3 upper estimate for two safe endpoints at distance at least the clearance d, whether or not the connecting segment is safe. R039 establishes the C3 estimate for endpoints sharing any safe coordinate supporting halfspace and unifies these cases with R038. The global upper estimate for short cross-face pairs and the complete N-source theorem remain open. The repository has no selected Comparator target or Palomar submission.",
     "sorry_count": 0,
     "sorry_in_definitions": 0,
     "axioms": [
@@ -43,7 +43,7 @@
     "notes": "Alessandro Odasso, a non-mathematician interested in assessing LLMs in scientific research, initiated and directs the project. GPT-6 assists with the initial project structure and formal mathematical work."
   },
   "fidelity": {
-    "divergences": "Lean has verified R036–R037: admissible sharp physical secants converge to C3 and any coefficient valid for all unit-source admissible two-point differences must be at least C3. This does not prove that C3 bounds all pairs across nonconvex cube exteriors, nor the N-source theorem. C3 decimal digits are not Lean-certified. Stability, accuracy and performance gains are not demonstrated. Merging source into main is not independent Comparator validation."
+    "divergences": "R036–R037 verify the necessary coefficient lower bound from actual admissible physical secants. R038–R039 verify C3 upper bounds only for long separations or pairs sharing a safe supporting coordinate halfspace. Neither proves the full nonconvex global upper bound for short cross-face pairs, nor the complete N-source optimality theorem. Decimal digits of C3 are not Lean-certified; stability, accuracy, performance, publication and mathematical novelty are not claimed. No independent Comparator run has been performed."
   },
   "review": {
     "status": "self-assessed",
