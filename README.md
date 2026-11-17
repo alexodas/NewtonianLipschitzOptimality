@@ -111,9 +111,12 @@ is verified, but its single explicit physical premise
 R044 now proves the required **physical directional
 derivative bound in normalized coordinates** (1,u,v)
 with u,v nonnegative and first-direction component
-zero. The necessary extension to every signed safe
-plane and its finite-difference integration remain
-unproved. The full second Palomar theorem is therefore **not
+zero. R045 now extends that physical derivative bound to
+every signed displacement whose **first Cartesian
+coordinate is safe**, with arbitrary clearance d>0.
+The remaining two safe axes and finite-difference
+integration remain unproved. The full second Palomar
+theorem is therefore **not
 yet established**, and
 a potential counterexample would require revising
 its statement.
@@ -348,7 +351,12 @@ as verified in the permanent mathematical ledger below.
   satisfies the 5/4 tangential directional estimate on the
   normalized plane x0=1 with u,v>=0; it uses exact physical
   Jacobian entries and the scalar certificates from R042.
-  Arbitrary axis, signs, scale and finite differences are pending.
+  R045 extends it to arbitrary signs and scales on axis 0.
+- R045 proves the **physical 5/4 tangential derivative
+  bound at arbitrary signed displacements** with
+  `d <= abs(x_0)`, `d > 0` and `h_0 = 0`.
+  It preserves the exact factor `mu/d³`; the remaining
+  axes and the finite-difference integration are open.
 - R001–R015 and R018–R023 document the foundational
   field, regularity, conservative estimates, and the
   verified algebraic reductions.
@@ -370,15 +378,19 @@ R043 proves the **conditional implication** from the
 explicit, unproved `oneSourceSafePlaneFiveFourthBound`
 to `oneSourceGlobalCandidateBound`. It does not
 establish either proposition unconditionally.
+R045 now proves the true physical tangential derivative
+estimate at arbitrary signed positions with a safe
+**first coordinate**; the result for the other two
+axes and the resulting finite differences is still open.
 No proposed result is counted as verified in
 the cumulative mathematical ledger.
 
 **Still unproved:**
 
-- Extension of R044's **physical 5/4 tangential
-  derivative estimate** from the normalized nonnegative
-  plane to arbitrary safe axes, signs, and clearance,
-  followed by finite-difference integration. R043
+- Extension of R045's **physical 5/4 tangential
+  derivative estimate** from first-axis safe coordinates
+  to the other two Cartesian axes, followed by
+  safe-plane finite-difference integration. R043
   proves that the resulting finite-difference estimate
   would imply the global sharp C3 bound.
 - A universal C3 bound for arbitrary endpoints outside
@@ -1547,6 +1559,56 @@ remain unproved.
 `NewtonianPointSource.accelerationField_fderiv_normalized_tangent_le`.
 **Source:** [PhysicalTangentialNormalized.lean][physical-tangential-normalized].
 
+### R045 — Physical tangential derivative for arbitrary signs and first-axis clearance
+
+Lean extends R044's genuine physical Newtonian
+Jacobian restriction from the normalized nonnegative
+point (1,u,v) to **every signed displacement** x
+satisfying
+
+```text
+d > 0, d <= abs(x_0), mu >= 0.
+```
+
+For every row of the exact Cartesian Jacobian, the
+sum of the two columns tangential to the first-axis
+safe plane satisfies
+
+```text
+abs(J(row,1)) + abs(J(row,2))
+    <= (5/4)*mu/d^3.
+```
+
+The proof uses the previously verified invariance
+of the *actual* Jacobian's absolute entries under
+coordinate sign changes and its exact inverse-cube
+scaling under positive spatial dilation. It then
+applies R044's normalized physical matrix estimate.
+Consequently, for the actual Frechet derivative and
+any direction h with h_0=0, Lean proves
+
+```text
+norm_inf(Dg_mu(x)*h)
+    <= (5/4)*(mu/d^3)*norm_inf(h).
+```
+
+**Why useful:** Removes the normalized-coordinate
+and nonnegative-octant restrictions for one fixed
+safe Cartesian axis while retaining the exact physical
+Euclidean radius and factor 5/4. This is a direct
+step toward the plane premise isolated in R043.
+
+**Limit:** It covers only **axis 0 as the fixed safe
+coordinate**, not axes 1 or 2. It bounds true derivatives,
+not yet two-point force differences on a safe plane.
+No unrestricted sharp global one-source or N-source
+theorem follows; R043's plane premise remains unproved.
+
+**Lean:**
+`newtonianJacobianMatrix_first_safe_axis_tangent_columns_le`,
+`NewtonianPointSource.accelerationField_fderiv_first_safe_axis_tangent_le`.
+**Source:** [PhysicalTangentialFirstAxis.lean][physical-tangential-first-axis].
+
 ## Direct proof strategy
 
 The derivative bound (R027) is attained (R029)
@@ -1652,7 +1714,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [ConditionalFiniteSource][conditional-finite-source],
   [TangentialAlgebra][tangential-algebra],
   [SafePlaneReduction][safe-plane-reduction],
-  [PhysicalTangentialNormalized][physical-tangential-normalized].
+  [PhysicalTangentialNormalized][physical-tangential-normalized],
+  [PhysicalTangentialFirstAxis][physical-tangential-first-axis].
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
@@ -1666,6 +1729,7 @@ The substantive library is in `NewtonianLipschitz/`:
 [tangential-algebra]: NewtonianLipschitz/TangentialAlgebra.lean
 [safe-plane-reduction]: NewtonianLipschitz/SafePlaneReduction.lean
 [physical-tangential-normalized]: NewtonianLipschitz/PhysicalTangentialNormalized.lean
+[physical-tangential-first-axis]: NewtonianLipschitz/PhysicalTangentialFirstAxis.lean
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
 The Lean 4 toolchain and Mathlib revision are pinned.
