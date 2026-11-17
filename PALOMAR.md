@@ -86,10 +86,10 @@ minimality witness, a global two-point bound across
 nonconvex forbidden cubes and the complete universal
 optimality theorem are not yet proved.
 
-**Current repository stage:** PR #1 was merged into
-`main` after the Lean build had verified the R035 source.
-The post-merge R035 documentation synchronization is
-being proposed separately. This merge is not a
+**Repository stage:** PR #1 merged the Lean-verified
+R035 source into `main`. The R035 research ledger and
+metadata are synchronized in a separate documentation
+change. Neither merge nor compilation is an independent
 Comparator validation or Palomar submission.
 
 ## Conditions before actual submission
