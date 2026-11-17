@@ -101,7 +101,13 @@ row-numerator inequalities supporting a proposed
 without decimal approximations. The link to the
 actual physical Jacobian and the nonconvex **C3
 upper bound** remain unproved for short cross-face
-pairs.
+pairs. R043 proves, **conditionally on** the explicit
+unproved `oneSourceSafePlaneFiveFourthBound` finite-difference
+estimate on fixed safe coordinate planes, the unrestricted
+one-source global sharp C3 proposition
+`oneSourceGlobalCandidateBound`. This covers
+all endpoint configurations using R038–R040, but
+does not prove its safe-plane premise.
 
 **Outstanding evidence:** The sharp global upper
 bound (or a rigorous refutation) for **short
@@ -112,7 +118,11 @@ upper subcases, and R040 only a nonsharp 2*C3
 estimate. R042 supplies only the algebraic certificates
 for a proposed tangential 5/4 estimate; their transfer
 to the actual Jacobian, and integration on safe planes,
-are outstanding. R041 already proves that a valid one-source
+are outstanding. R043 now verifies the complete
+conditional reduction from the explicit safe-plane 5/4
+finite-difference premise to the one-source global C3
+estimate; the premise remains unproved. R041 already
+proves that a valid one-source
 global C3 estimate *would imply* the exact finite-source
 N*M*C3/d³ bound for the existing nonlinear differential
 acceleration model. The single-source premise is still
@@ -120,13 +130,16 @@ unproved; the full physical-source parametrization,
 matching Palomar declarations and independent
 Comparator verification remain outstanding.
 
-**Repository stage:** R001–R042 have passed complete
+**Repository stage:** R001–R043 have passed complete
 Lean builds, and the permanent README ledger records
-their exact statements and limitations. R041 is verified
-only as a **conditional implication**; R042 establishes
+their exact statements and limitations. R041 and R043
+are **conditional implications**; R042 establishes
 scalar inequalities, not the physical tangential
-estimate. The one-source global C3 premise remains open. This description does
-not depend on the transient state of a pull request.
+estimate. The safe-plane proposition
+`oneSourceSafePlaneFiveFourthBound` and the one-source
+global C3 proposition `oneSourceGlobalCandidateBound`
+remain unproved. This description does not depend
+on the transient state of a pull request.
 Neither compilation nor merge constitutes independent
 Comparator validation or a Palomar submission.
 
