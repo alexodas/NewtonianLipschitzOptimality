@@ -22,6 +22,7 @@ public import NewtonianLipschitz.DerivativeCoefficientMinimality
 public import NewtonianLipschitz.DerivativeAttainingDirection
 public import NewtonianLipschitz.AdmissibleCriticalDirection
 public import NewtonianLipschitz.AdmissibleSecantPairs
+public import NewtonianLipschitz.LongSeparation
 public import NewtonianLipschitz.ConvexBaseline
 public import NewtonianLipschitz.ConvexImproved
 public import NewtonianLipschitz.JacobianRows
