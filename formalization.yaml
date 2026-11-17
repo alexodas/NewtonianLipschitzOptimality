@@ -1,25 +1,37 @@
 {
   "version": "v0.4",
   "project": {
-    "name": "NewtonianLipschitzOptimality",
-    "description": "Research in progress: Lean 4 verification of sharp Cartesian-supremum-norm Newtonian point-source sensitivity. R016–R017 prove the exact scalar maximum C3; R024–R032 establish the true physical Newtonian derivative upper bound, attainment and local minimality; R030–R031 prove convex/box finite differences. R033–R035 construct admissible outward secants; R036 proves their exact right-hand limiting quotient and R037 the necessary universal unit-source two-point lower bound C3. R038 handles long admissible pairs, R039 common safe halfspaces, and R040 different-axis two-hop paths with a coarse 2*C3 bound. R041 proves an exact conditional finite-source summation bound with factor N*M*C3/d^3; the one-source premise is now proved by R047. R042 proves exact tangential polynomial inequalities and C3>5/2. R043 proves the conditional all-pairs geometric reduction from a 5/4 safe-plane finite-difference inequality to the sharp one-source global C3 estimate. R044 proves the true normalized physical tangential Jacobian bound; R045 transfers it to arbitrary signed first-axis positions and clearance; R046 establishes the genuine 5/4 tangential derivative estimate for all signed-safe axes; R047 integrates this physical estimate into a safe-plane 5/4 finite-difference bound and proves both previously open propositions oneSourceSafePlaneFiveFourthBound and oneSourceGlobalCandidateBound unconditionally, hence the sharp global one-source nonconvex C3 upper bound. R037 supplies the independent one-source universal optimality lower bound. R048 proves the exact iff K>=C3 for all unit-source safe two-point bounds and unconditional sum(mu_k)*C3/d^3 and N*M*C3/d^3 bounds for the exact finite-source nonlinear differential-acceleration model. A fully assembled physical N-source theorem and optimality interface with source positions, gravitational constant and masses, together with independent Comparator verification and external review, are still outstanding. Prospective areas: rigorous dynamics, validated dynamics, interval arithmetic, Barnes–Hut/FMM astrophysics, Coulomb modeling, AMR, GPU/HPC, planetary-defense uncertainty propagation, space situational awareness and certified Cartesian N-body methods. No performance or Palomar submission claims.",
+    "name": "Sharp Cartesian Lipschitz bounds for three-dimensional Newtonian point-source fields",
+    "description": "Two Lean-verified mathematical results. First, the unique root t of 2t^3-8t^2-4t+1=0 in [9/50,1/5] gives the exact maximum C3=(2+6t-2t^2)/(1+2t^2)^(5/2) of the scalar coefficient on [0,1]. Second, for any finite collection of nonnegative point masses at arbitrary centers in R^3, with gravitational parameter G>=0, uniform mass cap M>=0, and Cartesian clearance d>0 at two observation points from every source, the difference of their exact Newtonian gravitational accelerations is bounded in the Cartesian supremum norm by (N*G*M*C3/d^3) times their separation. No condition on the connecting segment is imposed: it may enter the excluded open safety cubes. The coefficient is the least possible universal coefficient over these configurations, already witnessed by the unit single-source case. The force law itself uses Euclidean radial distances. The statements and proofs are presented in standalone Challenge and Solution modules for Comparator; external review and Palomar registration are separate.",
     "authors": [
       "Alessandro Odasso"
     ],
-    "license": "Apache-2.0",
     "responsible_maintainers": [
       "Alessandro Odasso"
-    ]
+    ],
+    "license": "Apache-2.0"
   },
   "classification": {
+    "arxiv": [
+      "math.AP",
+      "math.NA"
+    ],
     "msc2020": [
+      "26A16",
       "70F10",
-      "68V20"
+      "65G30"
     ]
   },
-  "sources": [],
+  "sources": [
+    {
+      "title": "Exact global Cartesian Lipschitz coefficient of the three-dimensional Newtonian point-source field outside safety cubes",
+      "type": "original-proof",
+      "relationship": "other",
+      "note": "The specific sharp cubical-clearance theorem and its two-part presentation were developed in this repository with machine-checked proofs. This classifies the origin of the submitted formalization, not priority or novelty against all prior mathematical literature; no exhaustive published-literature equivalence review has been completed."
+    }
+  ],
   "status": {
-    "scope": "R016–R017 certify exact scalar C3; R024–R032 true physical derivative bounds and local optimality. R033–R035 prove outward-safe secants; R036 their right-hand derivative quotient limit, R037 the universal two-point lower bound. R038–R040 prove admissible long, shared-halfspace and two-hop geometric estimates. R041 proves a conditional finite-source summation implication. R042 establishes exact tangential scalar inequalities and C3>5/2. R043 gives the conditional geometric reduction from oneSourceSafePlaneFiveFourthBound to oneSourceGlobalCandidateBound. R044–R046 prove the physical 5/4 tangential derivative estimate with arbitrary signed-safe axis and clearance. R047 proves the actual safe-plane 5/4 finite difference via a one-dimensional mean-value inequality, discharges both propositions, and establishes the unrestricted global C3 upper bound for a single point source on the nonconvex cube exterior. R037 provides the matching necessary universal lower bound. R048 combines R037 and R047 into an exact one-source optimality iff and discharges R041's premise to prove unconditional finite-source sum and N*M*C3/d^3 bounds in the existing exact nonlinear model. The explicit unconditional physical N-source parameterization, final universal optimality declaration and independent Comparator checking remain outstanding; no Palomar submission is claimed.",
+    "scope": "Compared theorem 1 establishes existence and uniqueness of the stationary cubic root in the stated rational interval and exact maximality of the associated scalar function on [0,1]. Compared theorem 2 establishes the nonconvex global Lipschitz upper bound for the exact inverse-square Newtonian field of any finite number N of sources with arbitrary centers, masses between 0 and M, gravitational constant G>=0 and positive common Cartesian clearance d at both endpoints. It also states the least possible universal coefficient via an iff on the unit one-source instance. The optimality assertion is universal across allowable configurations (which include N=1), not a claim that the N*M coefficient is attained for each fixed N, fixed mass layout or degenerate M=0 instance. Both theorems use Pi supremum norm for spatial differences and Euclidean radius inside the field; cube boundaries are allowed. Deliberate statement placeholders in Challenge are excluded from substantive sorry counts. No independent Comparator result or Palomar registration is asserted until actually run and checked.",
     "sorry_count": 0,
     "sorry_in_definitions": 0,
     "axioms": [
@@ -36,19 +48,20 @@
           "OpenAI GPT-6"
         ],
         "framework": "ChatGPT",
-        "tool_setup": "Connected GitHub and GitHub Actions, Lean 4.35.0 and Mathlib"
+        "tool_setup": "AI-assisted mathematical analysis and Lean 4 proof writing through a connected GitHub repository; Lean 4.35.0 and pinned Mathlib; GitHub Actions for routine compilation, separately runnable Comparator for independent checking.",
+        "prompting_notes": "Human selected research questions and insisted on clear separation of proved, conditional and conjectural statements, exact mathematical hypotheses, and reproducible kernel checks."
       }
     ],
     "spend_usd": "not tracked",
-    "notes": "Alessandro Odasso, a non-mathematician interested in assessing LLMs in scientific research, initiated and directs the project. GPT-6 assists with the initial project structure and formal mathematical work."
+    "notes": "Alessandro Odasso directed the scientific questions and repository review. GPT-6 generated mathematical arguments, Lean proofs and editorial drafts. Full Lean build results establish formal proof checking, not independent mathematical peer review or bibliographic originality."
   },
   "fidelity": {
-    "divergences": "R037 is the exact necessary coefficient lower bound for the unit single source; R047 is the unconditional sharp single-source global C3 upper bound, not just a local derivative estimate. R041 remains a valid verified conditional summation theorem, whose one-source premise R047 establishes. R048 packages its unconditional finite-source upper bounds for the existing nonlinear acceleration model and an exact unit-source optimality iff. A standalone final theorem with physical G, masses, positions, and universal optimality has not yet been assembled. R043 was a conditional geometric implication and R047 now proves its safe-plane premise. The historical ledger records these proofs separately. A full Challenge/Solution declaration pair and independent Comparator validation are absent. The decimal expansion of C3 is not a Lean-certified enclosure. No peer review, validated performance improvement, novelty or publication is claimed."
+    "divergences": "The exact field is Newtonian inverse-square acceleration using Euclidean radii; both clearance and the variation norm are Cartesian supremum norms. Gravitational G>=0 is allowed in the formal upper bound, a harmless extension of the customary G>0 assumption; masses are nonnegative with a common cap. The minimality is of the coefficient universal over all finite-source instances, already forced when N=1, G=M=d=1; no claim of attainability for a fixed N or source arrangement. The coefficient is specified exactly by a rationally bracketed cubic root, not by Lean-certified decimal digits. Research originality and scientific applications are not independently established."
   },
   "review": {
     "status": "self-assessed",
     "reviewers": [],
-    "notes": "Placeholder metadata only, not submitted or accepted by Palomar, not a claim of mathematical priority or external peer review."
+    "notes": "Internal statement-to-model review and Lean CI checks are performed during preparation. No independent mathematical peer review or Palomar review has been completed; Comparator status must be reported from its actual run, not inferred from ordinary Lean compilation."
   },
-  "acknowledgements": "Uses Lean 4 and Mathlib. Independent scientific review and novelty assessment remain future tasks."
+  "acknowledgements": "The proof development uses Lean 4 and Mathlib. No other author's unpublished result is claimed."
 }
