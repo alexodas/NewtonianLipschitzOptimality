@@ -9,9 +9,9 @@ public section
 # Exact sharp candidate bound on the normalized first Jacobian row
 
 This module joins the proved diagonal row bound to the proved
-one-variable scalar maximum. Its conclusion is a real matrix-row
-inequality, not yet the complete Cartesian operator-norm inequality
-for every nonzero vector.
+one-variable scalar maximum. Its conclusion is a real matrix-row inequality. The later
+R024–R027 results establish the unrestricted Cartesian
+pointwise derivative and operator-norm bound.
 -/
 
 namespace NewtonianLipschitz
