@@ -108,7 +108,12 @@ safe coordinate plane would imply the full one-source
 global C3 bound**. This conditional geometric reduction
 is verified, but its single explicit physical premise
 `oneSourceSafePlaneFiveFourthBound` remains unproved.
-The full second Palomar theorem is therefore **not
+R044 now proves the required **physical directional
+derivative bound in normalized coordinates** (1,u,v)
+with u,v nonnegative and first-direction component
+zero. The necessary extension to every signed safe
+plane and its finite-difference integration remain
+unproved. The full second Palomar theorem is therefore **not
 yet established**, and
 a potential counterexample would require revising
 its statement.
@@ -338,6 +343,11 @@ as verified in the permanent mathematical ledger below.
   inequality follows for all safe endpoint pairs. The geometric
   case split is fully verified, but the plane premise remains
   **unproved**.
+- R044 proves the **genuine physical Newtonian derivative**
+  satisfies the 5/4 tangential directional estimate on the
+  normalized plane x0=1 with u,v>=0; it uses exact physical
+  Jacobian entries and the scalar certificates from R042.
+  Arbitrary axis, signs, scale and finite differences are pending.
 - R001–R015 and R018–R023 document the foundational
   field, regularity, conservative estimates, and the
   verified algebraic reductions.
@@ -350,9 +360,11 @@ cube faces (issue #4). It may be proved or
 refuted by a rigorous counterexample. R041 proves
 only a conditional N-source implication and does
 not settle its unproved one-source premise.
-R042 proves the scalar inequalities needed by a proposed
-safe-plane tangent estimate, but does **not** yet prove
-that estimate for the actual Newtonian derivative.
+R042 proves the scalar inequalities needed by a safe-plane
+tangent estimate; R044 now proves their transfer to the
+actual Newtonian derivative for normalized points
+(1,u,v) with u,v>=0, and directions with first coordinate
+zero. The unrestricted physical estimate remains open.
 R043 proves the **conditional implication** from the
 explicit, unproved `oneSourceSafePlaneFiveFourthBound`
 to `oneSourceGlobalCandidateBound`. It does not
@@ -362,11 +374,12 @@ the cumulative mathematical ledger.
 
 **Still unproved:**
 
-- The **physical 5/4 tangential derivative estimate**
-  along a safe coordinate plane and its finite-difference
-  integration. R043 formally proves that this missing
-  estimate would imply the sharp cross-face and global
-  C3 bounds, but does not prove the premise.
+- Extension of R044's **physical 5/4 tangential
+  derivative estimate** from the normalized nonnegative
+  plane to arbitrary safe axes, signs, and clearance,
+  followed by finite-difference integration. R043
+  proves that the resulting finite-difference estimate
+  would imply the global sharp C3 bound.
 - A universal C3 bound for arbitrary endpoints outside
   forbidden cubes, even if the joining segment is unsafe;
   the **nonconvex complement** requires separate analysis.
@@ -1480,6 +1493,59 @@ No independent Comparator verification is claimed.
 `oneSourceGlobalCandidateBound_of_safePlaneFiveFourth`.
 **Source:** [SafePlaneReduction.lean][safe-plane-reduction].
 
+### R044 — Physical Newtonian tangential derivative at a normalized safe plane
+
+At the normalized displacement
+`x = (1,u,v)`, with `u,v >= 0` (no upper
+bounds on u or v), the first coordinate x0=1
+is held fixed. Lean proves for **every row** of
+the actual physical Newtonian Jacobian matrix
+
+```text
+abs(J(row,1)) + abs(J(row,2)) <= (5/4)*mu,
+mu >= 0.
+```
+
+The exact physical Euclidean radius is used; the
+proof invokes the scalar radial and tangential
+numerator estimates from R042, then the existing
+verified Cartesian Jacobian-entry formulas.
+A generic restricted-column matrix inequality
+bounds the matrix action on directions with first
+component zero. Finally, the existing identity
+between the physical Newtonian Frechet derivative
+and this matrix gives
+
+```text
+norm_inf(Dg_mu(1,u,v) * h)
+    <= (5/4)*mu*norm_inf(h),
+u >= 0, v >= 0, h_0 = 0.
+```
+
+**Why useful:** Establishes the previously missing
+link from scalar tangential algebra to the **real
+physical Newtonian derivative**, with no replacement
+field, no linearized force difference, and no numerical
+value for C3. It is the normalized, nonnegative-coordinate
+core for the single safe-plane physical 5/4 estimate.
+
+**Limit:** The theorem is only for normalized points
+(1,u,v), u,v >= 0, with tangential directions h_0=0.
+It does **not** establish all safe-plane derivatives
+for arbitrary coordinate axes, signs and clearance d;
+it does not integrate finite differences or prove the
+global C3 inequality. The R043 and R041 hypotheses
+remain unproved.
+
+**Lean:**
+`tangential_normalized_radius_bounds`,
+`tangential_normalized_first_numerator_le_radius`,
+`tangential_normalized_lateral_numerator_le_radius`,
+`newtonianJacobianMatrix_normalized_tangent_columns_le`,
+`matrix3_mulVec_tangent_zero_norm_le`,
+`NewtonianPointSource.accelerationField_fderiv_normalized_tangent_le`.
+**Source:** [PhysicalTangentialNormalized.lean][physical-tangential-normalized].
+
 ## Direct proof strategy
 
 The derivative bound (R027) is attained (R029)
@@ -1584,7 +1650,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [CrossFaceTwoHop][cross-face-two-hop],
   [ConditionalFiniteSource][conditional-finite-source],
   [TangentialAlgebra][tangential-algebra],
-  [SafePlaneReduction][safe-plane-reduction].
+  [SafePlaneReduction][safe-plane-reduction],
+  [PhysicalTangentialNormalized][physical-tangential-normalized].
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
@@ -1597,6 +1664,7 @@ The substantive library is in `NewtonianLipschitz/`:
 [conditional-finite-source]: NewtonianLipschitz/ConditionalFiniteSource.lean
 [tangential-algebra]: NewtonianLipschitz/TangentialAlgebra.lean
 [safe-plane-reduction]: NewtonianLipschitz/SafePlaneReduction.lean
+[physical-tangential-normalized]: NewtonianLipschitz/PhysicalTangentialNormalized.lean
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
 The Lean 4 toolchain and Mathlib revision are pinned.
