@@ -26,7 +26,7 @@ required = [
     "large language models (LLMs)",
     "not yet Lean-verified theorems",
     "nonconvex exterior of a cube",
-    "independently kernel-checked",
+    "independent kernel checking",
     "Palomar files are placeholders",
 ]
 issues = [f"README missing: {token}" for token in required if token not in readme]
