@@ -31,27 +31,130 @@ An **optimal, formally checked deterministic sensitivity bound** for the exact N
 
 The mathematical coefficient, if ultimately proved optimal, would be optimal **only for the stated norm, clearance and domain class**. The nonconvex global-domain problem is separate. No originality claim or validated improvement in these application areas is made at this stage.
 
-## Results acquired and verification status
+## Results acquired — cumulative mathematical ledger
 
-The baseline Newtonian library has been **Lean-compiled in [Action #10](https://github.com/alexodas/NewtonianLipschitzOptimality/actions/runs/43980863205)**. Further work toward the sharp coefficient is in review: [Action #11](https://github.com/alexodas/NewtonianLipschitzOptimality/actions/runs/43982849584) failed on one row-comparison elaboration issue, which is corrected in the present branch. **The current branch's new lemmas remain pending a green full-build run.** The repository does not yet prove the candidate optimal coefficient or its sharpness.
+Only **mathematical results already accepted by Lean on a successful full build**
+appear here. Entries are cumulative: append new results without erasing or
+renumbering earlier ones. Each entry states the theorem's content, its use
+and limitations, and its exact Lean source. Work in progress, CI chronology,
+and research milestones belong outside this section.
 
-Claims are recorded as **proposed**, **Lean-compiled**, **independently kernel-checked**, or **externally reviewed**, with the exact declaration, source and verification evidence. Individual modules may have compiled in an otherwise unsuccessful workflow, but that does **not** qualify the full proposed revision as verified.
+<!-- RESULT:R001 -->
+### R001 — Exact Euclidean radius and Cartesian norm bridge
 
-## Theorem status ledger
+The Euclidean radius of a Cartesian three-vector equals the norm of its
+physical Euclidean representation; the Cartesian supremum norm does not
+exceed this radius.
 
-The table records **mathematical declarations**, not inferred results or historical result labels. The source of truth for compilation is a successful full CI run on the relevant commit.
+**Why useful:** Preserves the physical inverse-cube radius while estimating
+forces in the desired supremum norm. **Limit:** Norm comparison alone does
+not produce a sharp force coefficient.
 
-| Exact Lean declaration | Source | Verification / role |
-|---|---|---|
-| `NewtonianPointSource.accelerationField_fderiv_full` | `NewtonianLipschitz/Derivative.lean` | **Lean-compiled**, Action #10: exact Fréchet derivative of the physical inverse-cube force |
-| `NewtonianPointSource.accelerationField_fderiv_norm_le_ten_of_clearance` | `NewtonianLipschitz/BaselineBounds.lean` | **Lean-compiled**, Action #10: conservative coefficient 10, not sharp |
-| `NewtonianPointSource.accelerationField_lipschitzOnWith_of_clearance` | `NewtonianLipschitz/ConvexBaseline.lean` | **Lean-compiled**, Action #10: conservative bound on convex noncollision domains |
-| `NewtonianPointSource.accelerationField_fderiv_norm_le_seven_of_clearance` | `NewtonianLipschitz/ImprovedBounds.lean` | **Pending complete successful CI**, optional nonoptimal coefficient 7; not on critical path |
-| `NewtonianPointSource.accelerationField_lipschitzOnWith_seven` | `NewtonianLipschitz/ConvexImproved.lean` | **Pending complete successful CI**, optional convex-domain improvement |
-| `lateralRowNumerator_le_dominant`, `lateralRowNumerator_swapped_le_dominant`, `dominantRowNumerator_le_diagonal` | `NewtonianLipschitz/JacobianRows.lean` | **Pending CI**, algebraic reductions for the sharp Jacobian bound |
-| `stationaryCubic_strictAntiOn_unitInterval`, `stationaryCubic_root_unique_on_unitInterval` | `NewtonianLipschitz/CubicCandidate.lean` | **Pending complete successful CI**, analysis of the proposed stationary polynomial |
+**Lean:** `euclideanRadius_eq_physical_norm`,
+`cartesian_norm_le_euclideanRadius` ·
+**Sources:** [`Basic.lean`](NewtonianLipschitz/Basic.lean),
+[`Norms.lean`](NewtonianLipschitz/Norms.lean).
 
-**Not established:** the exact supremum operator norm, the candidate coefficient as a proved maximum, a matching sharpness witness, a global sharp bound on the nonconvex cube exterior, independent Comparator verification or external peer review.
+<!-- RESULT:R002 -->
+### R002 — Differentiability of the exact Newtonian field away from collision
+
+The actual three-dimensional inverse-cube Newtonian acceleration is
+continuously differentiable at every nonzero source separation.
+
+**Why useful:** Justifies differentiation and local mean-value arguments
+for the true force. **Limit:** No regularity across the collision
+singularity is claimed.
+
+**Lean:** `NewtonianPointSource.accelerationField_contDiffAt` ·
+**Source:** [`Smoothness.lean`](NewtonianLipschitz/Smoothness.lean).
+
+<!-- RESULT:R003 -->
+### R003 — Exact Fréchet derivative of Newtonian acceleration
+
+At each nonzero separation, the full directional Fréchet derivative of
+the actual field is the sum of the inverse-cube identity term and the
+inverse-fifth radial term, evaluated with the physical Euclidean
+inner product.
+
+**Why useful:** Supplies the exact Jacobian to optimize in the Cartesian
+supremum operator norm. **Limit:** The exact derivative formula by itself
+does not establish its optimal uniform bound.
+
+**Lean:** `NewtonianPointSource.accelerationField_fderiv_full` ·
+**Source:** [`Derivative.lean`](NewtonianLipschitz/Derivative.lean).
+
+<!-- RESULT:R004 -->
+### R004 — Explicit inverse-power bounds from positive clearance
+
+A positive Euclidean source clearance and a gravitational-parameter cap
+control the inverse-cube and inverse-fifth coefficients of the exact
+Newtonian field.
+
+**Why useful:** Converts geometric separation into explicit estimates
+for the derivative. **Limit:** The parameter bound and positive
+clearance are hypotheses, not inferred physical measurements.
+
+**Lean:** `NewtonianPointSource.inverse_power_parameter_le_of_clearance`,
+`NewtonianPointSource.inverse_fifth_derivative_coefficient_le` ·
+**Source:** [`BaselineBounds.lean`](NewtonianLipschitz/BaselineBounds.lean).
+
+<!-- RESULT:R005 -->
+### R005 — Conservative Cartesian derivative coefficient 10
+
+The exact three-dimensional Newtonian field satisfies the directional
+bound `‖Dgμ(x) h‖∞ ≤ (10 M / d³) ‖h‖∞`, under positive Euclidean
+clearance `d` and an upper gravitational-parameter bound `M`.
+
+**Why useful:** Gives a fully explicit, unconditional-on-a-supplied-derivative
+bound for the exact field. **Limit:** The coefficient **10 is not optimal**.
+
+**Lean:** `NewtonianPointSource.accelerationField_fderiv_norm_le_ten_of_clearance` ·
+**Source:** [`BaselineBounds.lean`](NewtonianLipschitz/BaselineBounds.lean).
+
+<!-- RESULT:R006 -->
+### R006 — Convex-domain Lipschitz certificate for the exact field
+
+On any convex spatial set with uniform positive Euclidean clearance,
+the exact Newtonian field has an explicit Cartesian-supremum-norm
+Lipschitz coefficient `10 M / d³`.
+
+**Why useful:** Converts the proved derivative estimate into a finite
+difference bound on a precisely defined safe domain. **Limit:** Requires
+convexity; it is **not** a theorem about all pairs in the nonconvex
+exterior of a cube, and the coefficient is not sharp.
+
+**Lean:** `NewtonianPointSource.accelerationField_lipschitzOnWith_of_clearance` ·
+**Source:** [`ConvexBaseline.lean`](NewtonianLipschitz/ConvexBaseline.lean).
+
+<!-- RESULT:R007 -->
+### R007 — Geometric clearance certified by a Cartesian anchor
+
+A sufficiently separated anchor gives a quantitative positive
+Euclidean-radius lower bound throughout a specified Cartesian
+supremum-norm ball.
+
+**Why useful:** Supplies explicit geometric hypotheses for force
+regularity and Lipschitz estimates. **Limit:** The anchor margin is
+assumed; no source history or observed trajectory is certified.
+
+**Lean:** `clearance_on_anchor_ball` ·
+**Source:** [`Clearance.lean`](NewtonianLipschitz/Clearance.lean).
+
+<!-- RESULT:R008 -->
+### R008 — Algebra of exact finite-source differential-force sums
+
+The exact nonlinear differential force from a finite list of point
+sources is expressed as a finite sum, with verified empty-list and
+cons-list identities.
+
+**Why useful:** Prepares future aggregation of certified single-source
+bounds without substituting a tidal linearization. **Limit:** No
+uniform Lipschitz coefficient for a family of sources follows from
+these algebraic identities alone.
+
+**Lean:** `NewtonianPointSource.finiteDifferentialAcceleration_nil`,
+`NewtonianPointSource.finiteDifferentialAcceleration_cons` ·
+**Source:** [`FiniteSources.lean`](NewtonianLipschitz/FiniteSources.lean).
 
 ## Direct proof strategy
 
@@ -81,18 +184,20 @@ milestone unless it directly resolves a dependency of the sharp proof.
 
 | Milestone | Mathematical / verification obligation | Status |
 |---|---|---|
-| **M01 — Foundation** | Exact physical field, Fréchet derivative, norm bridges and conservative convex-domain certificate | **Verified in Lean, Action #10** |
+| **M01 — Foundation** | Exact physical field, Fréchet derivative, norm bridges and conservative convex-domain certificate | **Completed; R001–R008** |
 | **M02 — Jacobian reduction** | Exact row formula, coordinate/sign symmetry, dominant row and diagonal reduction at fixed radius | **In progress**; partial algebraic lemmas pending CI |
 | **M03 — Sharp upper bound** | Prove the maximum of `f(t)`, existence and uniqueness of its critical root, and the resulting sharp universal derivative coefficient | **Open** |
 | **M04 — Optimality** | Produce a matching directional derivative / nearby-point witness excluding every smaller coefficient | **Open** |
 | **M05 — Domain theorem** | Apply the sharp coefficient on precisely quantified convex safe domains; investigate nonconvex exterior bounds separately | **Open** |
 | **M06 — Scientific and archival validation** | Audit theorem ledger, proofs, assumptions, references, novelty, Palomar metadata, standalone Comparator and full CI before merge | **Open** |
 
-**Update rule:** every mathematical PR revision must refresh this table
-and the theorem ledger with accurate evidence. Keep the history of
-successful verifications, never convert a candidate into an acquired
-theorem because its numerical value looks plausible, and review the
-entire README before the eventual merge.
+**Update rule:** after a successful full Lean build, append each genuinely
+new mathematical result to the cumulative R-series above with its
+precise statement, use, limitation, declaration and source. Never
+renumber or erase established entries. Update the roadmap whenever
+proof obligations change. Keep build and review evidence in GitHub
+Actions and the PR rather than mixing process history into the
+mathematical results. Review the entire README before merging.
 
 ## Repository structure and reproducibility
 
