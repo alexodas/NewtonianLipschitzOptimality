@@ -22,26 +22,8 @@ namespace NewtonianLipschitz
 of its three Cartesian coordinates. -/
 theorem cartesian_norm_eq_max_abs (x : Vec3) :
     ‖x‖ = max (|x 0|) (max (|x 1|) (|x 2|)) := by
-  apply le_antisymm
-  · have hbound :
-        0 ≤ max (|x 0|) (max (|x 1|) (|x 2|)) :=
-      (abs_nonneg (x 0)).trans (le_max_left _ _)
-    apply (pi_norm_le_iff_of_nonneg hbound).2
-    intro i
-    fin_cases i
-    · simpa only [Real.norm_eq_abs] using
-        (le_max_left (|x 0|) (max (|x 1|) (|x 2|)))
-    · simpa only [Real.norm_eq_abs] using
-        ((le_max_left (|x 1|) (|x 2|)).trans
-          (le_max_right (|x 0|) (max (|x 1|) (|x 2|))))
-    · simpa only [Real.norm_eq_abs] using
-        ((le_max_right (|x 1|) (|x 2|)).trans
-          (le_max_right (|x 0|) (max (|x 1|) (|x 2|))))
-  · apply max_le
-    · simpa only [Real.norm_eq_abs] using (norm_le_pi_norm x 0)
-    · apply max_le
-      · simpa only [Real.norm_eq_abs] using (norm_le_pi_norm x 1)
-      · simpa only [Real.norm_eq_abs] using (norm_le_pi_norm x 2)
+  simp [Pi.norm_def, Fin.univ_succ, Finset.sup_insert,
+    Real.norm_eq_abs, max_assoc, max_comm, max_left_comm]
 
 /-- Every row of the true Newtonian Jacobian has the exact
 candidate upper bound at an arbitrary nonzero displacement,
