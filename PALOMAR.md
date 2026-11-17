@@ -87,9 +87,12 @@ R038 proves the C3 upper estimate for safe endpoints
 separated by at least the clearance d without requiring
 a safe segment. R039 proves it for any two endpoints
 in a common positive or negative safe supporting
-halfspace, and combines these two cases. The global
-nonconvex **upper bound** remains open for short
-cross-face pairs.
+halfspace, and combines these two cases. R040 gives
+a constructive safe two-hop path for endpoints on
+different active axes and a verified **nonsharp
+2*C3** two-point bound in that case. The sharp
+global nonconvex **C3 upper bound** remains open
+for short cross-face pairs.
 
 **Outstanding evidence:** A sharp upper bound (or a
 rigorous refutation) for short one-source cross-face
@@ -97,17 +100,17 @@ pairs that share no safe coordinate halfspace; then
 scaling, source translation and finite-source lifting,
 and the complete universal optimality theorem. R037
 proves the necessary lower bound, while R038–R039
-prove only two sufficient cases of the global upper
-estimate.
+prove only two sufficient cases of the sharp global
+upper estimate; R040 has the larger coefficient 2*C3,
+so cannot close this gap.
 
-**Repository stage:** PRs #1–#3 and #5–#6 are merged
-into `main`. R038 passed its Lean Action on PR #6,
-and R039 passed the full Lean build on the current
-single active PR #7. R038–R039 are being registered
-in the permanent mathematical ledger together with
-R039's proof source. Neither merge nor compilation
-constitutes independent Comparator validation or
-a Palomar submission.
+**Repository stage:** R038 and R039 passed complete
+Lean builds and are merged into `main`. R040's
+different-active-axis two-hop result passed the Lean
+Action in the present PR #8. The permanent mathematical
+ledger records the precise nonsharp statement and its
+limitations. Neither compilation nor a merge constitutes
+independent Comparator validation or a Palomar submission.
 
 ## Conditions before actual submission
 
