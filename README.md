@@ -320,6 +320,28 @@ three-dimensional points still require separate proofs.
 **Source:**
 [NormalizedSharpBound.lean](NewtonianLipschitz/NormalizedSharpBound.lean).
 
+### R019 — All rows in the normalized positive octant
+
+For `mu >= 0`, `0 <= u,v <= 1`, and each row index
+`i` of the exact physical Jacobian at `(1,u,v)`,
+Lean proves
+
+`sum_j abs(J_mu(1,u,v)[i,j]) <= mu*candidateMaximum`.
+
+The second and third rows use exact matrix entries,
+the lateral-row algebra from R011, and R018.
+
+**Why useful:** Completes all three physical Jacobian row
+estimates for the normalized nonnegative configuration.
+**Limit:** Arbitrary signs, coordinate permutations and
+non-unit spatial scaling are not yet covered.
+
+**Lean:** `newtonianJacobianMatrix_normalized_allRows_le_candidateMaximum`,
+`newtonianJacobianMatrix_normalized_secondRow_le_candidateMaximum`,
+`newtonianJacobianMatrix_normalized_thirdRow_le_candidateMaximum`.
+**Source:**
+[NormalizedSharpBound.lean](NewtonianLipschitz/NormalizedSharpBound.lean).
+
 ## Direct proof strategy
 
 The next objective is the sharp coefficient, not another
@@ -341,16 +363,16 @@ intermediate constant.
 
 - **M01 — Foundation: complete.** Exact field, derivative,
   norm bridges, clearance, and bounds 10 and 7 (R001–R010).
-- **M02 — Jacobian reduction: in progress.** The row algebra
-  (R011), exact Jacobian (R013), first-row sum (R014),
-  and diagonal bound (R015) are proved. Other rows and
-  global operator-norm symmetries remain to be established.
-- **M03 — Sharp upper bound: in progress.** The cubic
-  facts (R012), exact root (R016), scalar maximum (R017),
-  and normalized first-row bound (R018) are proved.
-  Bounds for the other two normalized rows are proposed
-  in NormalizedSharpBound.lean and await the full build.
-  The unrestricted 3D bound remains open.
+- **M02 — Jacobian reduction: in progress.** Row algebra
+  (R011), exact Jacobian (R013), and normalized row bounds
+  (R014–R015, R018–R019) are proved. Symmetry, sign and
+  scale transfer to arbitrary points remain open.
+- **M03 — Sharp upper bound: in progress.** Cubic
+  facts (R012), the exact root (R016), the scalar maximum
+  (R017), and all normalized row bounds (R018–R019)
+  are proved. Sign and scaling invariance are proposed
+  in JacobianSymmetries.lean and await the full build.
+  The unrestricted 3D inequality remains open.
 - **M04 — Optimality: open.** A matching witness.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
@@ -376,7 +398,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [JacobianMatrix](NewtonianLipschitz/JacobianMatrix.lean),
   [CubicCandidate](NewtonianLipschitz/CubicCandidate.lean),
   [ScalarMaximum](NewtonianLipschitz/ScalarMaximum.lean),
-  [NormalizedSharpBound](NewtonianLipschitz/NormalizedSharpBound.lean).
+  [NormalizedSharpBound](NewtonianLipschitz/NormalizedSharpBound.lean),
+  [JacobianSymmetries](NewtonianLipschitz/JacobianSymmetries.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
