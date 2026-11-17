@@ -77,13 +77,20 @@ corollary. R032 proves C3 is the least universal
 pointwise derivative-norm coefficient. R033 constructs
 an attaining direction; R034 certifies an outward
 orientation whose forward ray stays outside the unit
-safety cube. Distinct admissible secant pairs are
-proposed in `AdmissibleSecantPairs.lean`, pending CI.
+safety cube. R035 proves distinct admissible secant
+pairs with exact Cartesian step length. The limiting
+secant quotient and global nonconvex estimate remain open.
 
 **Outstanding evidence:** An admissible finite-difference
 minimality witness, a global two-point bound across
 nonconvex forbidden cubes and the complete universal
 optimality theorem are not yet proved.
+
+**Current repository stage:** PR #1 was merged into
+`main` after the Lean build had verified the R035 source.
+The post-merge R035 documentation synchronization is
+being proposed separately. This merge is not a
+Comparator validation or Palomar submission.
 
 ## Conditions before actual submission
 

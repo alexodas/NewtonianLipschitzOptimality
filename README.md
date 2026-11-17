@@ -246,8 +246,9 @@ as verified in the permanent mathematical ledger below.
   where the derivative operator norm **equals C3**.
 - R032 proves that **no smaller universal coefficient**
   works for the Newtonian derivative operator norm.
-- R033–R034 exhibit an attaining derivative direction
-  whose entire forward ray stays outside the unit cube.
+- R033–R035 establish an attaining direction, an
+  outward admissible ray, and distinct safe pairs
+  with exactly known Cartesian separation.
 - R030–R031 prove **finite-difference bounds** with C3
   on convex safe domains and certified Cartesian boxes.
 - R001–R015 and R018–R023 document the foundational
@@ -256,9 +257,9 @@ as verified in the permanent mathematical ledger below.
 
 **Proposed but not yet verified in Lean:**
 
-- `AdmissibleSecantPairs.lean` proposes a unit
-  derivative-attaining direction and distinct admissible
-  secant endpoints with an exact step-length identity.
+No additional Lean theorem is staged in this
+documentation-only update. The next planned proof
+will address limiting secant difference quotients.
 
 **Still unproved:**
 
@@ -953,9 +954,9 @@ Jacobian row and compares with the R029 upper bound.
 **Why useful:** Supplies a precise directional witness
 for a future local difference-quotient argument and
 a route toward optimality of finite-difference bounds.
-**Limit:** It does not yet show that finite perturbed
-positions are admissible outside the safety cube or
-prove global two-point minimality.
+**Limit:** R033 alone gives no clearance certificate;
+R034–R035 supply that geometry and distinct safe pairs.
+Global two-point minimality is still unproved.
 
 **Lean:**
 `NewtonianPointSource.unitAxis_fderiv_exists_attaining_direction`.
@@ -994,19 +995,59 @@ that the global nonconvex two-point bound holds.
 **Source:**
 [AdmissibleCriticalDirection.lean][admissible-critical].
 
+### R035 — Distinct safe secant pairs of exact Cartesian step length
+
+Let `x_star = (1,t_star,t_star)` denote the critical
+unit-clearance displacement for the unit-parameter
+Newtonian field. Lean proves that there is a direction
+`h` with `norm_inf(h) = 1` and
+
+```text
+norm_inf((fderiv accelerationField x_star) h) = C3.
+```
+
+For every `s > 0`, the perturbed point
+`y_s = x_star + s*h` satisfies
+
+```text
+norm_inf(y_s) >= 1,
+norm_inf(y_s - x_star) = s,
+y_s != x_star.
+```
+
+Together with `norm_inf(x_star) = 1` (R028), this
+gives two distinct admissible endpoints outside
+the open unit safety cube, with known separation.
+The proof also certifies `C3 > 0`, forcing an
+attaining direction of norm at most one to have
+norm exactly one.
+
+**Why useful:** Supplies admissible secant pairs in
+the same critical direction that saturates the
+derivative bound, preparing a rigorous limiting
+finite-difference quotient argument.
+**Limit:** Neither the limit of the secant quotient
+nor global optimality of the nonconvex two-point
+bound is established by these geometric witnesses.
+
+**Lean:** `candidateMaximum_pos`,
+`NewtonianPointSource.unitAxis_exists_safe_distinct_secant_pairs`.
+**Source:**
+[AdmissibleSecantPairs.lean][admissible-secant].
+
 ## Direct proof strategy
 
 The derivative bound (R027) is attained (R029)
 and minimal for universal derivative estimates (R032).
-R033–R034 construct an attaining direction with an
-admissible outward ray. R030–R031 cover convex domains.
+R033–R035 produce admissible sharp secant pairs, while
+R030–R031 cover convex safe domains and boxes.
 
-1. Show that the outward ray gives distinct pairs
-   with a unit direction and known step length.
-2. Prove the matching admissible **two-point** lower
-   bound using the finite-difference quotient limit.
-3. Analyze safe endpoints outside nonconvex cubes
-   even when their connecting segment enters a cube.
+1. Prove the limiting **two-point** quotient equals
+   C3 along the unit outward direction of R035.
+2. Deduce that no smaller constant bounds all
+   admissible finite differences, even for one source.
+3. Analyze safe endpoints outside nonconvex cubes,
+   even when their connecting segment crosses a cube.
 4. Prove the multi-source global upper bound and
    its separate optimality theorem for Palomar.
 
@@ -1028,11 +1069,10 @@ admissible outward ray. R030–R031 cover convex domains.
   The unrestricted nonconvex bound remains unproved.
 - **M04 — Optimality: in progress.** R029 proves
   derivative-norm attainment, R032 pointwise minimality,
-  and R033–R034 give a norm-attaining outward-safe ray.
-  Distinct safe secant endpoints are proposed in
-  AdmissibleSecantPairs.lean, pending the next Lean build.
-  The two-point quotient limit and the unrestricted
-  nonconvex upper bound are still open.
+  and R033–R035 provide an outward-safe attaining
+  direction and distinct admissible secant pairs.
+  The limiting difference quotient, two-point
+  minimality and the global nonconvex bound are open.
 - **M05 — Domain theorem: in progress.** The convex
   finite-difference theorem (R030) and Cartesian-box
   center-margin certificate (R031) are both verified.
@@ -1041,7 +1081,9 @@ admissible outward ray. R030–R031 cover convex domains.
   planned Palomar pair is the exact formula for C3 and its
   global optimality (see [PALOMAR.md](PALOMAR.md)).
   The second theorem, independent Comparator, references
-  and final review before merge remain outstanding.
+  and final review before any Palomar submission remain
+  outstanding. PR #1 has been merged into `main`; new
+  research changes proceed through separate reviews.
 
 ## Repository structure and reproducibility
 
