@@ -1736,6 +1736,63 @@ No originality, review or submission is claimed.
 `oneSourceGlobalCandidateBound_proved`.
 **Source:** [SafePlaneFiniteDifference.lean][safe-plane-finite-difference].
 
+### R048 — Exact one-source global optimality iff and unconditional finite-source bounds
+
+Lean combines the R047 global upper bound with R037's
+necessary lower bound in a single exact equivalence:
+for the unit Newtonian source and the **closed
+unit-cube exterior**, a real coefficient K satisfies
+
+```text
+for all safe x,y:
+  norm_inf(g(x)-g(y)) <= K*norm_inf(x-y)
+```
+
+**if and only if** `C3 <= K`. This proves
+optimality of C3 for genuine two-point differences,
+not just for the derivative or convex subsets.
+
+R048 also discharges the explicitly conditional
+one-source hypothesis in R041, proving directly
+for its existing exact finite-source nonlinear
+differential-acceleration sum
+
+```text
+norm_inf(total differential acceleration)
+  <= (sum_k(mu_k)*C3/d^3)*norm_inf(q)
+  <= (N*M*C3/d^3)*norm_inf(q).
+```
+
+Here `mu_k >= 0` is each true Newtonian
+gravitational parameter, `mu_k <= M`,
+`N = sources.length`, and both observation
+positions have clearance at least `d > 0`
+from each source. The finite sum uses the
+**exact force difference**, not a linearization.
+
+**Why useful:** Formally closes the sharp
+one-source theorem with an if-and-only-if
+optimality statement and proves the expected
+unconditional N-dependent upper bound for
+the existing nonlinear finite-source model.
+The theorem no longer assumes any unproved
+global one-source premise.
+
+**Limit:** The final planned Palomar statement
+still requires the explicit physical G, masses
+and source-position translation interface,
+a matching N-source universal optimality
+statement with clear assumptions, and
+independent Comparator verification.
+No external validation, publication or
+submission is claimed.
+
+**Lean:**
+`unitSource_safe_global_bound_iff_candidateMaximum_le`,
+`NewtonianPointSource.finiteDifferentialAcceleration_norm_le_sum_global`,
+`NewtonianPointSource.finiteDifferentialAcceleration_norm_le_length_mul_global`.
+**Source:** [UnconditionalFiniteSource.lean][unconditional-finite-source].
+
 ## Direct proof strategy
 
 The optimal pointwise derivative bound is
@@ -1850,7 +1907,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [PhysicalTangentialNormalized][physical-tangential-normalized],
   [PhysicalTangentialFirstAxis][physical-tangential-first-axis],
   [PhysicalTangentialAllAxes][physical-tangential-all-axes],
-  [SafePlaneFiniteDifference][safe-plane-finite-difference].
+  [SafePlaneFiniteDifference][safe-plane-finite-difference],
+  [UnconditionalFiniteSource][unconditional-finite-source].
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
@@ -1867,6 +1925,7 @@ The substantive library is in `NewtonianLipschitz/`:
 [physical-tangential-first-axis]: NewtonianLipschitz/PhysicalTangentialFirstAxis.lean
 [physical-tangential-all-axes]: NewtonianLipschitz/PhysicalTangentialAllAxes.lean
 [safe-plane-finite-difference]: NewtonianLipschitz/SafePlaneFiniteDifference.lean
+[unconditional-finite-source]: NewtonianLipschitz/UnconditionalFiniteSource.lean
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
 The Lean 4 toolchain and Mathlib revision are pinned.
