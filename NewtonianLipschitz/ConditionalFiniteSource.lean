@@ -11,7 +11,7 @@ public section
 The missing mathematical problem is the global C3 two-point
 estimate for one Newtonian point source outside a nonconvex
 safety cube. We encode that statement as a *proposition*,
-not as a theorem, axiom or hypothesis silently assumed true.
+not as a theorem or an assumption that is silently considered true.
 
 R041 proves that **if** this remaining single-source
 statement is eventually established, its exact finite-source
