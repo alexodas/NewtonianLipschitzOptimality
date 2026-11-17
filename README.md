@@ -22,63 +22,73 @@ with mathematical reasoning, Lean proof development, and verification.
 
 ## Main theorem target — gravitational variation outside cubes
 
-### Enunciato in parole (obiettivo di ricerca)
+### Plain-language statement (research goal)
 
-Considera **N corpi puntiformi** nello spazio, lungo i tre assi
-cartesiani **X, Y e Z**. Ogni corpo ha massa non superiore a un
-valore massimo prefissato. Attorno a ciascuno immagina un
-**cubo di sicurezza** allineato agli assi e centrato sul corpo,
-con lato `2d`: l'interno del cubo è vietato, la sua superficie
-è ammessa.
+Consider **N point masses** in three-dimensional space, with
+Cartesian axes **X, Y, and Z**. Each body has a mass no greater
+than a prescribed maximum. Around each body, imagine an
+**axis-aligned safety cube**, centered on that body, with
+side length 2d. Its interior is forbidden; its boundary
+is allowed.
 
-Scegli **due punti P e Q** esterni agli interni di tutti questi
-cubi, anche se il segmento che li unisce attraversa una
-regione vietata.
+Choose **any two points P and Q** outside the interiors of
+all these cubes, even if the straight segment joining them
+passes through a forbidden region.
 
-**Il teorema che vogliamo dimostrare afferma** che la variazione
-massima di una componente della gravità (X, Y oppure Z) non
-supera la variazione massima di una coordinata tra P e Q,
-moltiplicata per il fattore `C3 * G * Mmax * N / d^3`,
-che dipende dalla costante gravitazionale, dal numero di
-corpi, dalla massa massima e dal semilato dei cubi.
+**The proposed theorem states** that the greatest change in
+gravitational acceleration along any one of the X, Y, or Z
+axes is bounded by the greatest coordinate displacement
+between P and Q, multiplied by a universal factor. That
+factor depends on the gravitational constant, maximum body
+mass, number of bodies, and inverse cube of the safety
+distance.
 
-La **costante adimensionale candidata** è circa
-**2,5775644**. Vogliamo anche dimostrare, separatamente,
-che non possa essere ridotta. **La disuguaglianza globale
-e la sua ottimalità non sono ancora dimostrate.**
+The **candidate dimensionless constant** is approximately
+**2.5775644**. We also seek to prove, separately, that this
+constant cannot be reduced.
 
-### Formulazione matematica
+**This global two-point inequality and its optimality have
+not yet been proved.**
 
-Un punto `P=(P_X,P_Y,P_Z)` ha tre coordinate, una per asse.
-Le lettere **P e Q indicano punti**, non assi.
+### Formal mathematical statement
 
-Per ogni vettore `v=(v_X,v_Y,v_Z)` definiamo:
+Each point has three coordinates:
+P = (P_X, P_Y, P_Z) and Q = (Q_X, Q_Y, Q_Z).
+Here **P and Q are points**, not coordinate axes.
 
-- `norm_2(v) = sqrt(v_X^2 + v_Y^2 + v_Z^2)`:
-  la **distanza euclidea**, utilizzata nella legge gravitazionale.
-- `norm_inf(v) = max(|v_X|, |v_Y|, |v_Z|)`:
-  la **norma cartesiana del massimo**, utilizzata nel limite
-  di variazione e nel criterio dei cubi.
+For a vector v = (v_X, v_Y, v_Z), define:
 
-Siano `N >= 1`, `G > 0`, `d > 0`, le posizioni
-`a_1,...,a_N` e le masse `0 <= m_k <= Mmax`.
-Il semilato dei cubi è `d`. La sicurezza di P e Q
-significa, per **ogni** corpo `k`:
+- The **Euclidean norm**, used in Newton's gravitational law:
+  norm_2(v) = sqrt(v_X^2 + v_Y^2 + v_Z^2).
+- The **Cartesian maximum norm**, used for safety cubes and
+  the variation bound:
+  norm_inf(v) = max(|v_X|, |v_Y|, |v_Z|).
 
-`norm_inf(P-a_k) >= d` e `norm_inf(Q-a_k) >= d`.
+Let N >= 1 be the number of bodies, G > 0 the gravitational
+constant, and d > 0 the cube half-side. The bodies have
+positions a_1,...,a_N and masses 0 <= m_k <= Mmax.
 
-Il campo di accelerazione gravitazionale totale è:
+The two points are **safe** if, for every body k,
+
+- norm_inf(P-a_k) >= d and norm_inf(Q-a_k) >= d.
+
+Thus P and Q lie outside every open forbidden cube,
+with cube boundaries included in the safe region.
+
+Their total gravitational acceleration is
 
 $$
 g(P) = -G\sum_{k=1}^{N}
-\frac{m_k(P-a_k)}{\|P-a_k\|_2^3}.
+\frac{m_k(P-a_k)}{\|P-a_k\|_2^3},
 $$
 
-Indichiamo con `Delta X`, `Delta Y`, `Delta Z` le tre
-componenti di `P-Q`; con `Delta g_X`, `Delta g_Y`,
-`Delta g_Z` quelle di `g(P)-g(Q)`.
+and analogously for Q.
 
-**Congettura principale (non ancora verificata in Lean):**
+Write Delta X, Delta Y, Delta Z for the coordinate differences
+of P-Q, and Delta g_X, Delta g_Y, Delta g_Z for the components
+of g(P)-g(Q).
+
+**Main conjecture (not yet proved in Lean):**
 
 $$
 \max\bigl(|\Delta g_X|,|\Delta g_Y|,|\Delta g_Z|\bigr)
@@ -87,40 +97,40 @@ C_3\frac{G M_{\max}N}{d^3}
 \max\bigl(|\Delta X|,|\Delta Y|,|\Delta Z|\bigr).
 $$
 
-La stessa formula, più compatta, è:
+Equivalently, in compact notation,
 
 $$
 \|g(P)-g(Q)\|_\infty
 \le \frac{C_3 G M_{\max}N}{d^3}\|P-Q\|_\infty.
 $$
 
-La candidata esatta è
-`C3 = candidateCoefficient(candidateCriticalPoint)`.
-Il suo valore numerico è circa `2.5775644212`; il punto
-critico è l'unica radice in `[9/50,1/5]` del polinomio
-`2*t^3-8*t^2-4*t+1=0`.
+The exact candidate is defined in Lean by
+candidateCoefficient(candidateCriticalPoint).
+Its numerical value is approximately 2.5775644212.
+The critical point is the unique root in [9/50, 1/5]
+of 2*t^3 - 8*t^2 - 4*t + 1 = 0.
 
-**Ottimalità, da provare separatamente:** nessuna costante
-universale inferiore a `C3` soddisfa il teorema per tutte
-le configurazioni ammissibili.
+**Separate optimality conjecture:** No smaller universal
+constant can replace C3 for all admissible configurations.
 
 ## Mathematical question
 
-La legge di Newton usa la distanza **euclidea** `norm_2`,
-mentre l'ineguaglianza proposta usa `norm_inf` per misurare
-la variazione lungo i tre assi X, Y e Z.
+Newton's law uses the **Euclidean norm** norm_2, whereas
+the proposed sensitivity inequality uses norm_inf to measure
+variations along the three Cartesian axes X, Y, and Z.
 
-Le stime già dimostrate con coefficienti 10 e 7 assumono
-una distanza di sicurezza euclidea. La candidata `C3`
-riguarda invece la sicurezza misurata con `norm_inf`:
-le due ipotesi non devono essere confuse.
+The previously proved coefficients 10 and 7 require
+Euclidean clearance. The sharp candidate C3 instead uses
+clearance in the Cartesian maximum norm. These are
+different geometric assumptions.
 
-La massimizzazione scalare, tutte le righe del Jacobiano
-normalizzato e le simmetrie degli assi sono già verificate
-in Lean (R016–R021). Manca la maggiorazione tridimensionale
-universale. Il **complemento non convesso** dei cubi
-richiede inoltre un argomento specifico per due punti
-arbitrari, indipendentemente dal segmento che li unisce.
+Lean already verifies the scalar maximization, normalized
+Jacobian row estimates, and axis symmetries (R016–R021).
+The unrestricted three-dimensional derivative estimate
+remains open. In addition, the **nonconvex complement**
+of the forbidden cubes requires a separate argument for
+arbitrary pairs of points, including those whose connecting
+segment crosses a forbidden region.
 
 ## Why the result may matter — intended audience
 

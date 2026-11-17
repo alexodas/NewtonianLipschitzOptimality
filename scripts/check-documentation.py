@@ -30,7 +30,7 @@ required = [
     "not a mathematician",
     "large language models (LLMs)",
     "not yet Lean-verified theorems",
-    "complemento non convesso",
+    "nonconvex complement",
     "independent kernel checking",
     "Palomar files are placeholders",
 ]
