@@ -73,8 +73,14 @@ Newtonian derivative's sharp Cartesian operator-norm
 bound and its attainment. R033–R037 exhibit admissible
 safe secants approaching C3 and prove that no smaller
 universal one-source global coefficient can work.
-R038–R040 handle long and shared-face pairs and build
+R035 constructs exact-step admissible secant pairs;
+R036 proves their right-hand quotient limit.
+R038 handles long admissible pairs, R039 handles
+common supporting safe halfspaces, and R040 builds
 a safe two-hop bridge for different-axis endpoints.
+R045 proves the signed-safe first-axis physical
+tangential derivative bound, later extended to
+all three axes in R046.
 
 R042 certifies exact scalar inequalities supporting a
 stronger tangential coefficient 5/4, and proves the
