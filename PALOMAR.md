@@ -108,6 +108,13 @@ one-source global sharp C3 proposition
 `oneSourceGlobalCandidateBound`. This covers
 all endpoint configurations using R038–R040, but
 does not prove its safe-plane premise.
+R044 proves the actual physical Newtonian
+Jacobian tangent-column 5/4 bound and the
+corresponding Frechet directional inequality
+at (1,u,v), u,v >= 0, h0 = 0. The transfer
+to arbitrary axes, coordinate signs and scale
+is outstanding; no unrestricted derivative
+or safe-plane finite-difference estimate follows.
 
 **Outstanding evidence:** The sharp global upper
 bound (or a rigorous refutation) for **short
@@ -116,9 +123,11 @@ coordinate halfspace. R037 supplies the necessary
 two-point lower bound, R038–R039 the proved sharp
 upper subcases, and R040 only a nonsharp 2*C3
 estimate. R042 supplies only the algebraic certificates
-for a proposed tangential 5/4 estimate; their transfer
-to the actual Jacobian, and integration on safe planes,
-are outstanding. R043 now verifies the complete
+for a proposed tangential 5/4 estimate; R044
+now transfers them to the **actual physical
+Jacobian at normalized nonnegative points**.
+The unrestricted signed-axis/scale derivative
+and integration on safe planes remain outstanding. R043 now verifies the complete
 conditional reduction from the explicit safe-plane 5/4
 finite-difference premise to the one-source global C3
 estimate; the premise remains unproved. R041 already
@@ -130,12 +139,13 @@ unproved; the full physical-source parametrization,
 matching Palomar declarations and independent
 Comparator verification remain outstanding.
 
-**Repository stage:** R001–R043 have passed complete
+**Repository stage:** R001–R044 have passed complete
 Lean builds, and the permanent README ledger records
 their exact statements and limitations. R041 and R043
 are **conditional implications**; R042 establishes
-scalar inequalities, not the physical tangential
-estimate. The safe-plane proposition
+scalar inequalities, and R044 proves the physical
+tangential estimate **only in normalized nonnegative
+coordinates**. The safe-plane proposition
 `oneSourceSafePlaneFiveFourthBound` and the one-source
 global C3 proposition `oneSourceGlobalCandidateBound`
 remain unproved. This description does not depend
