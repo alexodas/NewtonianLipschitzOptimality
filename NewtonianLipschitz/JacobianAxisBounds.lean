@@ -19,8 +19,7 @@ namespace NewtonianLipschitz
 to itself. -/
 theorem cycleIndex_three (i : Fin 3) :
     cycleIndex (cycleIndex (cycleIndex i)) = i := by
-  fin_cases i <;>
-    simp only [cycleIndex_zero, cycleIndex_one, cycleIndex_two]
+  fin_cases i <;> simp [cycleIndex]
 
 /-- Every row has the sharp candidate bound when Y is positive
 and dominates the other two nonnegative Cartesian coordinates. -/
