@@ -80,12 +80,12 @@ C3 two-point estimate on convex safe domains; R038
 handles sufficiently separated allowed points; R039
 handles points sharing a safe supporting halfspace.
 R040 constructs two safe steps between different
-active faces, obtaining the **larger, nonoptimal
-coefficient 2*C3**. Taken together, these cases
-give an explicit **nonsharp global 2*C3 bound for
-one source** by a case split; that all-pairs
-corollary has not yet been packaged as a single
-Lean theorem. The unresolved question is therefore
+active faces, obtaining a **coarser bound with
+coefficient 2*C3**, not proved optimal. Taken
+together, these cases give an explicit global
+2*C3 bound for one source by a case split; that
+all-pairs corollary has not yet been packaged
+as a single Lean theorem. The unresolved question is therefore
 *not* whether some finite global bound exists:
 it is whether **C3 itself works globally and is
 optimal**. R036–R037 already prove that no smaller
