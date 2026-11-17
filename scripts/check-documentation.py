@@ -42,6 +42,25 @@ for audience in ("rigorous dynamics", "planetary-defense", "space situational aw
 for audience in ("CAPD", "planetary defense", "space situational awareness", "Barnes–Hut"):
     if audience not in palomar_notes:
         issues.append(f"PALOMAR.md missing potential audience: {audience}")
+# The acquired-results section is a cumulative mathematical catalog.
+# It must never be turned into an activity log or silently renumbered.
+import re
+section_start = "## Results acquired — cumulative mathematical ledger"
+section_end = "## Direct proof strategy"
+if section_start in readme and section_end in readme:
+    catalog = readme.split(section_start, 1)[1].split(section_end, 1)[0]
+    matches = list(re.finditer(r"<!-- RESULT:R(\\d{3}) -->", catalog))
+    numbers = [int(m.group(1)) for m in matches]
+    if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 8:
+        issues.append("Results must be cumulative, contiguous, and retain R001–R008")
+    for idx, match in enumerate(matches):
+        block = catalog[match.end():matches[idx+1].start() if idx+1 < len(matches) else len(catalog)]
+        if not all(tag in block for tag in ("**Why useful:**", "**Limit:**", "**Lean:**")):
+            issues.append(f"Result R{numbers[idx]:03d} missing statement/use/limit/Lean evidence")
+        if not ("**Source:**" in block or "**Sources:**" in block):
+            issues.append(f"Result R{numbers[idx]:03d} missing exact source link")
+    if re.search(r"Action\\s*#\\s*\\d+|workflow run|CI failure|CI attempt", catalog, re.I):
+        issues.append("Acquired results must not contain build or task chronology")
 if "LeanAsteroidPairs" in readme:
     issues.append("New project README must be scientifically self-contained")
 if issues:
