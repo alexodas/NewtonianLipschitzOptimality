@@ -27,6 +27,7 @@ public import NewtonianLipschitz.CommonSafeFace
 public import NewtonianLipschitz.CrossFaceTwoHop
 public import NewtonianLipschitz.TangentialAlgebra
 public import NewtonianLipschitz.ConditionalFiniteSource
+public import NewtonianLipschitz.SafePlaneReduction
 public import NewtonianLipschitz.ConvexBaseline
 public import NewtonianLipschitz.ConvexImproved
 public import NewtonianLipschitz.JacobianRows
