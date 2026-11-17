@@ -13,8 +13,9 @@ parameter therefore gives an explicit unit-Cartesian-norm
 displacement whose physical Jacobian first row attains
 candidateMaximum.
 
-An operator-norm lower bound and finite-difference optimality
-still require separate arguments.
+R029 later proves exact operator-norm attainment; R036–R037
+prove the necessary finite-difference coefficient lower bound.
+The sharp nonconvex global upper bound remains open.
 -/
 
 namespace NewtonianLipschitz

@@ -90,27 +90,36 @@ in a common positive or negative safe supporting
 halfspace, and combines these two cases. R040 gives
 a constructive safe two-hop path for endpoints on
 different active axes and a verified **nonsharp
-2*C3** two-point bound in that case. The sharp
+2*C3** two-point bound in that case. R041 verifies
+the **conditional** deduction of the exact finite-source
+bound with coefficient `N*M*C3/d³` from the still-open
+one-source global C3 proposition
+`oneSourceGlobalCandidateBound`. The sharp
 global nonconvex **C3 upper bound** remains open
 for short cross-face pairs.
 
-**Outstanding evidence:** A sharp upper bound (or a
-rigorous refutation) for short one-source cross-face
-pairs that share no safe coordinate halfspace; then
-scaling, source translation and finite-source lifting,
-and the complete universal optimality theorem. R037
-proves the necessary lower bound, while R038–R039
-prove only two sufficient cases of the sharp global
-upper estimate; R040 has the larger coefficient 2*C3,
-so cannot close this gap.
+**Outstanding evidence:** The sharp global upper
+bound (or a rigorous refutation) for **short
+one-source cross-face pairs** without any shared safe
+coordinate halfspace. R037 supplies the necessary
+two-point lower bound, R038–R039 the proved sharp
+upper subcases, and R040 only a nonsharp 2*C3
+estimate. R041 already proves that a valid one-source
+global C3 estimate *would imply* the exact finite-source
+N*M*C3/d³ bound for the existing nonlinear differential
+acceleration model. The single-source premise is still
+unproved; the full physical-source parametrization,
+matching Palomar declarations and independent
+Comparator verification remain outstanding.
 
-**Repository stage:** R038 and R039 passed complete
-Lean builds and are merged into `main`. R040's
-different-active-axis two-hop result passed the Lean
-Action in the present PR #8. The permanent mathematical
-ledger records the precise nonsharp statement and its
-limitations. Neither compilation nor a merge constitutes
-independent Comparator validation or a Palomar submission.
+**Repository stage:** R001–R041 have passed complete
+Lean builds, and the permanent README ledger records
+their exact statements and limitations. R041 is verified
+only as a **conditional implication**; its one-source
+global C3 premise remains open. This description does
+not depend on the transient state of a pull request.
+Neither compilation nor merge constitutes independent
+Comparator validation or a Palomar submission.
 
 ## Conditions before actual submission
 

@@ -23,7 +23,7 @@ required = [
     "### R009 —", "### R010 —",
     "### R011 —", "### R012 —",
     "### R013 —",
-    "### R014 —", "### R015 —", "### R016 —", "### R017 —", "### R018 —", "### R019 —", "### R020 —", "### R021 —", "### R022 —", "### R023 —", "### R024 —", "### R025 —", "### R026 —", "### R027 —", "### R028 —", "### R029 —", "### R030 —", "### R031 —", "### R032 —", "### R033 —", "### R034 —", "### R035 —", "### R036 —", "### R037 —", "### R038 —", "### R039 —", "### R040 —",
+    "### R014 —", "### R015 —", "### R016 —", "### R017 —", "### R018 —", "### R019 —", "### R020 —", "### R021 —", "### R022 —", "### R023 —", "### R024 —", "### R025 —", "### R026 —", "### R027 —", "### R028 —", "### R029 —", "### R030 —", "### R031 —", "### R032 —", "### R033 —", "### R034 —", "### R035 —", "### R036 —", "### R037 —", "### R038 —", "### R039 —", "### R040 —", "### R041 —",
     "## Direct proof strategy",
     "M01 — Foundation", "M02 — Jacobian reduction", "M03 — Sharp upper bound",
     "M04 — Two-point lower bound", "M05 — Domain theorem", "M06 — Scientific and archival validation",
@@ -51,11 +51,42 @@ for audience in ("rigorous dynamics", "planetary-defense", "space situational aw
 for audience in ("CAPD", "planetary defense", "space situational awareness", "Barnes–Hut"):
     if audience not in palomar_notes:
         issues.append(f"PALOMAR.md missing potential audience: {audience}")
-for ref in ("R035", "R036", "R037", "R038", "R039", "R040"):
+for ref in ("R035", "R036", "R037", "R038", "R039", "R040", "R041"):
     if ref not in palomar_notes:
         issues.append(f"PALOMAR.md missing verified {ref} provenance")
     if ref not in description:
         issues.append(f"Metadata description missing verified {ref} provenance")
+
+# Release-facing documentation must describe durable proof status, not
+# a PR that may already have been merged. The mathematical ledger itself
+# records historical theorem scope, never transient CI chronology.
+import re
+for document_name, content in (
+    ("README.md", readme),
+    ("PALOMAR.md", palomar_notes),
+):
+    if re.search(r"\b(?:current|present|active).{0,45}\bPR\s*#\d+", content, re.I):
+        issues.append(f"{document_name} contains a transient active-PR claim")
+if "**Proposed but not yet verified in Lean:**" in readme and "**Still unproved:**" in readme:
+    proposed = readme.split("**Proposed but not yet verified in Lean:**", 1)[1].split(
+        "**Still unproved:**", 1
+    )[0]
+    if re.search(r"\bR\d{3}\s+is now Lean-verified\b", proposed):
+        issues.append("Proposed-status block misplaces a verified result")
+if "R040" not in readme.split("**Verified in Lean:**", 1)[1].split(
+    "**Proposed but not yet verified in Lean:**", 1
+)[0]:
+    issues.append("README verified-status block omits R040")
+if "R041" not in readme.split("**Verified in Lean:**", 1)[1].split(
+    "**Proposed but not yet verified in Lean:**", 1
+)[0]:
+    issues.append("README verified-status block omits R041")
+if "oneSourceGlobalCandidateBound" not in readme:
+    issues.append("R041 must name its explicit unproved one-source premise")
+if "oneSourceGlobalCandidateBound" not in palomar_notes:
+    issues.append("Palomar must identify the unproved R041 premise explicitly")
+if "conditional" not in palomar_notes.lower() or "conditional" not in readme.lower():
+    issues.append("R041 conditional status missing from documentation")
 # The acquired-results section is a cumulative mathematical catalog.
 # It must never be turned into an activity log or silently renumbered.
 import re
@@ -78,8 +109,8 @@ if section_start in readme and section_end in readme:
     catalog = readme.split(section_start, 1)[1].split(section_end, 1)[0]
     matches = list(re.finditer(r"^### R(\d{3}) — ", catalog, re.M))
     numbers = [int(m.group(1)) for m in matches]
-    if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 40:
-        issues.append("Results must be cumulative, contiguous, and retain R001–R040")
+    if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 41:
+        issues.append("Results must be cumulative, contiguous, and retain R001–R041")
     for idx, match in enumerate(matches):
         block = catalog[match.end():matches[idx+1].start() if idx+1 < len(matches) else len(catalog)]
         if not all(tag in block for tag in ("**Why useful:**", "**Limit:**", "**Lean:**")):

@@ -66,8 +66,11 @@ R038 proves the proposed upper bound for sufficiently separated
 safe pairs; R039 proves it for safe pairs that share a supporting
 coordinate halfspace. R040 constructs a safe two-hop bridge for
 endpoints on distinct active coordinate axes, giving a **nonsharp**
-2*C3 bound. The desired sharp C3 bound for short cross-face
-pairs remains open.
+2*C3 bound. R041 proves the exact **conditional**
+lifting from a one-source global C3 estimate to a
+finite-source bound with coefficient N*M*C3/d^3.
+The required sharp one-source C3 inequality for short
+cross-face pairs remains open.
 
 ### Formal mathematical statement
 
@@ -231,10 +234,12 @@ unchanged code stability or any runtime gain; these
 require application-level analysis and benchmarking.
 
 **Present limitation:** R027–R029 prove the sharp
-pointwise derivative norm and its attainment; R030–R031
-prove convex-domain and Cartesian-box bounds.
-The global two-point estimate across the nonconvex
-exterior of forbidden cubes is **unproved**.
+pointwise derivative norm and its attainment;
+R030–R031 handle convex safe domains and boxes;
+R038–R039 handle far or common-face safe pairs;
+R040 gives a nonsharp 2*C3 bound for different-axis
+pairs. The sharp global C3 estimate across the
+nonconvex exterior remains **unproved**.
 Reusing a precomputed scalar has negligible arithmetic
 overhead, but adopting the bound in real software requires
 checking the model, clearance and domain hypotheses.
@@ -277,16 +282,21 @@ as verified in the permanent mathematical ledger below.
   supported by different safe axes. It gives two convex-safe
   hops of length at most the original separation and thus a
   **nonsharp 2*C3 bound**, even if the direct segment is unsafe.
+- R041 proves that the still-open **one-source global C3**
+  statement, *if established*, implies the sharp finite-source
+  differential-force bound with coefficient N*M*C3/d³.
+  The premise is stated explicitly and remains unproved.
 - R001–R015 and R018–R023 document the foundational
   field, regularity, conservative estimates, and the
   verified algebraic reductions.
 
 **Proposed but not yet verified in Lean:**
 
-R040 is now Lean-verified. The next research task is
-to prove the missing sharp C3 bound, find a rigorous
-counterexample, or improve the nonsharp two-hop estimate
-for short cross-face pairs (issue #4).
+R041 is verified as a **conditional implication**,
+not as proof of its one-source premise. The missing
+sharp C3 upper bound for short cross-face pairs is
+still an open research problem (issue #4). No
+unproved theorem is included in this results ledger.
 
 **Still unproved:**
 
@@ -430,7 +440,8 @@ maximal-row numerator dominates both lateral numerators.
 For fixed `u^2+v^2`, its maximum is on the diagonal `u=v`.
 
 **Why useful:** Reduces the algebraic optimization to one variable.
-**Limit:** Does not yet bound the full physical operator globally.
+**Limit:** This algebraic lemma alone is not an operator-norm
+bound; later R024–R027 establish the sharp derivative bound.
 
 **Lean:** `lateralRowNumerator_le_dominant`,
 `lateralRowNumerator_swapped_le_dominant`,
@@ -444,7 +455,8 @@ on `[0,1]`, positive at `9/50`, negative at `1/5`, and has
 at most one zero in that interval.
 
 **Why useful:** Exact information about a possible maximizer.
-**Limit:** Existence, maximization, and sharpness remain unproved.
+**Limit:** These cubic properties alone do not prove the
+maximizer; existence and scalar maximality follow in R016–R017.
 
 **Lean:** `stationaryCubic_pos_at_nine_fiftieths`,
 `stationaryCubic_neg_at_one_fifth`,
@@ -478,8 +490,8 @@ the first row of the **actual** Newtonian Jacobian is
 
 **Why useful:** Connects the physical derivative matrix to the
 dominant-row numerator in R011.
-**Limit:** The other rows and the global operator-norm maximum
-still require proof.
+**Limit:** This first-row identity alone gives neither
+the other rows (R019) nor the global norm bound (R024–R027).
 
 **Lean:** `newtonianJacobianMatrix_normalized_firstRow_abs_sum`,
 `newtonianJacobianMatrix_normalized_zero_zero`,
@@ -496,8 +508,9 @@ the actual Jacobian is bounded using the diagonal parameter
 
 **Why useful:** Transfers R011's one-variable algebraic
 reduction to a genuine row of the derivative matrix.
-**Limit:** Does not yet prove the global operator norm,
-the sharp coefficient, or its optimality.
+**Limit:** This first-row reduction alone is not a
+global operator-norm or optimality theorem; later results
+address the derivative, not the full nonconvex domain.
 
 **Lean:** `newtonianJacobianMatrix_normalized_firstRow_le_diagonal`.
 **Source:** [JacobianMatrix.lean](NewtonianLipschitz/JacobianMatrix.lean).
@@ -568,7 +581,9 @@ and the pointwise directional derivative upper bound.
 **Limit:** Maximizing $f$ does not establish that $C_3$
 is the smallest coefficient for the global two-point
 gravitational inequality outside nonconvex safety cubes.
-A matching optimality proof is still required.
+R037 later proves the necessary global two-point
+coefficient lower bound; the global nonconvex C3
+upper bound is still open.
 
 **Lean:** `candidateCoefficient_hasDerivAt`,
 `candidateCoefficient_le_at_criticalPoint`,
@@ -585,8 +600,9 @@ maximum defined and proved in R017.
 
 **Why useful:** Applies the scalar maximum to the actual
 Jacobian of the Newtonian field.
-**Limit:** Other rows and arbitrarily signed or scaled
-three-dimensional points still require separate proofs.
+**Limit:** This first-row lemma alone does not cover the
+other rows and arbitrary signed/scaled points; R019–R027
+provide those derivative estimates.
 
 **Lean:** `newtonianJacobianMatrix_normalized_firstRow_le_candidateMaximum`,
 `diagonalParameter_mem_unitInterval`,
@@ -607,8 +623,9 @@ the lateral-row algebra from R011, and R018.
 
 **Why useful:** Completes all three physical Jacobian row
 estimates for the normalized nonnegative configuration.
-**Limit:** Arbitrary signs, coordinate permutations and
-non-unit spatial scaling are not yet covered.
+**Limit:** This normalized-octant statement alone omits
+arbitrary signs and non-unit scales, handled later in
+R020–R027.
 
 **Lean:** `newtonianJacobianMatrix_normalized_allRows_le_candidateMaximum`,
 `newtonianJacobianMatrix_normalized_secondRow_le_candidateMaximum`,
@@ -627,9 +644,9 @@ at `c*x` equals `c^(-3)` times the Jacobian at `x`.
 
 **Why useful:** Provides the sign and scale bridges needed
 to extend the verified normalized row bound R019.
-**Limit:** Coordinate permutations and the unrestricted
-Jacobian bound remain to be proved. No global two-point
-inequality or optimality follows from this result alone.
+**Limit:** This symmetry result alone does not establish
+the unrestricted Jacobian bound (R024–R027) or any
+global nonconvex two-point inequality.
 
 **Lean:** `euclideanRadius_coordinateAbs`,
 `newtonianJacobianMatrix_rowSum_coordinateAbs`,
@@ -647,9 +664,9 @@ reindexed accordingly, as are the absolute row sums.
 **Why useful:** These two transformations generate the six
 permutations of the three axes; they support reducing
 arbitrary Cartesian coordinates to normalized form.
-**Limit:** A full arbitrary-permutation reduction and the
-unrestricted sharp derivative inequality remain open.
-They do not imply the nonconvex global theorem.
+**Limit:** The permutation identities alone do not prove
+the unrestricted sharp derivative bound (R024–R027)
+or the nonconvex global two-point theorem.
 
 **Lean:** `euclideanRadius_cycleVec`,
 `newtonianJacobianMatrix_cycle_entry`,
@@ -673,9 +690,9 @@ vector and applies the exact inverse-cubic scaling identity.
 
 **Why useful:** Transfers the sharp normalized row bounds
 from unit X to a full positive scale.
-**Limit:** The verified statement does not yet cover cases
-with maximal Y or Z, arbitrary signs, or the universal
-Cartesian maximum-norm bound.
+**Limit:** This positive-X case alone does not cover
+dominant Y/Z coordinates (R023), signs (R024), or
+the resulting Cartesian derivative-norm bound (R027).
 
 **Lean:** `newtonianJacobianMatrix_rowSum_positive_smul`,
 `positive_first_coordinate_normalization`,
@@ -695,8 +712,9 @@ Both proofs rotate the Cartesian coordinates and reuse R022.
 
 **Why useful:** Covers every choice of dominant axis
 for a nonnegative displacement.
-**Limit:** Signed coordinates, the full maximum-norm bound
-and global two-point Lipschitz estimates remain separate.
+**Limit:** This nonnegative-orthant case alone does not
+cover signed coordinates (R024) or the sharp operator
+bound (R027). Global nonconvex differences remain open.
 
 **Lean:** `cycleIndex_three`,
 `newtonianJacobianMatrix_secondMax_le_candidateMaximum`,
@@ -770,9 +788,9 @@ corresponding absolute Jacobian row sum.
 
 **Why useful:** Supplies the directional estimate from
 which an induced operator-norm bound can be proved.
-**Limit:** The operator-norm statement is a separate
-obligation. Global two-point bounds on nonconvex domains
-and optimality are not established.
+**Limit:** This action estimate alone is not the
+operator-norm theorem (R027) or the global two-point
+estimate. R037 later proves the necessary lower bound.
 
 **Lean:** `matrix3_mulVec_coordinate_abs_le_rowSum`,
 `newtonianJacobianMatrix_mulVec_norm_le_candidateMaximum`,
@@ -828,9 +846,9 @@ every diagonal displacement `(1,t,t)` for `0 <= t <= 1`.
 **Why useful:** Provides a concrete exact equality
 witness, showing that the universal Jacobian row-sum
 upper bound cannot be improved.
-**Limit:** The witness does not yet establish equality
-for the induced derivative operator norm or a global
-two-point gravitational Lipschitz inequality.
+**Limit:** The row witness alone does not establish
+the operator-norm equality (R029), nor the still-open
+global two-point C3 upper estimate.
 
 **Lean:** `normalized_diagonal_radius`,
 `newtonianJacobianMatrix_diagonal_firstRow_eq_coefficient`,
@@ -893,7 +911,8 @@ Cartesian-safe domains, with the same coefficient C3.
 **Limit:** Two safe endpoints do not imply their joining
 segment is safe. The exterior of an open safety cube is
 nonconvex, so no unrestricted two-point claim follows.
-Minimality of the global coefficient is still unproved.
+R037 later proves the necessary two-point lower bound;
+the global nonconvex C3 upper estimate remains unproved.
 
 **Lean:**
 `NewtonianPointSource.accelerationField_norm_sub_le_candidateMaximum_convex`.
@@ -951,8 +970,9 @@ unit-parameter critical diagonal witness of R029.
 **Why useful:** Establishes the quantified **minimality**
 of C3 for all universal Cartesian derivative-norm
 estimates, rather than just displaying equality.
-**Limit:** It does not yet prove minimality for a global
-two-point estimate on nonconvex cubical exteriors.
+**Limit:** This is derivative minimality, not two-point
+minimality; R037 later proves the necessary coefficient
+lower bound for admissible pairs. The upper bound is open.
 
 **Lean:** `candidateMaximum_le_of_universal_fderiv_opNorm_bound`,
 `candidateMaximum_no_smaller_universal_fderiv_bound`.
@@ -1010,9 +1030,9 @@ the forbidden open unit cube around the source.
 **Why useful:** Connects the pointwise sharpness
 witness (R033) to the actual cubical clearance
 geometry required by the global conjecture.
-**Limit:** This is an admissible ray, not yet a
-proof that secant quotients converge to C3 or
-that the global nonconvex two-point bound holds.
+**Limit:** This ray alone does not establish the
+secant quotient limit (proved later in R036) or
+the still-open sharp global C3 upper bound.
 
 **Lean:**
 `NewtonianPointSource.unitAxis_exists_outward_attaining_direction`,
@@ -1231,26 +1251,80 @@ follows from R040, and Comparator remains inactive.
 `NewtonianPointSource.accelerationField_norm_sub_le_two_candidateMaximum_different_axes`.
 **Source:** [CrossFaceTwoHop.lean][cross-face-two-hop].
 
+### R041 — Conditional sharp finite-source lifting from one source
+
+Lean defines `oneSourceGlobalCandidateBound : Prop`
+as the still-open assertion that **every** admissible
+two-point Newtonian force difference for a single source
+satisfies the global C3 estimate, without requiring the
+connecting segment to remain outside the forbidden cube.
+This is a proposition, **not** a proof of that assertion.
+
+**Assuming that proposition**, Lean proves for the
+existing exact finite-source differential acceleration
+sum and positive clearance d at both observation points:
+
+```text
+norm_inf(sum_k (g_k(a_k+q)-g_k(a_k)))
+  <= (C3/d^3) * (sum_k mu_k) * norm_inf(q).
+```
+
+Here `a_k` is each source's initial displacement and
+`q` is the common observation-point difference. If
+each source gravitational parameter satisfies
+`mu_k <= M`, the same verified implication gives
+
+```text
+norm_inf(total differential acceleration)
+  <= (N*M*C3/d^3) * norm_inf(q),
+N = sources.length.
+```
+
+The proof uses induction over the source list,
+exact nonlinear field differences, the triangle
+inequality and the cap on the sum of source parameters.
+No force linearization is introduced.
+
+**Why useful:** Removes the finite-source summation
+step as an additional analytic obstacle for the proposed
+second Palomar theorem. Once the one-source sharp upper
+bound is proved, the corresponding N-source inequality
+follows through this formalized reduction.
+**Limit:** The required `oneSourceGlobalCandidateBound`
+premise remains **unproved**, specifically for short
+cross-face pairs. R041 is not an unconditional global
+upper bound, a finished optimality theorem or
+independent Comparator verification.
+
+**Lean:**
+`oneSourceGlobalCandidateBound`,
+`NewtonianPointSource.finiteDifferentialAcceleration_norm_le_of_oneSourceGlobal`,
+`sourceGravitationalParameter_sum_le_length_mul`,
+`NewtonianPointSource.finiteDifferentialAcceleration_norm_le_length_mul_of_oneSourceGlobal`.
+**Source:** [ConditionalFiniteSource.lean][conditional-finite-source].
+
 ## Direct proof strategy
 
 The derivative bound (R027) is attained (R029)
 and minimal for derivative estimates (R032).
 R033–R037 close the **admissible two-point lower bound**.
 R038 covers long separations, R039 covers common safe
-supporting halfspaces, and R040 gives a safe two-hop
-**2*C3** estimate for distinct active axes.
+supporting halfspaces, and R040 gives the two-hop
+**2*C3** estimate for distinct active axes. R041
+already establishes the **conditional** N-source lift.
 
-1. Improve the **nonsharp** two-hop bound in the
-   short cross-face case `norm_inf(x-y)<d`: control
-   cancellation or exploit the edge/corner geometry.
-2. Prove the sharp C3 one-source global upper bound
-   (or find a rigorous counterexample) before calling
-   it a global theorem.
-3. Only after that result, lift the estimate to
-   arbitrary source positions and finite-source sums,
-   checking scaling hypotheses.
-4. Finally prepare the two Palomar statements and
-   Comparator without assuming the missing upper bound.
+1. Prove or refute the missing sharp C3 bound for
+   short cross-face one-source pairs; investigate
+   force-difference cancellation instead of merely
+   summing two C3 bounds.
+2. Combine that future one-source theorem with the
+   **already verified conditional reduction R041**
+   and identify physical parameters `mu_k = G*m_k`,
+   including source-position translations.
+3. Assemble two auditable Palomar statements and
+   configure Comparator only after both targets
+   are actually proved, without implying that
+   the conditional result supplies its premise.
 
 ## Roadmap
 
@@ -1279,8 +1353,10 @@ supporting halfspaces, and R040 gives a safe two-hop
   nonconvex bound for safe pairs separated by at least
   d and R039 handles any common safe supporting face.
   R040 gives a constructive two-hop nonsharp 2*C3
-  bound for distinct-axis active faces. The sharp
-  short cross-face one-source bound and eventual
+  bound for distinct-axis active faces. R041 proves
+  the **conditional** finite-source lifting with the
+  sharp N*M*C3/d³ factor. The short cross-face
+  one-source C3 bound and thus the unconditional
   multi-source theorem remain open.
 - **M06 — Scientific and archival validation: open.** The
   planned Palomar pair is the exact formula for C3 and its
@@ -1328,7 +1404,9 @@ The substantive library is in `NewtonianLipschitz/`:
   [AdmissibleSecantPairs][admissible-secant],
   [LongSeparation][long-separation],
   [CommonSafeFace][common-safe-face],
-  [CrossFaceTwoHop][cross-face-two-hop].
+  [CrossFaceTwoHop][cross-face-two-hop],
+  [ConditionalFiniteSource][conditional-finite-source].
+- Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
 [derivative-direction]: NewtonianLipschitz/DerivativeAttainingDirection.lean
@@ -1337,7 +1415,7 @@ The substantive library is in `NewtonianLipschitz/`:
 [long-separation]: NewtonianLipschitz/LongSeparation.lean
 [common-safe-face]: NewtonianLipschitz/CommonSafeFace.lean
 [cross-face-two-hop]: NewtonianLipschitz/CrossFaceTwoHop.lean
-- Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
+[conditional-finite-source]: NewtonianLipschitz/ConditionalFiniteSource.lean
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
 The Lean 4 toolchain and Mathlib revision are pinned.

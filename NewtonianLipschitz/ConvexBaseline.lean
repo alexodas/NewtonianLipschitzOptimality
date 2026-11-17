@@ -10,8 +10,10 @@ public section
 
 This module connects the explicit, conservative derivative bound
 to a genuine Lipschitz estimate on convex collision-free domains.
-The bound is not presented as sharp. A future optimization can
-strengthen the coefficient while keeping the verified baseline intact.
+This Euclidean-clearance bound is not sharp. The later R030
+theorem establishes the sharp C3 estimate on convex domains
+with uniform Cartesian clearance, while retaining this
+conservative baseline for its own assumptions.
 -/
 
 open scoped NNReal Topology InnerProductSpace

@@ -66,7 +66,8 @@ theorem positive_first_coordinate_normalization
 
 /-- The sharp candidate bounds every row of the physical
 Jacobian when X is the largest nonnegative coordinate.
-This is not yet the unrestricted 3D derivative theorem. -/
+This lemma alone is not the unrestricted 3D derivative
+theorem, obtained later in R024–R027. -/
 theorem newtonianJacobianMatrix_firstMax_le_candidateMaximum
     (μ : ℝ) (x : Vec3) (i : Fin 3)
     (hμ : 0 ≤ μ)

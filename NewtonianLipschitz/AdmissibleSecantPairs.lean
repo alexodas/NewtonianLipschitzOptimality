@@ -14,8 +14,10 @@ norm exactly one. Hence every positive step along its ray
 gives a distinct pair of unit-clearance-admissible points
 with Cartesian separation equal to the step size.
 
-This supplies geometrically valid secant pairs; it does
-not yet establish their difference-quotient limit.
+The first construction supplies valid secant pairs. Later in
+this same module, R036 proves the limiting physical secant
+quotient and R037 the necessary universal coefficient lower
+bound. The global sharp upper estimate remains open.
 -/
 
 namespace NewtonianLipschitz

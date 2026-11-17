@@ -106,7 +106,8 @@ theorem stationaryCubic_root_unique_on_unitInterval
 
 The rational sign-changing interval and the intermediate value
 theorem produce a root. The existing strict-antitonicity theorem
-makes it unique. This does not yet prove scalar maximization.
+makes it unique. Scalar maximization is proved separately
+in R017, not by this cubic-root lemma alone.
 -/
 
 /-- The stationary cubic has a root in the exact rational bracket. -/

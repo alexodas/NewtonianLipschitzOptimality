@@ -12,9 +12,10 @@ permutations of the three Cartesian axes. These lemmas show
 that the physical Euclidean radius and the corresponding
 absolute-row sums transform exactly as expected.
 
-The unrestricted sharp derivative bound will still require
-combining these identities with the verified normalization
-and positive-scaling arguments.
+The later R024–R027 results combine these identities with
+normalization and positive scaling to obtain the sharp
+pointwise derivative bound. The global nonconvex two-point
+estimate remains a separate open question.
 -/
 
 namespace NewtonianLipschitz
