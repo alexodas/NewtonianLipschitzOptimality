@@ -336,7 +336,8 @@ as verified in the permanent mathematical ledger below.
   a fifth-power radial denominator estimate, two normalized
   row-numerator bounds supporting a prospective 5/4 estimate,
   and the strict scalar inequality **C3 > 5/2**.
-  The physical tangential derivative bound is **not yet proved**.
+  Its conclusions are algebraic; R044 adds a physical
+  normalized derivative result.
 - R043 proves the **conditional global reduction**: if the exact
   Newtonian finite difference along every fixed safe coordinate
   plane has coefficient 5/4, then the one-source global C3
