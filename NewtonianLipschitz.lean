@@ -25,6 +25,7 @@ public import NewtonianLipschitz.AdmissibleSecantPairs
 public import NewtonianLipschitz.LongSeparation
 public import NewtonianLipschitz.CommonSafeFace
 public import NewtonianLipschitz.CrossFaceTwoHop
+public import NewtonianLipschitz.TangentialAlgebra
 public import NewtonianLipschitz.ConditionalFiniteSource
 public import NewtonianLipschitz.ConvexBaseline
 public import NewtonianLipschitz.ConvexImproved
