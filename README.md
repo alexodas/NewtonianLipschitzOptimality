@@ -22,9 +22,12 @@ even when their connecting segment is unsafe?
 exact Newtonian field of one source**. Together with
 R037's necessary two-point lower bound, this identifies
 C3 as the exact optimal universal one-source coefficient.
-For multiple sources, R041's conditional finite-source
-reduction can now use the proved R047 premise; assembling
-the complete physical N-source Palomar declaration and
+For multiple sources, **R048 now proves an unconditional
+N*M*C3/d³ finite-source upper bound** for the existing
+exact nonlinear differential-acceleration sum, as well
+as a formal **if and only if** characterizing the sharp
+one-source coefficient. The intended complete physical
+G/mass/source-position Palomar declaration and
 independent Comparator validation remain outstanding.
 
 The [Status](#status) section distinguishes verified
@@ -103,18 +106,25 @@ that no smaller universal coefficient could work,
 so the **optimal one-source global coefficient is C3**.
 This is not merely a local derivative statement.
 
-**What about N sources?** R041 proves the exact
-conditional lifting of a one-source global C3 bound
-to a finite-source differential-acceleration bound.
-R047 has now established the previously missing
-one-source premise. Thus the multi-source estimate
-is supported by an already checked implication
-and a now checked premise, although the fully
-assembled unconditional N-source declaration,
-physical parameter interface and independent
-Comparator checking are still outstanding.
-The full planned second Palomar submission is
-**not yet completed**.
+**What about N sources?** R048 now combines the
+proved one-source bound R047 with R041's exact
+finite-source summation to obtain a **direct,
+unconditional Lean theorem** for the nonlinear
+sum of accelerations, with coefficient
+`N*M*C3/d³` when each source's gravitational
+parameter is at most M. It also verifies an
+exact **if and only if**: for the unit one-source
+cube, a coefficient K works for every safe pair
+precisely when K >= C3.
+
+The remaining work is not another search for a
+global constant. It is to express the complete
+physical formulation in terms of G, individual
+masses, source positions, admissible multiplicities
+and universal optimality, and to prepare the two
+final Palomar declarations for independent
+Comparator verification. The full planned
+Palomar submission is **not yet completed**.
 
 ### Formal mathematical statement
 
@@ -330,9 +340,9 @@ as verified in the permanent mathematical ledger below.
 - R041 proves a **conditional** lifting of the one-source
   global C3 assertion to an N-source differential-force
   bound with coefficient N*M*C3/d³. The missing one-source
-  premise is **now proved by R047**; the explicit
-  unconditional N-source declaration is still to be
-  assembled and checked as the final Palomar target.
+  premise is **now proved by R047**; R048 assembles
+  an unconditional N-source bound for the existing
+  exact differential-acceleration model.
 - R042 certifies exact **safe-plane tangential algebra**:
   a fifth-power radial denominator estimate, two normalized
   row-numerator bounds supporting a prospective 5/4 estimate,
@@ -363,28 +373,37 @@ as verified in the permanent mathematical ledger below.
   discharges the R043 premise and establishes the
   **unconditional sharp global C3 upper bound for
   one Newtonian source**, including unsafe chords.
+- R048 combines R037 and R047 into a formal **iff**
+  characterizing exactly all global unit-source
+  coefficients K with `C3 <= K`. It also turns
+  R041 into **unconditional** finite-source bounds
+  with coefficients `sum(mu_k)*C3/d³` and
+  `N*M*C3/d³` for the existing nonlinear model.
 - R001–R015 and R018–R023 document the foundational
   field, regularity, conservative estimates, and the
   verified algebraic reductions.
 
 **Proposed but not yet verified in Lean:**
 
-The full end-to-end **N-source Palomar theorem** with
-the intended physical mass/source-position interface
-and explicit global-optimality declaration is still
-to be assembled. R041 formally proves the conditional
-finite-source lifting, while R047 now proves its
-one-source premise; neither fact alone constitutes
-independent Comparator checking of a final two-target
-Palomar submission. No proposed result is counted
-as verified in the cumulative mathematical ledger.
+The **existing finite-source differential-acceleration
+model** now has a directly stated unconditional
+upper estimate (R048). The **final N-source Palomar
+theorem**, including the intended explicit
+gravitational constant G, physical mass/source-position
+interface and universal-optimality statement, still
+needs to be assembled and independently checked.
+R048's verified results do not constitute a
+completed Comparator submission. No proposed
+result is counted as verified in the cumulative
+mathematical ledger.
 
 **Still unproved:**
 
-- The final directly stated N-source upper estimate
-  for the complete physical parameterization, and
-  the exact universal optimality statement in that
-  combined interface (using R037 for minimality).
+- The final N-source theorem in the complete
+  physical `G`, masses and source-position
+  parameterization, with a matching universal
+  optimality claim that checks all relevant
+  positivity and multiplicity hypotheses.
 - Independent Comparator validation of the two
   selected Palomar theorem declarations, and external
   mathematical review.
@@ -1717,6 +1736,63 @@ No originality, review or submission is claimed.
 `oneSourceGlobalCandidateBound_proved`.
 **Source:** [SafePlaneFiniteDifference.lean][safe-plane-finite-difference].
 
+### R048 — Exact one-source global optimality iff and unconditional finite-source bounds
+
+Lean combines the R047 global upper bound with R037's
+necessary lower bound in a single exact equivalence:
+for the unit Newtonian source and the **closed
+unit-cube exterior**, a real coefficient K satisfies
+
+```text
+for all safe x,y:
+  norm_inf(g(x)-g(y)) <= K*norm_inf(x-y)
+```
+
+**if and only if** `C3 <= K`. This proves
+optimality of C3 for genuine two-point differences,
+not just for the derivative or convex subsets.
+
+R048 also discharges the explicitly conditional
+one-source hypothesis in R041, proving directly
+for its existing exact finite-source nonlinear
+differential-acceleration sum
+
+```text
+norm_inf(total differential acceleration)
+  <= (sum_k(mu_k)*C3/d^3)*norm_inf(q)
+  <= (N*M*C3/d^3)*norm_inf(q).
+```
+
+Here `mu_k >= 0` is each true Newtonian
+gravitational parameter, `mu_k <= M`,
+`N = sources.length`, and both observation
+positions have clearance at least `d > 0`
+from each source. The finite sum uses the
+**exact force difference**, not a linearization.
+
+**Why useful:** Formally closes the sharp
+one-source theorem with an if-and-only-if
+optimality statement and proves the expected
+unconditional N-dependent upper bound for
+the existing nonlinear finite-source model.
+The theorem no longer assumes any unproved
+global one-source premise.
+
+**Limit:** The final planned Palomar statement
+still requires the explicit physical G, masses
+and source-position translation interface,
+a matching N-source universal optimality
+statement with clear assumptions, and
+independent Comparator verification.
+No external validation, publication or
+submission is claimed.
+
+**Lean:**
+`unitSource_safe_global_bound_iff_candidateMaximum_le`,
+`NewtonianPointSource.finiteDifferentialAcceleration_norm_le_sum_global`,
+`NewtonianPointSource.finiteDifferentialAcceleration_norm_le_length_mul_global`.
+**Source:** [UnconditionalFiniteSource.lean][unconditional-finite-source].
+
 ## Direct proof strategy
 
 The optimal pointwise derivative bound is
@@ -1731,15 +1807,15 @@ R041 had already verified the corresponding
 conditional finite-source lifting and now has
 a valid one-source premise.
 
-1. Package the one-source result with the
-   existing finite-source summation (R041) into
-   an **unconditional** physically parameterized
-   N-source theorem; explicitly identify
-   `mu_k = G*m_k` and source-position translations.
-2. Formally connect the R037 necessary lower bound
-   to the final interface's universal optimality,
-   checking the admissible multiplicities and
-   allowed source arrangements.
+1. R048 now packages the existing finite-source
+   summation into **unconditional** bounds, and
+   proves the exact one-source optimality iff.
+   The next task is the complete physical interface
+   `mu_k = G*m_k`, including source-position
+   translations, explicit mass caps and clearance.
+2. Lift the sharpness witness to the intended
+   universal N-source formulation, checking the
+   admissible multiplicities and source arrangements.
 3. Assemble two auditable Palomar statements and
    independently configure and run Comparator
    before any claim of submission readiness.
@@ -1771,11 +1847,12 @@ a valid one-source premise.
   supply the geometric subcases; R042–R046 certify
   tangential bounds; and R047 proves the unrestricted
   sharp global C3 upper estimate for one Newtonian
-  source. R041's finite-source lifting implication
-  has its necessary one-source premise proved by
-  R047. Explicit physical N-source parameterization,
-  unconditional final declaration and minimality
-  in the completed interface remain to be formalized.
+  source. R048 now states the unconditional finite-source
+  upper estimates in the existing exact nonlinear
+  differential model and packages the one-source
+  optimality equivalence. The full G/mass/position
+  parameterization and optimality in that final
+  Palomar interface remain to be formalized.
 - **M06 — Scientific and archival validation: open.**
   The planned Palomar pair is the exact scalar C3
   formula and optimal global N-source sensitivity
@@ -1830,7 +1907,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [PhysicalTangentialNormalized][physical-tangential-normalized],
   [PhysicalTangentialFirstAxis][physical-tangential-first-axis],
   [PhysicalTangentialAllAxes][physical-tangential-all-axes],
-  [SafePlaneFiniteDifference][safe-plane-finite-difference].
+  [SafePlaneFiniteDifference][safe-plane-finite-difference],
+  [UnconditionalFiniteSource][unconditional-finite-source].
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
@@ -1847,6 +1925,7 @@ The substantive library is in `NewtonianLipschitz/`:
 [physical-tangential-first-axis]: NewtonianLipschitz/PhysicalTangentialFirstAxis.lean
 [physical-tangential-all-axes]: NewtonianLipschitz/PhysicalTangentialAllAxes.lean
 [safe-plane-finite-difference]: NewtonianLipschitz/SafePlaneFiniteDifference.lean
+[unconditional-finite-source]: NewtonianLipschitz/UnconditionalFiniteSource.lean
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
 The Lean 4 toolchain and Mathlib revision are pinned.
@@ -1873,11 +1952,13 @@ A complete Lean build checks the formal statements as encoded.
 It is different from **independent kernel checking**, scientific
 peer review, physical validation, and proof of originality.
 
-The **one-source global nonconvex C3 upper bound**
-is now Lean-verified (R047), and R037 proves the
-necessary universal two-point lower bound. The fully assembled physical N-source Palomar
-declarations are **not yet Lean-verified theorems**
-in their final requested interface; independent
+The global nonconvex one-source C3 upper bound
+(R047), exact unit-source optimality iff (R048)
+and unconditional exact finite-source sum bounds
+(R048) are Lean-verified. The fully assembled
+physical G/mass/position Palomar declarations
+are **not yet Lean-verified theorems** in the
+final requested interface; independent
 Comparator checking also remains outstanding.
 Preserve exact assumptions, norms, source links,
 and uncertainty.
