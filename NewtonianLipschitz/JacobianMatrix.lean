@@ -205,4 +205,25 @@ theorem newtonianJacobianMatrix_normalized_firstRow_abs_sum
   rw [dominantRowNumerator_eq]
   ring
 
+/-- On the normalized nonnegative octant, the *actual* first-row
+absolute sum is bounded by the diagonal numerator at equal Euclidean
+radius. This is a step toward, not the complete global sharp bound. -/
+theorem newtonianJacobianMatrix_normalized_firstRow_le_diagonal
+    (μ u v : ℝ) (hμ : 0 ≤ μ)
+    (hu0 : 0 ≤ u) (hu1 : u ≤ 1)
+    (hv0 : 0 ≤ v) (hv1 : v ≤ 1) :
+    (∑ j : Fin 3,
+      |newtonianJacobianMatrix μ (normalizedVector u v) 0 j|) ≤
+      (μ / euclideanRadius (normalizedVector u v) ^ 5) *
+        dominantRowNumerator (diagonalParameter u v)
+          (diagonalParameter u v) := by
+  rw [newtonianJacobianMatrix_normalized_firstRow_abs_sum
+    μ u v hμ hu0 hu1 hv0 hv1]
+  have hr : 0 ≤ euclideanRadius (normalizedVector u v) := by
+    rw [euclideanRadius_eq_physical_norm]
+    exact norm_nonneg _
+  exact mul_le_mul_of_nonneg_left
+    (dominantRowNumerator_le_diagonal u v)
+    (div_nonneg hμ (pow_nonneg hr _))
+
 end NewtonianLipschitz

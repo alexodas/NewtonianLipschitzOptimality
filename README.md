@@ -227,12 +227,31 @@ Cartesian supremum operator norm.
 `newtonianJacobianMatrix_mulVec`.
 **Source:** [JacobianMatrix.lean](NewtonianLipschitz/JacobianMatrix.lean).
 
+### R014 — Exact normalized first-row Jacobian sum
+
+For a nonnegative normalized displacement `(1,u,v)`,
+where `0 <= u,v <= 1` and `mu >= 0`, the absolute sum of
+the first row of the **actual** Newtonian Jacobian is
+
+`mu/(norm_2(1,u,v))^5 * (2-u^2-v^2+3*u+3*v)`.
+
+**Why useful:** Connects the physical derivative matrix to the
+dominant-row numerator in R011.
+**Limit:** The other rows and the global operator-norm maximum
+still require proof.
+
+**Lean:** `newtonianJacobianMatrix_normalized_firstRow_abs_sum`,
+`newtonianJacobianMatrix_normalized_zero_zero`,
+`newtonianJacobianMatrix_normalized_zero_one`,
+`newtonianJacobianMatrix_normalized_zero_two`.
+**Source:** [JacobianMatrix.lean](NewtonianLipschitz/JacobianMatrix.lean).
+
 ## Direct proof strategy
 
 The next objective is the sharp coefficient, not another
 intermediate constant.
 
-1. Prove the normalized row-sum formula for the **actual** Jacobian.
+1. Extend the verified first-row formula (R014) to the other rows.
 2. Establish the global sign and coordinate-permutation reduction.
 3. Reduce the upper bound to
    `f(t)=(2+6*t-2*t^2)/(1+2*t^2)^(5/2)` for `0 <= t <= 1`.
@@ -248,9 +267,10 @@ intermediate constant.
 
 - **M01 — Foundation: complete.** Exact field, derivative,
   norm bridges, clearance, and bounds 10 and 7 (R001–R010).
-- **M02 — Jacobian reduction: in progress.** Row algebra (R011)
-  and the actual matrix (R013) are proved. The new normalized
-  row-sum bridge still requires a successful Lean build.
+- **M02 — Jacobian reduction: in progress.** Row algebra (R011),
+  exact matrix (R013), and the normalized first-row sum (R014) are
+  proved. A diagonal bound for that row is proposed, pending CI.
+  The other rows and global operator-norm bridge remain open.
 - **M03 — Sharp upper bound: open.** Exact maximization and
   universal estimate; cubic facts R012 are established.
 - **M04 — Optimality: open.** A matching witness.
