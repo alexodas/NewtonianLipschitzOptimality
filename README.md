@@ -5,16 +5,22 @@ and its Lipschitz bounds in the Cartesian supremum norm.
 
 ## Executive summary
 
-The objective is to prove the smallest universal sensitivity coefficient
-under explicit positive-clearance and geometric domain assumptions.
+The project separates **two mathematical questions**.
+The first, already Lean-verified, determines the exact
+**optimal local steepness** of the Newtonian field in the
+Cartesian supremum norm: its coefficient is C3, obtained
+from an exact scalar maximization and attained by the
+physical derivative. The first planned Palomar statement
+records the exact scalar formula, supported by the
+separately verified local optimality results.
 
-The coefficient C3 is defined by an exact scalar
-maximization and is attained by the operator norm of
-the physical Newtonian derivative. It also gives a
-proved finite-difference bound on **convex** domains,
-including Cartesian boxes with explicit clearance. The main research
-objective is the best universal two-point bound
-outside nonconvex source-centered safety cubes.
+The second question is **global**: does that same sharp
+coefficient C3 bound the force difference between *any*
+two admissible points outside the nonconvex safety cubes,
+even when their connecting segment is unsafe? This is
+still a conjecture to **prove or refute**. Partial sharp
+bounds and a nonsharp global route are known, but the
+optimal global coefficient is not yet identified.
 
 The [Status](#status) section distinguishes verified
 results from current proposals and open problems.
@@ -30,47 +36,76 @@ with mathematical reasoning, Lean proof development, and verification.
 
 ### Plain-language statement (research goal)
 
-Consider **N point masses** in three-dimensional space, with
-Cartesian axes **X, Y, and Z**. Each body has a mass no greater
-than a prescribed maximum. Around each body, imagine an
-**axis-aligned safety cube**, centered on that body, with
-side length 2d. Its interior is forbidden; its boundary
-is allowed.
+Imagine **N point masses** in three-dimensional space, with
+Cartesian axes **X, Y, and Z**. Each mass is surrounded by
+an axis-aligned **safety cube** of side length 2d.
+The interior of each cube is forbidden, while its surface
+and the points outside it are allowed.
 
-Choose **any two points P and Q** outside the interiors of
-all these cubes, even if the straight segment joining them
-passes through a forbidden region.
+There are **two different questions** about how much
+the gravitational acceleration can change.
 
-**The proposed theorem states** that the greatest change in
-gravitational acceleration along any one of the X, Y, or Z
-axes is bounded by the greatest coordinate displacement
-between P and Q, multiplied by a universal factor. That
-factor depends on the gravitational constant, maximum body
-mass, number of bodies, and inverse cube of the safety
-distance.
+**First question — What is the greatest local steepness?
+(Proved.)** Stand at one allowed position and consider an
+arbitrarily small movement. How rapidly can the force
+change, relative to the largest change of any one
+Cartesian coordinate? Lean proves an exact universal
+answer, called **C3**. Its value is approximately
+**2.5775644212**, obtained from an exact root of a cubic
+equation (R016–R017). The physical derivative obeys
+this bound everywhere with the specified clearance
+(R024–R027); at a particular point on the cube surface
+it **attains** the bound (R028–R029). R032 proves that
+no smaller coefficient works for all such local
+derivative estimates. Thus C3 is the **optimal local
+coefficient**, not merely a plausible estimate.
+The first planned Palomar theorem specifies its exact
+scalar characterization, supported by these local results.
 
-The exact scalar coefficient **C3** is defined and proved
-in R016–R017; numerically it is about **2.5775644212**.
-R029 proves that C3 is attained by the operator norm of
-the physical Newtonian derivative at a critical point.
-R030 proves a two-point inequality with C3 on **convex**
-domains with uniform Cartesian clearance.
+**Second question — Does the same optimal coefficient
+control any two allowed points? (Open.)** Now select two
+points P and Q anywhere outside *all* forbidden cube
+interiors, even if the straight line between them
+passes **through** a forbidden cube. We ask whether the
+difference between their actual gravitational forces
+is always bounded using **the same C3** times their
+Cartesian separation and the physical source/clearance
+factors. A bound on the derivative at allowed positions
+does not answer this automatically: the line segment
+may enter a region where our derivative bound does not
+apply. This is the central nonconvex-domain difficulty.
 
-**The global conjecture below is stronger:** it covers
-all safe endpoints, even when their connecting segment
-passes through a forbidden cube. Its universal **upper
-bound is not yet proved**. R036–R037 establish the
-separate necessary lower bound for any proposed universal
-coefficient, using physically admissible secants.
-R038 proves the proposed upper bound for sufficiently separated
-safe pairs; R039 proves it for safe pairs that share a supporting
-coordinate halfspace. R040 constructs a safe two-hop bridge for
-endpoints on distinct active coordinate axes, giving a **nonsharp**
-2*C3 bound. R041 proves the exact **conditional**
-lifting from a one-source global C3 estimate to a
-finite-source bound with coefficient N*M*C3/d^3.
-The required sharp one-source C3 inequality for short
-cross-face pairs remains open.
+We have genuine partial results. R030 establishes the
+C3 two-point estimate on convex safe domains; R038
+handles sufficiently separated allowed points; R039
+handles points sharing a safe supporting halfspace.
+R040 constructs two safe steps between different
+active faces, obtaining a **coarser bound with
+coefficient 2*C3**, not proved optimal. Taken
+together, these cases give an explicit global
+2*C3 bound for one source by a case split; that
+all-pairs corollary has not yet been packaged
+as a single Lean theorem. The unresolved question is therefore
+*not* whether some finite global bound exists:
+it is whether **C3 itself works globally and is
+optimal**. R036–R037 already prove that no smaller
+universal coefficient could work.
+
+Either outcome would be a valid mathematical result:
+**prove** that C3 controls every allowed pair, or
+**refute** it with a rigorously certified pair whose
+force difference exceeds the proposed C3 bound.
+In the second case, the true optimal global
+coefficient would need to be characterized separately.
+
+R041 proves the exact **conditional** lifting from a
+one-source global C3 estimate to an N-source bound,
+but it does **not** prove its one-source premise.
+The missing sharp case concerns nearby points on
+different safe cube faces. The full second Palomar
+theorem is therefore **not yet established**, and
+a potential counterexample would require revising
+its statement.
 
 ### Formal mathematical statement
 
@@ -292,11 +327,14 @@ as verified in the permanent mathematical ledger below.
 
 **Proposed but not yet verified in Lean:**
 
-R041 is verified as a **conditional implication**,
-not as proof of its one-source premise. The missing
-sharp C3 upper bound for short cross-face pairs is
-still an open research problem (issue #4). No
-unproved theorem is included in this results ledger.
+The proposed **global sharp C3** two-point bound
+remains open for nearby points on different safe
+cube faces (issue #4). It may be proved or
+refuted by a rigorous counterexample. R041 proves
+only a conditional N-source implication and does
+not settle its unproved one-source premise.
+No proposed result is counted as verified in
+the cumulative mathematical ledger.
 
 **Still unproved:**
 
