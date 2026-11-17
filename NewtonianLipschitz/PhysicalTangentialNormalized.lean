@@ -4,6 +4,8 @@ public import NewtonianLipschitz.SafePlaneReduction
 
 public section
 
+open Matrix
+
 /-!
 # True Newtonian tangential Jacobian on a normalized safe plane
 
@@ -134,9 +136,9 @@ theorem newtonianJacobianMatrix_normalized_tangent_columns_le
       change |(μ / r ^ 5) * (3 * u)| +
           |(μ / r ^ 5) * (3 * v)| =
           (μ / r ^ 5) * (3 * (u + v))
-      rw [abs_mul, abs_mul, abs_of_nonneg hK,
-        abs_of_nonneg (by positivity : 0 ≤ 3 * u),
-        abs_of_nonneg (by positivity : 0 ≤ 3 * v)]
+      simp only [abs_mul, abs_of_nonneg hK,
+        abs_of_nonneg hu, abs_of_nonneg hv,
+        abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 3)]
       ring
     calc
       _ = (μ / r ^ 5) * (3 * (u + v)) := hrow
@@ -154,8 +156,9 @@ theorem newtonianJacobianMatrix_normalized_tangent_columns_le
       change |(μ / r ^ 5) * (2 * u ^ 2 - 1 - v ^ 2)| +
           |(μ / r ^ 5) * (3 * u * v)| =
           (μ / r ^ 5) * (|2 * u ^ 2 - 1 - v ^ 2| + 3 * u * v)
-      rw [abs_mul, abs_mul, abs_of_nonneg hK,
-        abs_of_nonneg (by positivity : 0 ≤ 3 * u * v)]
+      simp only [abs_mul, abs_of_nonneg hK,
+        abs_of_nonneg hu, abs_of_nonneg hv,
+        abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 3)]
       ring
     calc
       _ = (μ / r ^ 5) *
@@ -174,8 +177,9 @@ theorem newtonianJacobianMatrix_normalized_tangent_columns_le
       change |(μ / r ^ 5) * (3 * v * u)| +
           |(μ / r ^ 5) * (2 * v ^ 2 - 1 - u ^ 2)| =
           (μ / r ^ 5) * (|2 * v ^ 2 - 1 - u ^ 2| + 3 * v * u)
-      rw [abs_mul, abs_mul, abs_of_nonneg hK,
-        abs_of_nonneg (by positivity : 0 ≤ 3 * v * u)]
+      simp only [abs_mul, abs_of_nonneg hK,
+        abs_of_nonneg hu, abs_of_nonneg hv,
+        abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 3)]
       ring
     have hlat :
         |2 * v ^ 2 - 1 - u ^ 2| + 3 * v * u ≤
