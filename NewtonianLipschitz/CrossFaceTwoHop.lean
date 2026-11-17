@@ -127,10 +127,11 @@ theorem NewtonianPointSource.accelerationField_norm_sub_le_two_candidateMaximum_
     ‖c.accelerationField x - c.accelerationField y‖ ≤
         ‖c.accelerationField x - c.accelerationField w‖ +
           ‖c.accelerationField w - c.accelerationField y‖ := by
-      convert norm_add_le
-        (c.accelerationField x - c.accelerationField w)
-        (c.accelerationField w - c.accelerationField y) using 1 <;>
-        abel
+      simpa only [dist_eq_norm] using
+        (dist_triangle
+          (c.accelerationField x)
+          (c.accelerationField w)
+          (c.accelerationField y))
     _ ≤ A * ‖x - w‖ + A * ‖w - y‖ :=
       add_le_add hxbound hybound
     _ ≤ A * ‖x - y‖ + A * ‖x - y‖ :=
