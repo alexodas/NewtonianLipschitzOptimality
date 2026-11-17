@@ -28,25 +28,24 @@ Considera **N corpi puntiformi** nello spazio, lungo i tre assi
 cartesiani **X, Y e Z**. Ogni corpo ha massa non superiore a un
 valore massimo prefissato. Attorno a ciascuno immagina un
 **cubo di sicurezza** allineato agli assi e centrato sul corpo,
-con lato `2d`: l'interno del cubo e vietato, la sua superficie
-e ammessa.
+con lato `2d`: l'interno del cubo è vietato, la sua superficie
+è ammessa.
 
 Scegli **due punti P e Q** esterni agli interni di tutti questi
 cubi, anche se il segmento che li unisce attraversa una
 regione vietata.
 
 **Il teorema che vogliamo dimostrare afferma** che la variazione
-massima di una componente della gravita (X, Y oppure Z) non
+massima di una componente della gravità (X, Y oppure Z) non
 supera la variazione massima di una coordinata tra P e Q,
-moltiplicata per un fattore universale. Tale fattore dipende
-dalla costante gravitazionale, dalla massa massima, dal
-numero di corpi e dall'inverso del cubo della distanza di
-sicurezza.
+moltiplicata per il fattore `C3 * G * Mmax * N / d^3`,
+che dipende dalla costante gravitazionale, dal numero di
+corpi, dalla massa massima e dal semilato dei cubi.
 
-La **costante adimensionale candidata** e circa
+La **costante adimensionale candidata** è circa
 **2,5775644**. Vogliamo anche dimostrare, separatamente,
 che non possa essere ridotta. **La disuguaglianza globale
-e la sua ottimalita non sono ancora dimostrate.**
+e la sua ottimalità non sono ancora dimostrate.**
 
 ### Formulazione matematica
 
@@ -63,12 +62,12 @@ Per ogni vettore `v=(v_X,v_Y,v_Z)` definiamo:
 
 Siano `N >= 1`, `G > 0`, `d > 0`, le posizioni
 `a_1,...,a_N` e le masse `0 <= m_k <= Mmax`.
-Il semilato dei cubi e `d`. La sicurezza di P e Q
+Il semilato dei cubi è `d`. La sicurezza di P e Q
 significa, per **ogni** corpo `k`:
 
 `norm_inf(P-a_k) >= d` e `norm_inf(Q-a_k) >= d`.
 
-Il campo di accelerazione gravitazionale totale e:
+Il campo di accelerazione gravitazionale totale è:
 
 $$
 g(P) = -G\sum_{k=1}^{N}
@@ -88,20 +87,20 @@ C_3\frac{G M_{\max}N}{d^3}
 \max\bigl(|\Delta X|,|\Delta Y|,|\Delta Z|\bigr).
 $$
 
-La stessa formula, piu compatta, e:
+La stessa formula, più compatta, è:
 
 $$
 \|g(P)-g(Q)\|_\infty
 \le \frac{C_3 G M_{\max}N}{d^3}\|P-Q\|_\infty.
 $$
 
-La candidata esatta e
+La candidata esatta è
 `C3 = candidateCoefficient(candidateCriticalPoint)`.
-Il suo valore numerico e circa `2.5775644212`; il punto
-critico e l'unica radice in `[9/50,1/5]` del polinomio
+Il suo valore numerico è circa `2.5775644212`; il punto
+critico è l'unica radice in `[9/50,1/5]` del polinomio
 `2*t^3-8*t^2-4*t+1=0`.
 
-**Ottimalita, da provare separatamente:** nessuna costante
+**Ottimalità, da provare separatamente:** nessuna costante
 universale inferiore a `C3` soddisfa il teorema per tutte
 le configurazioni ammissibili.
 
@@ -111,13 +110,13 @@ La legge di Newton usa la distanza **euclidea** `norm_2`,
 mentre l'ineguaglianza proposta usa `norm_inf` per misurare
 la variazione lungo i tre assi X, Y e Z.
 
-Le stime gia dimostrate con coefficienti 10 e 7 assumono
+Le stime già dimostrate con coefficienti 10 e 7 assumono
 una distanza di sicurezza euclidea. La candidata `C3`
 riguarda invece la sicurezza misurata con `norm_inf`:
 le due ipotesi non devono essere confuse.
 
 La massimizzazione scalare, tutte le righe del Jacobiano
-normalizzato e le simmetrie degli assi sono gia verificate
+normalizzato e le simmetrie degli assi sono già verificate
 in Lean (R016–R021). Manca la maggiorazione tridimensionale
 universale. Il **complemento non convesso** dei cubi
 richiede inoltre un argomento specifico per due punti
