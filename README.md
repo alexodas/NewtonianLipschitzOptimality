@@ -12,8 +12,9 @@ under explicit positive-clearance and geometric domain assumptions.
 coefficients 10 and 7, the scalar maximum, normalized Jacobian
 row bounds, and sign, scale, and axis-permutation identities.
 
-**Not yet proved:** the sharp coefficient, its optimality, and a global
-Lipschitz bound on nonconvex domains.
+**Not yet proved:** the global two-point inequality with the
+candidate coefficient, its optimality, and a Lipschitz
+bound on nonconvex domains.
 
 Alessandro Odasso directs the research. He is not a mathematician and
 uses this project to study the capabilities and limits of
@@ -124,13 +125,14 @@ Euclidean clearance. The sharp candidate C3 instead uses
 clearance in the Cartesian maximum norm. These are
 different geometric assumptions.
 
-Lean already verifies the scalar maximization, normalized
-Jacobian row estimates, and axis symmetries (R016–R023).
-The unrestricted three-dimensional derivative estimate
-remains open. In addition, the **nonconvex complement**
-of the forbidden cubes requires a separate argument for
-arbitrary pairs of points, including those whose connecting
-segment crosses a forbidden region.
+Lean verifies scalar maximization and the sharp candidate
+bound for each Jacobian row at every nonzero displacement
+with Cartesian clearance (R016–R025).
+The transfer to the induced derivative operator norm remains
+open. In addition, the **nonconvex complement** of the
+forbidden cubes requires a separate argument for arbitrary
+pairs of points, including those whose connecting segment
+crosses a forbidden region.
 
 ## Why the result may matter — intended audience
 
@@ -546,21 +548,44 @@ and optimality are separate obligations.
 **Source:**
 [JacobianSignedBounds.lean](NewtonianLipschitz/JacobianSignedBounds.lean).
 
+### R025 — Sharp Cartesian Jacobian bound at positive clearance
+
+Lean verifies that the norm of a Cartesian displacement
+is exactly `max(|X|,|Y|,|Z|)`. Thus, for `x != 0`,
+each absolute row sum of the physical Jacobian is bounded by
+
+`mu*candidateMaximum / norm_inf(x)^3`.
+
+When `d > 0` and `norm_inf(x) >= d`, the bound is
+`mu*candidateMaximum / d^3`. Lean also verifies that
+the exact scalar candidate maximum is nonnegative.
+
+**Why useful:** States the previously proved sharp row
+estimate in the actual Cartesian norm and under the cube
+clearance hypothesis used in the proposed theorem.
+**Limit:** A row-sum bound does not by itself certify the
+Frechet operator norm, a global two-point inequality on
+nonconvex domains, or optimality.
+
+**Lean:** `cartesian_norm_eq_max_abs`,
+`newtonianJacobianMatrix_rowSum_le_candidateMaximum_norm`,
+`candidateMaximum_nonneg`,
+`newtonianJacobianMatrix_rowSum_le_candidateMaximum_clearance`.
+**Source:**
+[JacobianCartesianBound.lean](NewtonianLipschitz/JacobianCartesianBound.lean).
+
 ## Direct proof strategy
 
 The sharp candidate bounds all absolute Jacobian
-row sums at arbitrary nonzero signed Cartesian
-displacements (R024).
+row sums with Cartesian supremum-norm clearance (R025).
 
-1. Identify the coordinate maximum with the actual Pi norm
-   and formalize the bound under positive Cartesian clearance.
-2. Transfer the matrix row estimate to the operator norm
-   of the physical Fréchet derivative.
-3. **Separately prove optimality** using a matching witness
+1. Transfer the matrix row estimate to the action and
+   operator norm of the physical Fréchet derivative.
+2. **Separately prove optimality** using a matching witness
    and a limiting difference quotient.
-4. Establish sharp finite-difference bounds on suitable
+3. Establish sharp finite-difference bounds on suitable
    convex safe domains.
-5. Analyze pairs of points across nonconvex cubical
+4. Analyze pairs of points across nonconvex cubical
    exclusions directly. The global `N`-source theorem
    remains a separate mathematical objective.
 
@@ -580,9 +605,10 @@ displacements (R024).
   normalized rows (R018–R019) and sign/scale transfer
   (R020), maximal-axis reductions (R022–R023)
   and all signed-coordinate row bounds (R024) are proved.
-  The actual Pi-norm and positive-clearance transfer
-  is proposed in JacobianCartesianBound.lean.
-  Operator, optimality and nonconvex bounds remain open.
+  The Pi-norm and positive-clearance transfer is
+  verified (R025). The transfer to directional matrix
+  action and the Frechet derivative remains open.
+  Operator-norm, optimality and nonconvex bounds remain open.
 - **M04 — Optimality: open.** A matching witness.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
