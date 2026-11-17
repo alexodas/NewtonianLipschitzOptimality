@@ -9,6 +9,7 @@ public import NewtonianLipschitz.NormalizedSharpBound
 public import NewtonianLipschitz.JacobianSymmetries
 public import NewtonianLipschitz.JacobianPermutations
 public import NewtonianLipschitz.JacobianNormalization
+public import NewtonianLipschitz.JacobianAxisBounds
 public import NewtonianLipschitz.ConvexBaseline
 public import NewtonianLipschitz.ConvexImproved
 public import NewtonianLipschitz.JacobianRows

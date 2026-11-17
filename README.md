@@ -477,10 +477,34 @@ They do not imply the nonconvex global theorem.
 **Source:**
 [JacobianPermutations.lean](NewtonianLipschitz/JacobianPermutations.lean).
 
+### R022 — Sharp row bound with a maximal positive X coordinate
+
+For a nonnegative Cartesian displacement with positive X
+coordinate dominating Y and Z, Lean proves that every
+absolute Jacobian row sum is at most
+
+`(mu*candidateMaximum)/(X^3)`.
+
+The proof expresses the displacement as X times a normalized
+vector and applies the exact inverse-cubic scaling identity.
+
+**Why useful:** Transfers the sharp normalized row bounds
+from unit X to a full positive scale.
+**Limit:** The verified statement does not yet cover cases
+with maximal Y or Z, arbitrary signs, or the universal
+Cartesian maximum-norm bound.
+
+**Lean:** `newtonianJacobianMatrix_rowSum_positive_smul`,
+`positive_first_coordinate_normalization`,
+`newtonianJacobianMatrix_firstMax_le_candidateMaximum`.
+**Source:**
+[JacobianNormalization.lean](NewtonianLipschitz/JacobianNormalization.lean).
+
 ## Direct proof strategy
 
-Scalar maximization, normalized row bounds and generators
-of coordinate permutations are proved (R016–R021).
+Scalar maximization, normalized row bounds, permutation
+generators, and the positive X normalization are proved
+(R016–R022).
 
 1. Combine sign, scaling and permutation identities into
    a full normalization theorem for arbitrary displacements.
@@ -502,9 +526,10 @@ of coordinate permutations are proved (R016–R021).
   (R011), exact Jacobian (R013), normalized row estimates
   (R014–R015, R018–R019), sign/scale invariances (R020)
   and cyclic/Y-Z axis transformations (R021) are proved.
-  A first-coordinate scaling transfer is proposed
-  in JacobianNormalization.lean, pending the full build.
-  Arbitrary displacements still require further steps.
+  Positive first-coordinate scaling is verified (R022).
+  Transfers for maximal Y and Z are proposed in
+  JacobianAxisBounds.lean, pending full Lean validation.
+  Arbitrary signs still require further work.
 - **M03 — Sharp upper bound: in progress.** Cubic facts
   (R012), exact root (R016), scalar maximum (R017),
   normalized rows (R018–R019) and sign/scale transfer
@@ -538,7 +563,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [NormalizedSharpBound](NewtonianLipschitz/NormalizedSharpBound.lean),
   [JacobianSymmetries](NewtonianLipschitz/JacobianSymmetries.lean),
   [JacobianPermutations](NewtonianLipschitz/JacobianPermutations.lean),
-  [JacobianNormalization](NewtonianLipschitz/JacobianNormalization.lean).
+  [JacobianNormalization](NewtonianLipschitz/JacobianNormalization.lean),
+  [JacobianAxisBounds](NewtonianLipschitz/JacobianAxisBounds.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
