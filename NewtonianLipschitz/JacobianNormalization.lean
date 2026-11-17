@@ -43,14 +43,26 @@ its X coordinate times a vector whose first coordinate is one. -/
 theorem positive_first_coordinate_normalization
     (x : Vec3) (hx0 : 0 < x 0) :
     (x 0) • normalizedVector (x 1 / x 0) (x 2 / x 0) = x := by
+  have hfirst :
+      ((x 0) • normalizedVector (x 1 / x 0) (x 2 / x 0)) 0 =
+        x 0 := by
+    simp only [Pi.smul_apply, smul_eq_mul, normalizedVector_zero]
+    ring
+  have hsecond :
+      ((x 0) • normalizedVector (x 1 / x 0) (x 2 / x 0)) 1 =
+        x 1 := by
+    simp only [Pi.smul_apply, smul_eq_mul, normalizedVector_one]
+    field_simp [ne_of_gt hx0] <;> ring
+  have hthird :
+      ((x 0) • normalizedVector (x 1 / x 0) (x 2 / x 0)) 2 =
+        x 2 := by
+    simp only [Pi.smul_apply, smul_eq_mul, normalizedVector_two]
+    field_simp [ne_of_gt hx0] <;> ring
   ext i
   fin_cases i
-  · simp only [Pi.smul_apply, smul_eq_mul, normalizedVector_zero]
-    ring
-  · simp only [Pi.smul_apply, smul_eq_mul, normalizedVector_one]
-    field_simp [ne_of_gt hx0] <;> ring
-  · simp only [Pi.smul_apply, smul_eq_mul, normalizedVector_two]
-    field_simp [ne_of_gt hx0] <;> ring
+  · simpa using hfirst
+  · simpa using hsecond
+  · simpa using hthird
 
 /-- The sharp candidate bounds every row of the physical
 Jacobian when X is the largest nonnegative coordinate.
@@ -67,9 +79,9 @@ theorem newtonianJacobianMatrix_firstMax_le_candidateMaximum
   let v : ℝ := x 2 / x 0
   let z : Vec3 := normalizedVector u v
   have hu0 : 0 ≤ u := div_nonneg hx10 hx0.le
-  have hu1 : u ≤ 1 := (div_le_iff₀ hx0).2 hx1
+  have hu1 : u ≤ 1 := (div_le_iff₀ hx0).2 (by simpa only [one_mul] using hx1)
   have hv0 : 0 ≤ v := div_nonneg hx20 hx0.le
-  have hv1 : v ≤ 1 := (div_le_iff₀ hx0).2 hx2
+  have hv1 : v ≤ 1 := (div_le_iff₀ hx0).2 (by simpa only [one_mul] using hx2)
   have hz : z ≠ 0 := by
     intro hzero
     have hfirst := congrArg (fun w : Vec3 => w 0) hzero
