@@ -49,12 +49,17 @@ factor depends on the gravitational constant, maximum body
 mass, number of bodies, and inverse cube of the safety
 distance.
 
-The **candidate dimensionless constant** is approximately
-**2.5775644**. We also seek to prove, separately, that this
-constant cannot be reduced.
+The exact scalar coefficient **C3** is defined and proved
+in R016–R017; numerically it is about **2.5775644212**.
+R029 proves that C3 is attained by the operator norm of
+the physical Newtonian derivative at a critical point.
+R030 proves a two-point inequality with C3 on **convex**
+domains with uniform Cartesian clearance.
 
-**This global two-point inequality and its optimality have
-not yet been proved.**
+**The global conjecture below is stronger:** it covers
+all safe endpoints, even when their connecting segment
+passes through a forbidden cube. Its universal upper
+bound and optimality are **not yet proved**.
 
 ### Formal mathematical statement
 
@@ -94,7 +99,8 @@ Write Delta X, Delta Y, Delta Z for the coordinate differences
 of P-Q, and Delta g_X, Delta g_Y, Delta g_Z for the components
 of g(P)-g(Q).
 
-**Main conjecture (not yet proved in Lean):**
+**Main conjecture — global nonconvex two-point bound
+(not yet proved in Lean):**
 
 $$
 \max\bigl(|\Delta g_X|,|\Delta g_Y|,|\Delta g_Z|\bigr)
@@ -110,14 +116,30 @@ $$
 \le \frac{C_3 G M_{\max}N}{d^3}\|P-Q\|_\infty.
 $$
 
-The exact candidate is defined in Lean by
-candidateCoefficient(candidateCriticalPoint).
-Its numerical value is approximately 2.5775644212.
-The critical point is the unique root in [9/50, 1/5]
-of 2*t^3 - 8*t^2 - 4*t + 1 = 0.
+**Exact value of C3 (proved in R016–R017):** In Lean,
+`candidateMaximum = candidateCoefficient candidateCriticalPoint`.
+The parameter `t_star = candidateCriticalPoint` is the
+unique real root in `[9/50, 1/5]` of
 
-**Separate optimality conjecture:** No smaller universal
-constant can replace C3 for all admissible configurations.
+```text
+2*t_star^3 - 8*t_star^2 - 4*t_star + 1 = 0.
+```
+
+The exact coefficient is
+
+$
+C_3 = \frac{2+6t_*-2t_*^2}{(1+2t_*^2)^{5/2}}.
+$
+
+The approximation `2.5775644212` is **not yet a
+Lean-certified decimal enclosure**.
+
+**Separate global optimality conjecture:** No smaller
+universal coefficient can replace C3 for all admissible
+point-source configurations. R029 proves optimality for
+the **pointwise derivative bound**, but establishing
+minimality for the two-point inequality still requires
+an admissible finite-difference witness.
 
 ## Mathematical question
 
