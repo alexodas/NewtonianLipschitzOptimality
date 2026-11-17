@@ -104,13 +104,16 @@ prove only two sufficient cases of the sharp global
 upper estimate; R040 has the larger coefficient 2*C3,
 so cannot close this gap.
 
-**Repository stage:** R038 and R039 passed complete
-Lean builds and are merged into `main`. R040's
-different-active-axis two-hop result passed the Lean
-Action in the present PR #8. The permanent mathematical
-ledger records the precise nonsharp statement and its
-limitations. Neither compilation nor a merge constitutes
-independent Comparator validation or a Palomar submission.
+**Repository stage:** R001–R040 have passed the
+full Lean build and are incorporated in `main`, with
+their exact mathematical statements, utilities and
+limitations recorded in the cumulative README ledger.
+R040 is a verified **nonsharp** bound; the global C3
+upper estimate remains unproved. This paragraph
+describes verified content rather than the transient
+status of any pull request. Neither compilation nor
+merge constitutes independent Comparator validation or
+a Palomar submission.
 
 ## Conditions before actual submission
 
