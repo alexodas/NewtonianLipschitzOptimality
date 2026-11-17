@@ -1,331 +1,319 @@
 # NewtonianLipschitzOptimality
 
-**Lean 4 formalization of sharp spatial Lipschitz bounds for the three-dimensional Newtonian point-source gravitational field in the Cartesian supremum norm.**
+Lean 4 formalization of the exact Newtonian gravitational field in 3D
+and its Lipschitz bounds in the Cartesian supremum norm.
 
 ## Executive summary
 
-The project aims to determine and formally verify the smallest universal Lipschitz coefficient for the exact three-dimensional Newtonian gravitational field under precisely stated noncollision and geometric-separation assumptions, distinguishing local, convex-domain and nonconvex-domain guarantees. **The research is initiated and directed by Alessandro Odasso, who is not a mathematician and is interested in evaluating the capabilities and limitations of large language models (LLMs) in scientific research.** GPT-6 assists with mathematical exploration, Lean formalization and verification infrastructure under his direction.
+The objective is to prove the smallest universal sensitivity coefficient
+under explicit positive-clearance and geometric domain assumptions.
+
+**Already proved:** the exact field and Fréchet derivative, conservative
+coefficients 10 and 7, algebraic row reductions, and the physical Jacobian
+matrix.
+
+**Not yet proved:** the sharp coefficient, its optimality, and a global
+Lipschitz bound on nonconvex domains.
+
+Alessandro Odasso directs the research. He is not a mathematician and
+uses this project to study the capabilities and limits of
+large language models (LLMs) in scientific research. GPT-6 assists
+with mathematical reasoning, Lean proof development, and verification.
 
 ## Mathematical question
 
-For the exact point-source field `g_μ(x) = -(μ / ‖x‖₂³) • x`, with `μ ≥ 0` and `x ≠ 0`, study the smallest dimensionless coefficient `C` for estimates of the form
+For nonzero displacement x and nonnegative parameter mu, the exact field is
 
-```text
-‖g_μ(x) - g_μ(y)‖∞ ≤ (C * μ / d³) * ‖x - y‖∞
-```
+`g_mu(x) = -mu * x / (euclideanRadius x)^3`.
 
-on specified collision-free sets with a **certified Cartesian supremum-norm clearance** `d > 0`. The norm on the left and right is the same supremum norm; the inverse-cube gravitational law uses the physical Euclidean radius.
+The radius in the gravitational law is **Euclidean**. The sensitivity
+bound uses the **Cartesian supremum norm**:
 
-**Distinct questions must remain distinct:** the largest supremum-norm Jacobian bound, a Lipschitz bound on convex safe regions, an optimal universal coefficient for those regions, and a global Lipschitz coefficient on the nonconvex exterior of a cube are not automatically equivalent. The last question requires its own proof rather than an unjustified line-segment argument.
+`norm_inf (g_mu(x)-g_mu(y)) <= (C*mu/d^3)*norm_inf (x-y)`.
 
-A current *unverified research candidate* for the pointwise derivative and convex-domain coefficient is `C ≈ 2.5775644212`. This decimal, and its claimed optimality, are **not yet Lean-verified theorems**. The repository must not present either as an established mathematical contribution before both the universal inequality and a matching sharpness example are formally proved.
+The positive Euclidean clearance d, admissible points, and shape of
+the safe domain must be quantified in each theorem. A pointwise derivative
+bound extends to suitable **convex** safe domains; the
+**nonconvex exterior of a cube** requires a separate argument.
+
+The numerical candidate is `C3 ≈ 2.5775644212`. Its exact value and
+optimality are **not yet Lean-verified theorems**.
 
 ## Why the result may matter — intended audience
 
-An **optimal, formally checked deterministic sensitivity bound** for the exact Newtonian inverse-cube field, measured in the Cartesian supremum norm, could sharpen the error budgets used by rigorous numerical methods. Its usefulness depends on the *precise geometric clearance and domain assumptions* of the theorem, as well as on how a given application propagates those bounds. The following are **potential research audiences and use cases**, not integrations or certified applications delivered by this repository.
+These are potential uses, not certified applications:
 
-- **Rigorous dynamical systems and interval arithmetic:** developers and users of validated ODE integration, interval enclosures and Taylor models (e.g. CAPD, VNODE-LP, COSY Infinity / Taylor Models), for whom explicit force-sensitivity constants can enter validated propagation estimates. No integration with those libraries has been implemented or tested here.
-- **Planetary defense and asteroid impact monitoring:** researchers studying rigorous propagation of orbital and parameter uncertainty through gravitational close approaches. Any application must establish the required positive source separation throughout the relevant region; the proposed theorem alone does not certify an encounter, impact or orbital trajectory.
-- **Aerospace engineering and space situational awareness:** analysts of satellite–debris conjunctions and collision risk who may benefit from deterministic bounds in uncertainty propagation. **A Lipschitz constant does not itself certify a collision probability**: statistical uncertainty models, additional forces, trajectory enclosures and independent numerical validation are separate requirements.
-- **Cartesian-grid \(N\)-body algorithms:** researchers building rigorously bounded Octree / Barnes–Hut-type approximations, where an explicit force regularity estimate may be one component of a certified error analysis. Tree approximation errors, truncation effects and near-field treatment require additional proofs.
+- **Validated dynamics:** CAPD, VNODE-LP and COSY Infinity may benefit
+  from explicit force sensitivity estimates.
+- **Planetary defense:** uncertainty propagation during close approaches
+  requires rigorous positive separation.
+- **Aerospace and space situational awareness:** a deterministic bound
+  may contribute to conjunction analyses, but a Lipschitz coefficient
+  does not itself certify a collision probability.
+- **Cartesian N-body and Barnes–Hut methods:** force sensitivity bounds
+  may enter error budgets; tree approximation errors need separate proofs.
 
-The mathematical coefficient, if ultimately proved optimal, would be optimal **only for the stated norm, clearance and domain class**. The nonconvex global-domain problem is separate. No originality claim or validated improvement in these application areas is made at this stage.
+No application integration, physical validation, or originality claim
+is implied by this list.
 
 ## Results acquired — cumulative mathematical ledger
 
-Only **mathematical results already accepted by Lean on a successful full build**
-appear here. Entries are cumulative: append new results without erasing or
-renumbering earlier ones. Each entry states the theorem's content, its use
-and limitations, and its exact Lean source. Work in progress, CI chronology,
-and research milestones belong outside this section.
+Only mathematical results verified by a successful full Lean build appear
+here. Numbering is permanent. Each entry records its meaning, utility,
+limits, Lean declarations, and exact source. Work in progress and CI
+chronology are kept outside this catalog.
 
-### R001 — Exact Euclidean radius and Cartesian norm bridge
+### R001 — Euclidean radius and Cartesian norm
 
-The Euclidean radius of a Cartesian three-vector equals the norm of its
-physical Euclidean representation; the Cartesian supremum norm does not
-exceed this radius.
+The physical radius is exactly the norm of the Euclidean representation;
+the Cartesian supremum norm does not exceed it.
 
-**Why useful:** Preserves the physical inverse-cube radius while estimating
-forces in the desired supremum norm. **Limit:** Norm comparison alone does
-not produce a sharp force coefficient.
+**Why useful:** Distinguishes the physical and sensitivity norms.
+**Limit:** It is not a sharp force estimate.
 
 **Lean:** `euclideanRadius_eq_physical_norm`,
-`cartesian_norm_le_euclideanRadius` ·
-**Sources:** [`Basic.lean`](NewtonianLipschitz/Basic.lean),
-[`Norms.lean`](NewtonianLipschitz/Norms.lean).
+`cartesian_norm_le_euclideanRadius`.
+**Sources:** [Basic.lean](NewtonianLipschitz/Basic.lean),
+[Norms.lean](NewtonianLipschitz/Norms.lean).
 
-### R002 — Differentiability of the exact Newtonian field away from collision
+### R002 — Differentiability away from collision
 
-The actual three-dimensional inverse-cube Newtonian acceleration is
-continuously differentiable at every nonzero source separation.
+The exact Newtonian acceleration is continuously differentiable
+at every nonzero source separation.
 
-**Why useful:** Justifies differentiation and local mean-value arguments
-for the true force. **Limit:** No regularity across the collision
-singularity is claimed.
+**Why useful:** Justifies differential estimates.
+**Limit:** No result at the collision singularity.
 
-**Lean:** `NewtonianPointSource.accelerationField_contDiffAt` ·
-**Source:** [`Smoothness.lean`](NewtonianLipschitz/Smoothness.lean).
+**Lean:** `NewtonianPointSource.accelerationField_contDiffAt`.
+**Source:** [Smoothness.lean](NewtonianLipschitz/Smoothness.lean).
 
-### R003 — Exact Fréchet derivative of Newtonian acceleration
+### R003 — Exact Fréchet derivative
 
-At each nonzero separation, the full directional Fréchet derivative of
-the actual field is the sum of the inverse-cube identity term and the
-inverse-fifth radial term, evaluated with the physical Euclidean
-inner product.
+The complete derivative of the actual inverse-cube field is proved,
+using the physical Euclidean inner product.
 
-**Why useful:** Supplies the exact Jacobian to optimize in the Cartesian
-supremum operator norm. **Limit:** The exact derivative formula by itself
-does not establish its optimal uniform bound.
+**Why useful:** Supplies the exact operator to optimize.
+**Limit:** Its optimal norm is not determined by the formula alone.
 
-**Lean:** `NewtonianPointSource.accelerationField_fderiv_full` ·
-**Source:** [`Derivative.lean`](NewtonianLipschitz/Derivative.lean).
+**Lean:** `NewtonianPointSource.accelerationField_fderiv_full`.
+**Source:** [Derivative.lean](NewtonianLipschitz/Derivative.lean).
 
-### R004 — Explicit inverse-power bounds from positive clearance
+### R004 — Inverse-power estimates from clearance
 
-A positive Euclidean source clearance and a gravitational-parameter cap
-control the inverse-cube and inverse-fifth coefficients of the exact
-Newtonian field.
+Positive Euclidean clearance and a parameter cap control the
+inverse-power coefficients in the Newtonian derivative.
 
-**Why useful:** Converts geometric separation into explicit estimates
-for the derivative. **Limit:** The parameter bound and positive
-clearance are hypotheses, not inferred physical measurements.
+**Why useful:** Turns geometry into explicit inequalities.
+**Limit:** Clearance and the parameter bound are assumptions.
 
 **Lean:** `NewtonianPointSource.inverse_power_parameter_le_of_clearance`,
-`NewtonianPointSource.inverse_fifth_derivative_coefficient_le` ·
-**Source:** [`BaselineBounds.lean`](NewtonianLipschitz/BaselineBounds.lean).
+`NewtonianPointSource.inverse_fifth_derivative_coefficient_le`.
+**Source:** [BaselineBounds.lean](NewtonianLipschitz/BaselineBounds.lean).
 
-### R005 — Conservative Cartesian derivative coefficient 10
+### R005 — Derivative coefficient 10
 
-The exact three-dimensional Newtonian field satisfies the directional
-bound `‖Dgμ(x) h‖∞ ≤ (10 M / d³) ‖h‖∞`, under positive Euclidean
-clearance `d` and an upper gravitational-parameter bound `M`.
+The true field satisfies the derivative estimate with coefficient
+`10*M/d^3` under positive clearance d and gravitational cap M,
+measured using the Cartesian supremum norm.
 
-**Why useful:** Gives a fully explicit, unconditional-on-a-supplied-derivative
-bound for the exact field. **Limit:** The coefficient **10 is not optimal**.
+**Why useful:** Explicit derivative control.
+**Limit:** 10 is not optimal.
 
-**Lean:** `NewtonianPointSource.accelerationField_fderiv_norm_le_ten_of_clearance` ·
-**Source:** [`BaselineBounds.lean`](NewtonianLipschitz/BaselineBounds.lean).
+**Lean:** `NewtonianPointSource.accelerationField_fderiv_norm_le_ten_of_clearance`.
+**Source:** [BaselineBounds.lean](NewtonianLipschitz/BaselineBounds.lean).
 
-### R006 — Convex-domain Lipschitz certificate for the exact field
+### R006 — Convex Lipschitz coefficient 10
 
-On any convex spatial set with uniform positive Euclidean clearance,
-the exact Newtonian field has an explicit Cartesian-supremum-norm
-Lipschitz coefficient `10 M / d³`.
+On convex sets with uniform positive Euclidean clearance,
+the exact field has Lipschitz coefficient `10*M/d^3`.
 
-**Why useful:** Converts the proved derivative estimate into a finite
-difference bound on a precisely defined safe domain. **Limit:** Requires
-convexity; it is **not** a theorem about all pairs in the nonconvex
-exterior of a cube, and the coefficient is not sharp.
+**Why useful:** Controls finite differences.
+**Limit:** Convexity is required; 10 is not sharp.
 
-**Lean:** `NewtonianPointSource.accelerationField_lipschitzOnWith_of_clearance` ·
-**Source:** [`ConvexBaseline.lean`](NewtonianLipschitz/ConvexBaseline.lean).
+**Lean:** `NewtonianPointSource.accelerationField_lipschitzOnWith_of_clearance`.
+**Source:** [ConvexBaseline.lean](NewtonianLipschitz/ConvexBaseline.lean).
 
-### R007 — Geometric clearance certified by a Cartesian anchor
+### R007 — Anchor-ball clearance
 
-A sufficiently separated anchor gives a quantitative positive
-Euclidean-radius lower bound throughout a specified Cartesian
-supremum-norm ball.
+A suitably separated anchor yields positive Euclidean clearance
+throughout a specified Cartesian supremum-norm ball.
 
-**Why useful:** Supplies explicit geometric hypotheses for force
-regularity and Lipschitz estimates. **Limit:** The anchor margin is
-assumed; no source history or observed trajectory is certified.
+**Why useful:** Supplies geometric certificates.
+**Limit:** The separation margin must be established independently.
 
-**Lean:** `clearance_on_anchor_ball` ·
-**Source:** [`Clearance.lean`](NewtonianLipschitz/Clearance.lean).
+**Lean:** `clearance_on_anchor_ball`.
+**Source:** [Clearance.lean](NewtonianLipschitz/Clearance.lean).
 
-### R008 — Algebra of exact finite-source differential-force sums
+### R008 — Finite-source exact force algebra
 
-The exact nonlinear differential force from a finite list of point
-sources is expressed as a finite sum, with verified empty-list and
-cons-list identities.
+Finite sums of exact nonlinear differential forces satisfy the
+empty-list and cons-list identities.
 
-**Why useful:** Prepares future aggregation of certified single-source
-bounds without substituting a tidal linearization. **Limit:** No
-uniform Lipschitz coefficient for a family of sources follows from
-these algebraic identities alone.
+**Why useful:** Foundation for multiple point sources.
+**Limit:** No aggregate Lipschitz bound follows from algebra alone.
 
 **Lean:** `NewtonianPointSource.finiteDifferentialAcceleration_nil`,
-`NewtonianPointSource.finiteDifferentialAcceleration_cons` ·
-**Source:** [`FiniteSources.lean`](NewtonianLipschitz/FiniteSources.lean).
+`NewtonianPointSource.finiteDifferentialAcceleration_cons`.
+**Source:** [FiniteSources.lean](NewtonianLipschitz/FiniteSources.lean).
 
-### R009 — Improved conservative Cartesian derivative coefficient 7
+### R009 — Improved derivative coefficient 7
 
-Using the dimension-three inequality `‖h‖₂ ≤ 2 ‖h‖∞`,
-the exact Newtonian Fréchet derivative satisfies
-`‖Dgμ(x) h‖∞ ≤ (7 M / d³) ‖h‖∞` whenever `d > 0`
-is a Euclidean source clearance and `M` bounds the nonnegative
-gravitational parameter.
+The inequality `norm_2 h <= 2*norm_inf h` yields the derivative
+coefficient `7*M/d^3` for the true field.
 
-**Why useful:** Strengthens the explicit estimate R005 without imposing
-an assumed force-derivative bound. **Limit:** The coefficient **7 is
-not optimal**; it is a consequence of a nonsharp norm conversion.
+**Why useful:** Improves R005 without assuming an unknown derivative cap.
+**Limit:** 7 is still not optimal.
 
 **Lean:** `euclideanRadius_le_two_mul_cartesian_norm`,
-`NewtonianPointSource.accelerationField_fderiv_norm_le_seven_of_clearance` ·
-**Sources:** [`Norms.lean`](NewtonianLipschitz/Norms.lean),
-[`ImprovedBounds.lean`](NewtonianLipschitz/ImprovedBounds.lean).
+`NewtonianPointSource.accelerationField_fderiv_norm_le_seven_of_clearance`.
+**Sources:** [Norms.lean](NewtonianLipschitz/Norms.lean),
+[ImprovedBounds.lean](NewtonianLipschitz/ImprovedBounds.lean).
 
-### R010 — Improved convex-domain Lipschitz coefficient 7
+### R010 — Improved convex Lipschitz coefficient 7
 
-The exact Newtonian field satisfies a Cartesian-supremum-norm Lipschitz
-estimate with coefficient `7 M / d³` on any convex spatial domain
-with uniform positive Euclidean clearance. The unit-source version
-also applies to suitably separated Cartesian anchor balls.
+The exact field has coefficient `7*M/d^3` on convex domains
+with uniform positive Euclidean clearance. An anchor-ball form
+is also proved.
 
-**Why useful:** Converts R009 into a bound on finite force
-differences. **Limit:** Depends on convexity and is neither sharp nor
-a global estimate on arbitrary pairs in the nonconvex cube exterior.
+**Why useful:** Improves R006 for finite force differences.
+**Limit:** Requires convexity and is not sharp.
 
 **Lean:** `NewtonianPointSource.accelerationField_lipschitzOnWith_seven`,
-`NewtonianPointSource.unitAxis_lipschitzOnWith_anchor_seven` ·
-**Source:** [`ConvexImproved.lean`](NewtonianLipschitz/ConvexImproved.lean).
+`NewtonianPointSource.unitAxis_lipschitzOnWith_anchor_seven`.
+**Source:** [ConvexImproved.lean](NewtonianLipschitz/ConvexImproved.lean).
 
-### R011 — Dominant Jacobian-row numerator and diagonal reduction
+### R011 — Dominant-row and diagonal algebra
 
-For normalized nonnegative coordinates `(1,u,v)`, with
-`0 ≤ u,v ≤ 1`, the algebraic numerator associated with the
-maximal coordinate dominates the two lateral absolute-row
-numerators. At fixed value of `u²+v²`, that numerator is bounded
-above by its value on the diagonal `u=v=t`.
+For normalized `(1,u,v)`, with `0 <= u,v <= 1`, the proposed
+maximal-row numerator dominates both lateral numerators.
+For fixed `u^2+v^2`, its maximum is on the diagonal `u=v`.
 
-**Why useful:** Reduces a central algebraic part of the proposed
-three-dimensional sharp-bound proof to one scalar variable.
-**Limit:** This is a comparison of the **defined algebraic row
-numerators**, not yet a theorem identifying the full physical Jacobian
-operator norm or its global maximum.
+**Why useful:** Reduces the algebraic optimization to one variable.
+**Limit:** Does not yet bound the full physical operator globally.
 
 **Lean:** `lateralRowNumerator_le_dominant`,
 `lateralRowNumerator_swapped_le_dominant`,
-`dominantRowNumerator_le_diagonal` ·
-**Source:** [`JacobianRows.lean`](NewtonianLipschitz/JacobianRows.lean).
+`dominantRowNumerator_le_diagonal`.
+**Source:** [JacobianRows.lean](NewtonianLipschitz/JacobianRows.lean).
 
-### R012 — Stationary-polynomial sign and uniqueness properties
+### R012 — Candidate stationary cubic
 
-The candidate cubic `p(t)=2t³−8t²−4t+1` is strictly
-decreasing on `[0,1]` and has opposite signs at
-`t=9/50` and `t=1/5`. Consequently, it has at most
-one zero on the unit interval.
+For `p(t)=2*t^3-8*t^2-4*t+1`, the cubic is strictly decreasing
+on `[0,1]`, positive at `9/50`, negative at `1/5`, and has
+at most one zero in that interval.
 
-**Why useful:** Supplies exact algebraic facts for identifying
-the prospective maximizing parameter without relying on a
-floating-point estimate. **Limit:** These declarations do **not**
-yet prove existence of a critical root, show that the proposed
-one-variable coefficient is maximized there, or establish an
-optimal force Lipschitz bound.
+**Why useful:** Exact information about a possible maximizer.
+**Limit:** Existence, maximization, and sharpness remain unproved.
 
 **Lean:** `stationaryCubic_pos_at_nine_fiftieths`,
 `stationaryCubic_neg_at_one_fifth`,
 `stationaryCubic_strictAntiOn_unitInterval`,
-`stationaryCubic_root_unique_on_unitInterval` ·
-**Source:** [`CubicCandidate.lean`](NewtonianLipschitz/CubicCandidate.lean).
+`stationaryCubic_root_unique_on_unitInterval`.
+**Source:** [CubicCandidate.lean](NewtonianLipschitz/CubicCandidate.lean).
 
-### R013 — Exact symmetric Cartesian Jacobian of Newtonian acceleration
+### R013 — Exact symmetric Cartesian Jacobian
 
-At every nonzero source separation, the full Fréchet derivative of
-the exact Newtonian field acts as the symmetric Cartesian matrix
-`μ/‖x‖₂⁵ · (3xxᵀ − ‖x‖₂² I)`. The equality holds for every
-Cartesian direction, using the physical Euclidean inner product.
+For every nonzero displacement, the actual Fréchet derivative acts
+as the symmetric matrix
 
-**Why useful:** Identifies the actual operator to be optimized
-for a sharp Cartesian supremum-norm sensitivity coefficient.
-**Limit:** Matrix identification and symmetry do not alone
-establish its induced operator norm or prove sharpness.
+`J_mu(x)=mu/(norm_2 x)^5 * (3*x*x^T-(norm_2 x)^2*I)`.
+
+**Why useful:** Gives the concrete matrix to optimize in the
+Cartesian supremum operator norm.
+**Limit:** No global sharp bound or optimality is proved by this alone.
 
 **Lean:** `NewtonianPointSource.accelerationField_fderiv_eq_jacobianMatrix`,
 `newtonianJacobianMatrix_symmetric`,
-`newtonianJacobianMatrix_mulVec` ·
-**Source:** [`JacobianMatrix.lean`](NewtonianLipschitz/JacobianMatrix.lean).
+`newtonianJacobianMatrix_mulVec`.
+**Source:** [JacobianMatrix.lean](NewtonianLipschitz/JacobianMatrix.lean).
 
 ## Direct proof strategy
 
-The **shortest proof-directed route** is to bound the exact Cartesian
-Jacobian in the supremum operator norm. By scaling, signs and coordinate
-permutations, normalize a nonzero point to a nonnegative vector
-`(1,u,v)` with `0 ≤ u,v ≤ 1`. Next show that the row of the maximal
-coordinate dominates, and at fixed `u²+v²` the largest numerator occurs
-at `u=v=t`. This reduces the full upper-bound problem to the exact
-one-variable function
+The next objective is the sharp coefficient, not another
+intermediate constant.
 
-```text
-f(t) = (2 + 6t - 2t²) / (1 + 2t²)^(5/2),    0 ≤ t ≤ 1.
-```
-
-Identify its maximum via the stationary cubic
-`2t³ - 8t² - 4t + 1 = 0`, then **separately prove sharpness** by producing
-admissible configurations whose difference quotients approach the
-claimed derivative norm. Apply the exact derivative bound to convex
-collision-free domains using the existing mean-value infrastructure.
-The nonconvex global-domain question has a distinct geometric obligation.
-
-No further effort on incremental constants such as 7 is a research
-milestone unless it directly resolves a dependency of the sharp proof.
+1. Prove the normalized row-sum formula for the **actual** Jacobian.
+2. Establish the global sign and coordinate-permutation reduction.
+3. Reduce the upper bound to
+   `f(t)=(2+6*t-2*t^2)/(1+2*t^2)^(5/2)` for `0 <= t <= 1`.
+4. Prove that the appropriate root of
+   `2*t^3-8*t^2-4*t+1=0` exists and gives the exact maximum.
+5. Prove that this exact maximum is a universal Jacobian bound.
+6. **Separately prove optimality** with a direction and limiting
+   difference quotient excluding every smaller constant.
+7. Transfer the sharp result to convex safe domains. Handle
+   nonconvex global domains as a separate theorem.
 
 ## Roadmap
 
-| Milestone | Mathematical / verification obligation | Status |
-|---|---|---|
-| **M01 — Foundation** | Exact physical field, Fréchet derivative, norm bridges and conservative convex-domain certificates (10 and 7) | **Completed; R001–R010** |
-| **M02 — Jacobian reduction** | Relate the exact Jacobian to row numerators, establish sign/permutation symmetry and complete diagonal reduction | **In progress**; exact matrix identity proved (R013); normalized first-row bridge proposed (pending CI); remaining global row/operator-norm bridge open |
-| **M03 — Sharp upper bound** | Prove existence of the cubic root, identify the maximum of `f(t)` and derive the exact supremum-operator bound | **Open**; sign and uniqueness lemmas proved (R012) |
-| **M04 — Optimality** | Produce a matching directional derivative / nearby-point witness excluding every smaller coefficient | **Open** |
-| **M05 — Domain theorem** | Apply the sharp coefficient on precisely quantified convex safe domains; investigate nonconvex exterior bounds separately | **Open** |
-| **M06 — Scientific and archival validation** | Audit theorem ledger, proofs, assumptions, references, novelty, Palomar metadata, standalone Comparator and full CI before merge | **Open** |
-
-**Update rule:** after a successful full Lean build, append each genuinely
-new mathematical result to the cumulative R-series above with its
-precise statement, use, limitation, declaration and source. Never
-renumber or erase established entries. Update the roadmap whenever
-proof obligations change. Keep build and review evidence in GitHub
-Actions and the PR rather than mixing process history into the
-mathematical results. Review the entire README before merging.
+- **M01 — Foundation: complete.** Exact field, derivative,
+  norm bridges, clearance, and bounds 10 and 7 (R001–R010).
+- **M02 — Jacobian reduction: in progress.** Row algebra (R011)
+  and the actual matrix (R013) are proved. The new normalized
+  row-sum bridge still requires a successful Lean build.
+- **M03 — Sharp upper bound: open.** Exact maximization and
+  universal estimate; cubic facts R012 are established.
+- **M04 — Optimality: open.** A matching witness.
+- **M05 — Domain theorem: open.** Sharp convex-domain bound
+  and separate investigation of nonconvex geometry.
+- **M06 — Scientific and archival validation: open.** Proof
+  integrity, mathematical references, Palomar metadata,
+  independent Comparator, and final review before merge.
 
 ## Repository structure and reproducibility
 
-- `NewtonianLipschitz/Basic.lean` — Cartesian coordinates, physical vectors and the Euclidean norm bridge.
-- `NewtonianLipschitz/Field.lean` — exact point-source acceleration and differential force.
-- `NewtonianLipschitz/Smoothness.lean` — physical and Cartesian differentiability away from collision.
-- `NewtonianLipschitz/Norms.lean` — proved norm-conversion inequalities.
-- `NewtonianLipschitz/Derivative.lean` — full Fréchet derivative of the exact point-source field.
-- `NewtonianLipschitz/Clearance.lean` — explicit geometric anchor-to-clearance lemmas.
-- `NewtonianLipschitz/FiniteSources.lean` — finite exact differential-force sums.
-- `NewtonianLipschitz/BaselineBounds.lean` — explicit conservative derivative estimates recovered from existing checked mathematics.
-- `NewtonianLipschitz/ConvexBaseline.lean` — nonoptimal Lipschitz bounds on convex safe domains.
-- `NewtonianLipschitz/ImprovedBounds.lean` — verified conservative derivative coefficient 7 (R009).
-- `NewtonianLipschitz/ConvexImproved.lean` — verified convex-domain coefficient 7 (R010).
-- `NewtonianLipschitz/JacobianRows.lean` — proved algebraic dominant-row and diagonal reduction (R011), not yet the full operator norm.
-- `NewtonianLipschitz/JacobianMatrix.lean` — verified exact symmetric Jacobian matrix and its action (R013); additional normalized-row formula pending CI.
-- `NewtonianLipschitz/CubicCandidate.lean` — candidate definitions and proved cubic sign/uniqueness properties (R012); maximization remains open.
-- `NewtonianLipschitz.lean` — substantive library entry point.
-- `lean-toolchain`, `lakefile.toml`, `lake-manifest.json` — pinned Lean 4 / Mathlib environment.
-- `.github/workflows/lean.yml` — full Lean build and source/documentation checks.
-- `.github/workflows/comparator.yml` — **manual, readiness-gated** independent Comparator run after selecting a proved theorem.
-- `Challenge.lean`, `Solution.lean`, `comparator.json` — initialized but **unselected** future Comparator interface; no verification is implied.
-- `formalization.yaml` and `PALOMAR.md` — Palomar-oriented **draft placeholders**, not a submission-ready theorem record.
-- `scripts/` — proof-hole, integrity, documentation and future independent-kernel checks.
-- `LICENSE` — Apache License, Version 2.0.
+The substantive library is in `NewtonianLipschitz/`:
 
-Run locally with:
+- Exact physics: [Basic](NewtonianLipschitz/Basic.lean),
+  [Field](NewtonianLipschitz/Field.lean),
+  [Smoothness](NewtonianLipschitz/Smoothness.lean),
+  [Derivative](NewtonianLipschitz/Derivative.lean).
+- Norms and geometry: [Norms](NewtonianLipschitz/Norms.lean),
+  [Clearance](NewtonianLipschitz/Clearance.lean).
+- Conservative bounds: [BaselineBounds](NewtonianLipschitz/BaselineBounds.lean),
+  [ConvexBaseline](NewtonianLipschitz/ConvexBaseline.lean),
+  [ImprovedBounds](NewtonianLipschitz/ImprovedBounds.lean),
+  [ConvexImproved](NewtonianLipschitz/ConvexImproved.lean).
+- Sharp-bound work: [JacobianRows](NewtonianLipschitz/JacobianRows.lean),
+  [JacobianMatrix](NewtonianLipschitz/JacobianMatrix.lean),
+  [CubicCandidate](NewtonianLipschitz/CubicCandidate.lean).
+- Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
-```sh
-lake exe cache get
-python3 scripts/check-repository.py
-python3 scripts/check-documentation.py
-python3 scripts/check-no-proof-holes.py
-lake build NewtonianLipschitz
-```
+[NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
+The Lean 4 toolchain and Mathlib revision are pinned.
 
-The independent Comparator infrastructure is present but **disabled until an actual, compiled theorem is selected**. The separate manual workflow deliberately fails without a nonempty theorem selection; no Comparator pass is claimed. Palomar files are placeholders and must be finalized against the Registry standard only after the target proof exists.
+To reproduce the project, run in sequence:
+
+1. `lake exe cache get`
+2. `python3 scripts/check-repository.py`
+3. `python3 scripts/check-documentation.py`
+4. `python3 scripts/check-no-proof-holes.py`
+5. `lake build NewtonianLipschitz`
+
+The independent Comparator is not yet configured with a selected
+theorem; no Comparator pass is claimed.
+**Palomar files are placeholders**, not a formalization submission.
 
 ## Methodology — transparent LLM-assisted research
 
-This README doubles as a scientific status report and an operational record of the next research step. The human project lead determines the research objectives and approves changes of direction. AI systems may propose approaches, generate code, identify mistakes and suggest literature; their outputs are hypotheses requiring independent checking, not scientific authority. Odasso's role as project director **does not imply professional mathematical credentials**.
+The human research director sets the questions. AI-generated proofs
+and text require verification. No `sorry`, `admit`, or unreviewed
+axioms are allowed in substantive proofs.
 
-**Formal-proof discipline:** maintain explicit definitions, hypotheses, norm conventions and quantifier order. Do not introduce `sorry`, `admit` or additional axioms into substantive proofs. A successful Lean build checks the stated formal declarations; it does not establish that a model matches a real physical system, nor that a theorem is new, optimal unless sharpness is proved, or suitable for publication.
+A complete Lean build checks the formal statements as encoded.
+It is different from **independent kernel checking**, scientific
+peer review, physical validation, and proof of originality.
 
-**Verification and review:** use pull requests for substantive results, inspect the diff, require a green full-build workflow on the exact proposed head before merging, and distinguish CI success from independent kernel checking. Preserve failed approaches in Git history without reporting them as results. Record scope restrictions and counterexamples, especially where nonconvex geometry prevents a standard mean-value argument.
+The conjectural sharp coefficient and optimality remain
+**not yet Lean-verified theorems**. Preserve exact assumptions,
+norms, source links, and uncertainty.
 
-**Documentation freshness:** before each result-changing merge, audit the executive summary, result claims, roadmap, methodology, source comments, proof-hole checks and relevant workflow settings. Update statements made obsolete by new mathematics, without silently upgrading evidence from numerical observation to formal proof. Assess originality through explicit comparison with the literature and eventual independent specialist review; no mathematical priority or scientific discovery is claimed at project creation.
+Keep cumulative **mathematical** results here; keep the build and
+task chronology in the pull request, not in the results catalog.
+Require a green full build and documentation review before merge.
+No novelty, priority, or publication-readiness claim is made.
 
 ## License
 
-Apache License, Version 2.0 (`Apache-2.0`). See [LICENSE](LICENSE).
+Apache License, Version 2.0 (Apache-2.0).
+See [LICENSE](LICENSE).
