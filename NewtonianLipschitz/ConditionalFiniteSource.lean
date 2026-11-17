@@ -62,7 +62,8 @@ theorem NewtonianPointSource.finiteDifferentialAcceleration_norm_le_of_oneSource
   induction sources with
   | nil =>
       intro _
-      simp [NewtonianPointSource.finiteDifferentialAcceleration]
+      simp only [NewtonianPointSource.finiteDifferentialAcceleration_nil,
+        List.map_nil, List.sum_nil, zero_mul, mul_zero, norm_zero, le_refl]
   | cons source rest ih =>
       intro hsafe
       have hheadsafe :
