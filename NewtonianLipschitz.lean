@@ -30,6 +30,7 @@ public import NewtonianLipschitz.ConditionalFiniteSource
 public import NewtonianLipschitz.SafePlaneReduction
 public import NewtonianLipschitz.PhysicalTangentialNormalized
 public import NewtonianLipschitz.PhysicalTangentialFirstAxis
+public import NewtonianLipschitz.PhysicalTangentialAllAxes
 public import NewtonianLipschitz.ConvexBaseline
 public import NewtonianLipschitz.ConvexImproved
 public import NewtonianLipschitz.JacobianRows
