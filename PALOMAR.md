@@ -102,18 +102,28 @@ prove `oneSourceGlobalCandidateBound`
 identifies C3 as the sharp universal coefficient
 for the one-source nonconvex cube-exterior problem.
 
-R041 had already proved the correct **conditional**
-finite-source lifting of a global one-source bound
-to the exact nonlinear differential-acceleration
-sum with coefficient `N*M*C3/d³`. The necessary
-one-source premise is now a theorem by R047;
-the lifting is mathematically available without
-an open single-source hypothesis. However, a
-standalone unconditional theorem with the intended
-complete physical N-body source positions,
-`mu_k = G*m_k` and universal minimality statement
-has not yet been assembled in the planned
-Palomar interface.
+R048 now formally packages the one-source sharp
+global **if and only if**: a real coefficient K
+bounds every admissible pair outside the unit cube
+exactly when `C3 <= K`, combining the R037 lower
+bound and R047 upper bound.
+
+R041 had established the **conditional** lifting
+of the one-source C3 inequality to a finite-source
+exact nonlinear differential-acceleration sum.
+**R048 discharges that hypothesis**, providing
+direct **unconditional** inequalities with sharp
+one-source factor C3 and overall coefficients
+`sum(mu_k)*C3/d³` and `N*M*C3/d³` for source
+gravitational parameters `mu_k <= M`.
+
+The intended final physical Palomar statement
+still needs an explicit source-position and
+`mu_k = G*m_k` interface and universal
+minimality under precisely stated N-source
+admissibility assumptions. The existing proof
+is for the repository's exact nonlinear sum,
+not yet the final Comparator declaration.
 
 **Outstanding evidence:** Finish the explicit
 physical-source parameterization, the final
@@ -125,13 +135,14 @@ Configure and run independent Comparator, then
 seek mathematical review. This repository is not
 yet a submission or externally reviewed result.
 
-**Repository stage:** R001–R047 have passed complete
+**Repository stage:** R001–R048 have passed complete
 Lean builds, and the README's cumulative ledger
-records their exact mathematical statements and
-limitations. R041 and R043 remain valid verified
-conditional implications, but R047 now proves
-both premises needed for the one-source and
-finite-source deductions. Compilation and merge
+records the exact mathematical statements and
+limitations. R041 and R043 remain valid historical
+conditional implications. R047 proves their missing
+one-source/safe-plane premises; R048 packages the
+unconditional finite-source bound and exact
+one-source optimality iff. Compilation and merge
 are not independent Comparator validation or
 Palomar submission.
 
