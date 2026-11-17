@@ -1406,6 +1406,7 @@ The substantive library is in `NewtonianLipschitz/`:
   [CommonSafeFace][common-safe-face],
   [CrossFaceTwoHop][cross-face-two-hop],
   [ConditionalFiniteSource][conditional-finite-source].
+- Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
 [derivative-direction]: NewtonianLipschitz/DerivativeAttainingDirection.lean
@@ -1415,7 +1416,6 @@ The substantive library is in `NewtonianLipschitz/`:
 [common-safe-face]: NewtonianLipschitz/CommonSafeFace.lean
 [cross-face-two-hop]: NewtonianLipschitz/CrossFaceTwoHop.lean
 [conditional-finite-source]: NewtonianLipschitz/ConditionalFiniteSource.lean
-- Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
 The Lean 4 toolchain and Mathlib revision are pinned.
