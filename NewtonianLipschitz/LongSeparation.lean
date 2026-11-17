@@ -64,7 +64,6 @@ theorem NewtonianPointSource.accelerationField_norm_le_of_cartesian_clearance
         (cartesian_norm_le_euclideanRadius x) hcoeff
     _ = c.gravitationalParameter / euclideanRadius x ^ 2 := by
       field_simp [ne_of_gt hr]
-      ring
     _ ≤ c.gravitationalParameter / d ^ 2 := hratio
 
 /-- R038: if two safe endpoints are at least one clearance
@@ -114,7 +113,6 @@ theorem NewtonianPointSource.accelerationField_norm_sub_le_candidateMaximum_long
     _ = 2 * (c.gravitationalParameter / d ^ 2) := by ring
     _ = ((1 / d ^ 3) * (2 * c.gravitationalParameter)) * d := by
       field_simp [ne_of_gt hd]
-      ring
     _ ≤ ((1 / d ^ 3) *
           (c.gravitationalParameter * candidateMaximum)) * d :=
       mul_le_mul_of_nonneg_right hscale hd.le
