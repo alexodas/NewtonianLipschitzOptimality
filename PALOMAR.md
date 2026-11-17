@@ -115,9 +115,12 @@ at (1,u,v), u,v >= 0, h0 = 0. The transfer
 to arbitrary coordinate signs and scales on
 the first axis is now proved by R045, using exact
 Jacobian sign invariance and inverse-cube scaling.
-A safe-plane finite-difference estimate still does
-not follow: the remaining two axes and integration
-are outstanding.
+R046 now extends the same genuine physical
+5/4 tangential derivative bound to **all signed
+safe axes** using verified cyclic symmetry.
+The safe-plane finite-difference estimate does
+not yet follow: the mean-value integration
+along a fixed safe plane remains outstanding.
 
 **Outstanding evidence:** The sharp global upper
 bound (or a rigorous refutation) for **short
@@ -129,11 +132,12 @@ estimate. R042 supplies only the algebraic certificates
 for a proposed tangential 5/4 estimate; R044
 now transfers them to the **actual physical
 Jacobian at normalized nonnegative points**.
-The unrestricted all-axis derivative and integration
-on safe planes remain outstanding. R045 proves the
-physical 5/4 tangential derivative for any displacement
-with a signed-safe first Cartesian coordinate, without
-a normalization or positive-octant restriction. R043 now verifies the complete
+The all-axis pointwise derivative is now certified
+by R046; **integration on safe planes** remains
+outstanding. R045 proves the signed-safe first-axis
+case, and R046 proves the second and third axes
+through exact cyclic permutation of the physical
+Newtonian Jacobian. R043 now verifies the complete
 conditional reduction from the explicit safe-plane 5/4
 finite-difference premise to the one-source global C3
 estimate; the premise remains unproved. R041 already
@@ -145,7 +149,7 @@ unproved; the full physical-source parametrization,
 matching Palomar declarations and independent
 Comparator verification remain outstanding.
 
-**Repository stage:** R001–R045 have passed complete
+**Repository stage:** R001–R046 have passed complete
 Lean builds, and the permanent README ledger records
 their exact statements and limitations. R041 and R043
 are **conditional implications**; R042 establishes
@@ -154,8 +158,8 @@ tangential estimate **only in normalized nonnegative
 coordinates**. R045 proves the actual physical 5/4
 tangential derivative under arbitrary coordinate signs
 and positive clearance on the first Cartesian axis;
-the other axes and finite differences remain open.
-The safe-plane proposition
+all three axes are now covered by R046, but finite
+differences remain open. The safe-plane proposition
 `oneSourceSafePlaneFiveFourthBound` and the one-source
 global C3 proposition `oneSourceGlobalCandidateBound`
 remain unproved. This description does not depend
