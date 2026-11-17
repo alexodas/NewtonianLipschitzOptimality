@@ -86,7 +86,7 @@ theorem tangential_lateral_row_le_five_four_quadratic
   calc
     |2 * u ^ 2 - 1 - v ^ 2| + 3 * u * v
         ≤ (1 + 2 * u ^ 2 + v ^ 2) + 3 * u * v :=
-          add_le_add_right h_abs _
+          add_le_add h_abs le_rfl
     _ ≤ (1 + 2 * t) + (3 / 2 : ℝ) * t :=
           add_le_add h_base h_product
     _ = 1 + (7 / 2 : ℝ) * t := by ring
@@ -125,9 +125,6 @@ theorem candidateMaximum_gt_five_halves :
       candidateCoefficient (1 / 5 : ℝ) =
         ((78 : ℝ) / 25) / r ^ 5 := by
     rw [candidateCoefficient_eq]
-    change (2 + 6 * (1 / 5 : ℝ) - 2 * (1 / 5 : ℝ) ^ 2) /
-        (Real.sqrt (1 + 2 * (1 / 5 : ℝ) ^ 2)) ^ 5 =
-      ((78 : ℝ) / 25) / r ^ 5
     have hinside :
         1 + 2 * (1 / 5 : ℝ) ^ 2 = (27 : ℝ) / 25 := by
       norm_num
