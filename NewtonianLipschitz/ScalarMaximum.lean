@@ -114,7 +114,9 @@ theorem stationaryCubic_negative_after_root
   exact h
 
 /-- The exact cubic root realizes the maximum of the candidate scalar
-coefficient on the unit interval. This is not yet a 3D Jacobian bound. -/
+coefficient on the unit interval. The separate R024–R027
+results obtain the physical Cartesian Jacobian and operator
+bounds from this scalar ingredient. -/
 theorem candidateCoefficient_le_at_criticalPoint
     (t : ℝ) (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     candidateCoefficient t ≤
