@@ -522,23 +522,47 @@ and global two-point Lipschitz estimates remain separate.
 [JacobianPermutations.lean](NewtonianLipschitz/JacobianPermutations.lean),
 [JacobianAxisBounds.lean](NewtonianLipschitz/JacobianAxisBounds.lean).
 
+### R024 — Global signed-coordinate Jacobian row-sum bound
+
+For every nonzero three-dimensional displacement with
+arbitrary coordinate signs and for `mu >= 0`, Lean proves
+that each absolute row sum of the actual Newtonian Jacobian
+is at most
+
+`mu*candidateMaximum / max(|X|,|Y|,|Z|)^3`.
+
+The proof combines all three dominant-axis cases (R022–R023)
+with the sign invariance of R020.
+
+**Why useful:** Establishes the candidate row bound at
+every nonzero Cartesian displacement, not just a
+normalized configuration or one coordinate octant.
+**Limit:** Its identification with the ambient Pi norm,
+the operator-norm transfer, global two-point bounds
+and optimality are separate obligations.
+
+**Lean:** `newtonianJacobianMatrix_nonnegative_max_le_candidateMaximum`,
+`newtonianJacobianMatrix_signed_max_le_candidateMaximum`.
+**Source:**
+[JacobianSignedBounds.lean](NewtonianLipschitz/JacobianSignedBounds.lean).
+
 ## Direct proof strategy
 
-Scalar maximization, normalized row bounds, and sharp
-row bounds for all three nonnegative dominant axes are
-proved (R016–R023).
+The sharp candidate bounds all absolute Jacobian
+row sums at arbitrary nonzero signed Cartesian
+displacements (R024).
 
-1. Combine sign invariance with the three dominant-axis
-   cases to cover arbitrary signed displacements.
-2. Prove the sharp Jacobian bound for every nonzero
-   separation, in the Cartesian supremum norm.
-3. Deduce the matching bound for the physical Fréchet
-   derivative and prove **optimality separately**.
-4. Establish sharp Lipschitz bounds on suitable convex
-   safe domains.
-5. Analyze pairs of points across the nonconvex cubical
-   exclusions directly; then address the full `N`-source
-   theorem as a separate global question.
+1. Identify the coordinate maximum with the actual Pi norm
+   and formalize the bound under positive Cartesian clearance.
+2. Transfer the matrix row estimate to the operator norm
+   of the physical Fréchet derivative.
+3. **Separately prove optimality** using a matching witness
+   and a limiting difference quotient.
+4. Establish sharp finite-difference bounds on suitable
+   convex safe domains.
+5. Analyze pairs of points across nonconvex cubical
+   exclusions directly. The global `N`-source theorem
+   remains a separate mathematical objective.
 
 ## Roadmap
 
@@ -548,16 +572,17 @@ proved (R016–R023).
   (R011), exact Jacobian (R013), normalized row estimates
   (R014–R015, R018–R019), sign/scale invariances (R020)
   and cyclic/Y-Z axis transformations (R021) are proved.
-  Positive X scaling (R022) and transfers for maximal
-  Y or Z (R023) are verified. The signed-coordinate
-  extension is proposed in JacobianSignedBounds.lean
-  and awaits the full Lean build.
+  Positive X scaling (R022), maximal Y and Z (R023),
+  and arbitrary coordinate signs (R024) are verified.
+  The complete coordinate row-sum reduction is acquired.
 - **M03 — Sharp upper bound: in progress.** Cubic facts
   (R012), exact root (R016), scalar maximum (R017),
   normalized rows (R018–R019) and sign/scale transfer
-  (R020) and maximal-axis row estimates (R022–R023)
-  are proved. Unrestricted signed-coordinate derivative
-  bounds and nonconvex two-point bounds remain open.
+  (R020), maximal-axis reductions (R022–R023)
+  and all signed-coordinate row bounds (R024) are proved.
+  The actual Pi-norm and positive-clearance transfer
+  is proposed in JacobianCartesianBound.lean.
+  Operator, optimality and nonconvex bounds remain open.
 - **M04 — Optimality: open.** A matching witness.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
@@ -588,7 +613,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [JacobianPermutations](NewtonianLipschitz/JacobianPermutations.lean),
   [JacobianNormalization](NewtonianLipschitz/JacobianNormalization.lean),
   [JacobianAxisBounds](NewtonianLipschitz/JacobianAxisBounds.lean),
-  [JacobianSignedBounds](NewtonianLipschitz/JacobianSignedBounds.lean).
+  [JacobianSignedBounds](NewtonianLipschitz/JacobianSignedBounds.lean),
+  [JacobianCartesianBound](NewtonianLipschitz/JacobianCartesianBound.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.

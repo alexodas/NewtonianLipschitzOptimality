@@ -22,6 +22,7 @@ needed = [
     "NewtonianLipschitz/JacobianNormalization.lean",
     "NewtonianLipschitz/JacobianAxisBounds.lean",
     "NewtonianLipschitz/JacobianSignedBounds.lean",
+    "NewtonianLipschitz/JacobianCartesianBound.lean",
     "NewtonianLipschitz/BaselineBounds.lean", "NewtonianLipschitz/ConvexBaseline.lean",
     "NewtonianLipschitz/ImprovedBounds.lean", "NewtonianLipschitz/ConvexImproved.lean",
     "NewtonianLipschitz/JacobianRows.lean",
@@ -58,7 +59,7 @@ if manifest.get("name") != config.get("name"):
 expected_imports = {
     "NewtonianLipschitz.lean": [
         "NewtonianLipschitz.Derivative", "NewtonianLipschitz.Clearance",
-        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ScalarMaximum", "NewtonianLipschitz.NormalizedSharpBound", "NewtonianLipschitz.JacobianSymmetries", "NewtonianLipschitz.JacobianPermutations", "NewtonianLipschitz.JacobianNormalization", "NewtonianLipschitz.JacobianAxisBounds", "NewtonianLipschitz.JacobianSignedBounds", "NewtonianLipschitz.ConvexBaseline",
+        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ScalarMaximum", "NewtonianLipschitz.NormalizedSharpBound", "NewtonianLipschitz.JacobianSymmetries", "NewtonianLipschitz.JacobianPermutations", "NewtonianLipschitz.JacobianNormalization", "NewtonianLipschitz.JacobianAxisBounds", "NewtonianLipschitz.JacobianSignedBounds", "NewtonianLipschitz.JacobianCartesianBound", "NewtonianLipschitz.ConvexBaseline",
         "NewtonianLipschitz.ConvexImproved", "NewtonianLipschitz.JacobianRows",
         "NewtonianLipschitz.JacobianMatrix",
     ],
@@ -90,6 +91,9 @@ expected_imports = {
     ],
     "NewtonianLipschitz/JacobianSignedBounds.lean": [
         "NewtonianLipschitz.JacobianAxisBounds"
+    ],
+    "NewtonianLipschitz/JacobianCartesianBound.lean": [
+        "NewtonianLipschitz.JacobianSignedBounds"
     ],
     "NewtonianLipschitz/BaselineBounds.lean": ["NewtonianLipschitz.Derivative"],
     "NewtonianLipschitz/ConvexBaseline.lean": ["NewtonianLipschitz.BaselineBounds", "NewtonianLipschitz.Clearance"],
