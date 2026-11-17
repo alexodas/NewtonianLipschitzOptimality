@@ -56,6 +56,27 @@ for ref in ("R035", "R036", "R037", "R038", "R039", "R040"):
         issues.append(f"PALOMAR.md missing verified {ref} provenance")
     if ref not in description:
         issues.append(f"Metadata description missing verified {ref} provenance")
+
+# Release-facing documentation must describe durable proof status, not
+# a PR that may already have been merged. The mathematical ledger itself
+# records historical theorem scope, never transient CI chronology.
+import re
+for document_name, content in (
+    ("README.md", readme),
+    ("PALOMAR.md", palomar_notes),
+):
+    if re.search(r"\\b(?:current|present|active).{0,45}\\bPR\\s*#\\d+", content, re.I):
+        issues.append(f"{document_name} contains a transient active-PR claim")
+if "**Proposed but not yet verified in Lean:**" in readme and "**Still unproved:**" in readme:
+    proposed = readme.split("**Proposed but not yet verified in Lean:**", 1)[1].split(
+        "**Still unproved:**", 1
+    )[0]
+    if re.search(r"\\bR\\d{3}\\s+is now Lean-verified\\b", proposed):
+        issues.append("Proposed-status block misplaces a verified result")
+if "R040" not in readme.split("**Verified in Lean:**", 1)[1].split(
+    "**Proposed but not yet verified in Lean:**", 1
+)[0]:
+    issues.append("README verified-status block omits R040")
 # The acquired-results section is a cumulative mathematical catalog.
 # It must never be turned into an activity log or silently renumbered.
 import re
