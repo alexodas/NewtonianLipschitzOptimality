@@ -66,8 +66,11 @@ R038 proves the proposed upper bound for sufficiently separated
 safe pairs; R039 proves it for safe pairs that share a supporting
 coordinate halfspace. R040 constructs a safe two-hop bridge for
 endpoints on distinct active coordinate axes, giving a **nonsharp**
-2*C3 bound. The desired sharp C3 bound for short cross-face
-pairs remains open.
+2*C3 bound. R041 proves the exact **conditional**
+lifting from a one-source global C3 estimate to a
+finite-source bound with coefficient N*M*C3/d^3.
+The required sharp one-source C3 inequality for short
+cross-face pairs remains open.
 
 ### Formal mathematical statement
 
@@ -279,17 +282,21 @@ as verified in the permanent mathematical ledger below.
   supported by different safe axes. It gives two convex-safe
   hops of length at most the original separation and thus a
   **nonsharp 2*C3 bound**, even if the direct segment is unsafe.
+- R041 proves that the still-open **one-source global C3**
+  statement, *if established*, implies the sharp finite-source
+  differential-force bound with coefficient N*M*C3/d³.
+  The premise is stated explicitly and remains unproved.
 - R001–R015 and R018–R023 document the foundational
   field, regularity, conservative estimates, and the
   verified algebraic reductions.
 
 **Proposed but not yet verified in Lean:**
 
-No additional result is claimed as verified merely because
-it is proposed. The open task is to prove or refute the
-sharp C3 estimate for short cross-face pairs (issue #4).
-The verified R040 two-hop bound has coefficient 2*C3,
-not C3.
+R041 is verified as a **conditional implication**,
+not as proof of its one-source premise. The missing
+sharp C3 upper bound for short cross-face pairs is
+still an open research problem (issue #4). No
+unproved theorem is included in this results ledger.
 
 **Still unproved:**
 
@@ -1244,26 +1251,80 @@ follows from R040, and Comparator remains inactive.
 `NewtonianPointSource.accelerationField_norm_sub_le_two_candidateMaximum_different_axes`.
 **Source:** [CrossFaceTwoHop.lean][cross-face-two-hop].
 
+### R041 — Conditional sharp finite-source lifting from one source
+
+Lean defines `oneSourceGlobalCandidateBound : Prop`
+as the still-open assertion that **every** admissible
+two-point Newtonian force difference for a single source
+satisfies the global C3 estimate, without requiring the
+connecting segment to remain outside the forbidden cube.
+This is a proposition, **not** a proof of that assertion.
+
+**Assuming that proposition**, Lean proves for the
+existing exact finite-source differential acceleration
+sum and positive clearance d at both observation points:
+
+```text
+norm_inf(sum_k (g_k(a_k+q)-g_k(a_k)))
+  <= (C3/d^3) * (sum_k mu_k) * norm_inf(q).
+```
+
+Here `a_k` is each source's initial displacement and
+`q` is the common observation-point difference. If
+each source gravitational parameter satisfies
+`mu_k <= M`, the same verified implication gives
+
+```text
+norm_inf(total differential acceleration)
+  <= (N*M*C3/d^3) * norm_inf(q),
+N = sources.length.
+```
+
+The proof uses induction over the source list,
+exact nonlinear field differences, the triangle
+inequality and the cap on the sum of source parameters.
+No force linearization is introduced.
+
+**Why useful:** Removes the finite-source summation
+step as an additional analytic obstacle for the proposed
+second Palomar theorem. Once the one-source sharp upper
+bound is proved, the corresponding N-source inequality
+follows through this formalized reduction.
+**Limit:** The required `oneSourceGlobalCandidateBound`
+premise remains **unproved**, specifically for short
+cross-face pairs. R041 is not an unconditional global
+upper bound, a finished optimality theorem or
+independent Comparator verification.
+
+**Lean:**
+`oneSourceGlobalCandidateBound`,
+`NewtonianPointSource.finiteDifferentialAcceleration_norm_le_of_oneSourceGlobal`,
+`sourceGravitationalParameter_sum_le_length_mul`,
+`NewtonianPointSource.finiteDifferentialAcceleration_norm_le_length_mul_of_oneSourceGlobal`.
+**Source:** [ConditionalFiniteSource.lean][conditional-finite-source].
+
 ## Direct proof strategy
 
 The derivative bound (R027) is attained (R029)
 and minimal for derivative estimates (R032).
 R033–R037 close the **admissible two-point lower bound**.
 R038 covers long separations, R039 covers common safe
-supporting halfspaces, and R040 gives a safe two-hop
-**2*C3** estimate for distinct active axes.
+supporting halfspaces, and R040 gives the two-hop
+**2*C3** estimate for distinct active axes. R041
+already establishes the **conditional** N-source lift.
 
-1. Improve the **nonsharp** two-hop bound in the
-   short cross-face case `norm_inf(x-y)<d`: control
-   cancellation or exploit the edge/corner geometry.
-2. Prove the sharp C3 one-source global upper bound
-   (or find a rigorous counterexample) before calling
-   it a global theorem.
-3. Only after that result, lift the estimate to
-   arbitrary source positions and finite-source sums,
-   checking scaling hypotheses.
-4. Finally prepare the two Palomar statements and
-   Comparator without assuming the missing upper bound.
+1. Prove or refute the missing sharp C3 bound for
+   short cross-face one-source pairs; investigate
+   force-difference cancellation instead of merely
+   summing two C3 bounds.
+2. Combine that future one-source theorem with the
+   **already verified conditional reduction R041**
+   and identify physical parameters `mu_k = G*m_k`,
+   including source-position translations.
+3. Assemble two auditable Palomar statements and
+   configure Comparator only after both targets
+   are actually proved, without implying that
+   the conditional result supplies its premise.
 
 ## Roadmap
 
@@ -1292,8 +1353,10 @@ supporting halfspaces, and R040 gives a safe two-hop
   nonconvex bound for safe pairs separated by at least
   d and R039 handles any common safe supporting face.
   R040 gives a constructive two-hop nonsharp 2*C3
-  bound for distinct-axis active faces. The sharp
-  short cross-face one-source bound and eventual
+  bound for distinct-axis active faces. R041 proves
+  the **conditional** finite-source lifting with the
+  sharp N*M*C3/d³ factor. The short cross-face
+  one-source C3 bound and thus the unconditional
   multi-source theorem remain open.
 - **M06 — Scientific and archival validation: open.** The
   planned Palomar pair is the exact formula for C3 and its
@@ -1341,7 +1404,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [AdmissibleSecantPairs][admissible-secant],
   [LongSeparation][long-separation],
   [CommonSafeFace][common-safe-face],
-  [CrossFaceTwoHop][cross-face-two-hop].
+  [CrossFaceTwoHop][cross-face-two-hop],
+  [ConditionalFiniteSource][conditional-finite-source].
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
 [derivative-direction]: NewtonianLipschitz/DerivativeAttainingDirection.lean
@@ -1350,6 +1414,7 @@ The substantive library is in `NewtonianLipschitz/`:
 [long-separation]: NewtonianLipschitz/LongSeparation.lean
 [common-safe-face]: NewtonianLipschitz/CommonSafeFace.lean
 [cross-face-two-hop]: NewtonianLipschitz/CrossFaceTwoHop.lean
+[conditional-finite-source]: NewtonianLipschitz/ConditionalFiniteSource.lean
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
