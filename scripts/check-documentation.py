@@ -18,7 +18,7 @@ required = [
     "### R009 —", "### R010 —",
     "### R011 —", "### R012 —",
     "### R013 —",
-    "### R014 —", "### R015 —",
+    "### R014 —", "### R015 —", "### R016 —",
     "## Direct proof strategy",
     "M01 — Foundation", "M02 — Jacobian reduction", "M03 — Sharp upper bound",
     "M04 — Optimality", "M05 — Domain theorem", "M06 — Scientific and archival validation",
@@ -55,8 +55,8 @@ if section_start in readme and section_end in readme:
     catalog = readme.split(section_start, 1)[1].split(section_end, 1)[0]
     matches = list(re.finditer(r"^### R(\d{3}) — ", catalog, re.M))
     numbers = [int(m.group(1)) for m in matches]
-    if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 15:
-        issues.append("Results must be cumulative, contiguous, and retain R001–R015")
+    if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 16:
+        issues.append("Results must be cumulative, contiguous, and retain R001–R016")
     for idx, match in enumerate(matches):
         block = catalog[match.end():matches[idx+1].start() if idx+1 < len(matches) else len(catalog)]
         if not all(tag in block for tag in ("**Why useful:**", "**Limit:**", "**Lean:**")):

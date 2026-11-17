@@ -261,6 +261,23 @@ the sharp coefficient, or its optimality.
 **Lean:** `newtonianJacobianMatrix_normalized_firstRow_le_diagonal`.
 **Source:** [JacobianMatrix.lean](NewtonianLipschitz/JacobianMatrix.lean).
 
+### R016 — Exact existence and uniqueness of the critical cubic root
+
+The cubic `2*t^3-8*t^2-4*t+1` has exactly one root in
+the rational interval `[9/50,1/5]`. Lean defines the exact
+real `candidateCriticalPoint` and proves its polynomial
+equation and enclosure, without a numerical approximation.
+
+**Why useful:** Defines the candidate maximizing parameter
+mathematically instead of assigning a rounded decimal.
+**Limit:** Root existence does not itself prove scalar
+maximization or the universal Lipschitz coefficient.
+
+**Lean:** `stationaryCubic_exists_root_bracket`,
+`stationaryCubic_existsUnique_root_bracket`,
+`candidateCriticalPoint_spec`.
+**Source:** [CubicCandidate.lean](NewtonianLipschitz/CubicCandidate.lean).
+
 ## Direct proof strategy
 
 The next objective is the sharp coefficient, not another
@@ -286,10 +303,11 @@ intermediate constant.
   (R011), exact Jacobian (R013), first-row sum (R014),
   and diagonal bound (R015) are proved. Other rows and
   global operator-norm symmetries remain to be established.
-- **M03 — Sharp upper bound: open.** The cubic properties
-  R012 are proved. Existence and exact designation of its
-  critical root are proposed in Lean, pending full CI.
-  Scalar maximization and the universal bound remain open.
+- **M03 — Sharp upper bound: in progress.** The cubic
+  properties (R012) and critical root (R016) are proved.
+  Scalar maximization is proposed in ScalarMaximum.lean,
+  pending the full Lean build. The universal 3D bound
+  remains open.
 - **M04 — Optimality: open.** A matching witness.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
@@ -313,7 +331,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [ConvexImproved](NewtonianLipschitz/ConvexImproved.lean).
 - Sharp-bound work: [JacobianRows](NewtonianLipschitz/JacobianRows.lean),
   [JacobianMatrix](NewtonianLipschitz/JacobianMatrix.lean),
-  [CubicCandidate](NewtonianLipschitz/CubicCandidate.lean).
+  [CubicCandidate](NewtonianLipschitz/CubicCandidate.lean),
+  [ScalarMaximum](NewtonianLipschitz/ScalarMaximum.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.

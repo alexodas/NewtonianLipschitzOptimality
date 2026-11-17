@@ -4,6 +4,7 @@ public import NewtonianLipschitz.Derivative
 public import NewtonianLipschitz.Clearance
 public import NewtonianLipschitz.FiniteSources
 public import NewtonianLipschitz.CubicCandidate
+public import NewtonianLipschitz.ScalarMaximum
 public import NewtonianLipschitz.ConvexBaseline
 public import NewtonianLipschitz.ConvexImproved
 public import NewtonianLipschitz.JacobianRows

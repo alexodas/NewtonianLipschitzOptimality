@@ -18,9 +18,21 @@ namespace NewtonianLipschitz
 def stationaryCubic (y : ℝ) : ℝ :=
   2 * y ^ 3 - 8 * y ^ 2 - 4 * y + 1
 
+/-- Exported polynomial formula for downstream proofs. -/
+theorem stationaryCubic_eq (t : ℝ) :
+    stationaryCubic t = 2 * t ^ 3 - 8 * t ^ 2 - 4 * t + 1 := by
+  rfl
+
 /-- Dimensionless candidate coefficient as an exact real expression. -/
 noncomputable def candidateCoefficient (y : ℝ) : ℝ :=
   (2 + 6 * y - 2 * y ^ 2) / (Real.sqrt (1 + 2 * y ^ 2)) ^ 5
+
+/-- Exported exact coefficient formula for downstream proofs. -/
+theorem candidateCoefficient_eq (t : ℝ) :
+    candidateCoefficient t =
+      (2 + 6 * t - 2 * t ^ 2) /
+        (Real.sqrt (1 + 2 * t ^ 2)) ^ 5 := by
+  rfl
 
 /-! ## Exactly checked polynomial facts for the proposed critical point -/
 

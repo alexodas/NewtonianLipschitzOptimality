@@ -15,6 +15,7 @@ needed = [
     "NewtonianLipschitz/Smoothness.lean", "NewtonianLipschitz/Norms.lean",
     "NewtonianLipschitz/Derivative.lean", "NewtonianLipschitz/FiniteSources.lean",
     "NewtonianLipschitz/Clearance.lean", "NewtonianLipschitz/CubicCandidate.lean",
+    "NewtonianLipschitz/ScalarMaximum.lean",
     "NewtonianLipschitz/BaselineBounds.lean", "NewtonianLipschitz/ConvexBaseline.lean",
     "NewtonianLipschitz/ImprovedBounds.lean", "NewtonianLipschitz/ConvexImproved.lean",
     "NewtonianLipschitz/JacobianRows.lean",
@@ -51,7 +52,7 @@ if manifest.get("name") != config.get("name"):
 expected_imports = {
     "NewtonianLipschitz.lean": [
         "NewtonianLipschitz.Derivative", "NewtonianLipschitz.Clearance",
-        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ConvexBaseline",
+        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ScalarMaximum", "NewtonianLipschitz.ConvexBaseline",
         "NewtonianLipschitz.ConvexImproved", "NewtonianLipschitz.JacobianRows",
         "NewtonianLipschitz.JacobianMatrix",
     ],
@@ -65,6 +66,7 @@ expected_imports = {
     "NewtonianLipschitz/Clearance.lean": ["NewtonianLipschitz.Norms"],
     "NewtonianLipschitz/FiniteSources.lean": ["NewtonianLipschitz.Field"],
     "NewtonianLipschitz/CubicCandidate.lean": ["Mathlib"],
+    "NewtonianLipschitz/ScalarMaximum.lean": ["NewtonianLipschitz.CubicCandidate"],
     "NewtonianLipschitz/BaselineBounds.lean": ["NewtonianLipschitz.Derivative"],
     "NewtonianLipschitz/ConvexBaseline.lean": ["NewtonianLipschitz.BaselineBounds", "NewtonianLipschitz.Clearance"],
     "NewtonianLipschitz/ImprovedBounds.lean": ["NewtonianLipschitz.BaselineBounds"],
