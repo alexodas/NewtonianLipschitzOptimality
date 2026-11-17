@@ -24,6 +24,7 @@ public import NewtonianLipschitz.AdmissibleCriticalDirection
 public import NewtonianLipschitz.AdmissibleSecantPairs
 public import NewtonianLipschitz.LongSeparation
 public import NewtonianLipschitz.CommonSafeFace
+public import NewtonianLipschitz.CrossFaceTwoHop
 public import NewtonianLipschitz.ConvexBaseline
 public import NewtonianLipschitz.ConvexImproved
 public import NewtonianLipschitz.JacobianRows

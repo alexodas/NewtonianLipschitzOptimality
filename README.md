@@ -64,7 +64,10 @@ separate necessary lower bound for any proposed universal
 coefficient, using physically admissible secants.
 R038 proves the proposed upper bound for sufficiently separated
 safe pairs; R039 proves it for safe pairs that share a supporting
-coordinate halfspace. Short cross-face pairs remain open.
+coordinate halfspace. R040 constructs a safe two-hop bridge for
+endpoints on distinct active coordinate axes, giving a **nonsharp**
+2*C3 bound. The desired sharp C3 bound for short cross-face
+pairs remains open.
 
 ### Formal mathematical statement
 
@@ -270,16 +273,20 @@ as verified in the permanent mathematical ledger below.
   in a **common safe supporting halfspace**, regardless of
   separation. Together R038–R039 cover far or common-face
   pairs, but not all safe pairs.
+- R040 constructs a **coordinate bridge** between endpoints
+  supported by different safe axes. It gives two convex-safe
+  hops of length at most the original separation and thus a
+  **nonsharp 2*C3 bound**, even if the direct segment is unsafe.
 - R001–R015 and R018–R023 document the foundational
   field, regularity, conservative estimates, and the
   verified algebraic reductions.
 
 **Proposed but not yet verified in Lean:**
 
-No additional proof is claimed beyond R039. The next
-research task is a rigorous bound or counterexample for
-short, cross-face pairs in the nonconvex cube exterior
-(issue #4).
+R040 is now Lean-verified. The next research task is
+to prove the missing sharp C3 bound, find a rigorous
+counterexample, or improve the nonsharp two-hop estimate
+for short cross-face pairs (issue #4).
 
 **Still unproved:**
 
@@ -1176,23 +1183,74 @@ and independent Comparator remain unproved.
 `NewtonianPointSource.accelerationField_norm_sub_le_candidateMaximum_far_or_common_face`.
 **Source:** [CommonSafeFace.lean][common-safe-face].
 
+### R040 — Safe coordinate bridge and nonsharp cross-face estimate
+
+For two points `x,y : Vec3` with positive clearance
+`d`, suppose `x` has a safe coordinate on axis `i`
+and `y` has a safe coordinate on another axis `j`:
+
+```text
+i != j,
+(x_i >= d or x_i <= -d),
+(y_j >= d or y_j <= -d).
+```
+
+Lean constructs a point `w` whose i-th coordinate
+equals `x_i` and j-th coordinate equals `y_j`,
+such that both hops satisfy
+
+```text
+norm_inf(x-w) <= norm_inf(x-y),
+norm_inf(w-y) <= norm_inf(x-y).
+```
+
+The first hop stays in the supporting halfspace of
+`x` and the second in that of `y`. R039 bounds
+each field difference with C3; the triangle
+inequality then proves the actual physical
+finite-difference bound
+
+```text
+norm_inf(g(x)-g(y))
+  <= (2*C3*μ/d^3)*norm_inf(x-y).
+```
+
+No assumption on clearance of the direct segment
+or a minimum separation is required.
+
+**Why useful:** Supplies a constructive safe piecewise
+path for different-axis endpoint pairs and a fully
+verified nonsharp global-scale estimate on that case.
+**Limit:** The factor 2 is **not sharp** and does not
+establish the desired C3 estimate for short cross-face
+pairs. No full one-source or N-source sharp theorem
+follows from R040, and Comparator remains inactive.
+
+**Lean:**
+`cartesian_different_axes_two_hop_bridge`,
+`NewtonianPointSource.accelerationField_norm_sub_le_two_candidateMaximum_different_axes`.
+**Source:** [CrossFaceTwoHop.lean][cross-face-two-hop].
+
 ## Direct proof strategy
 
 The derivative bound (R027) is attained (R029)
 and minimal for derivative estimates (R032).
 R033–R037 close the **admissible two-point lower bound**.
-R038 covers long separations, and R039 covers common
-safe supporting halfspaces.
+R038 covers long separations, R039 covers common safe
+supporting halfspaces, and R040 gives a safe two-hop
+**2*C3** estimate for distinct active axes.
 
-1. Prove or refute the remaining **short cross-face**
-   case with `norm_inf(x-y)<d`, with no common
-   supporting halfspace and potentially unsafe segment.
-2. Complete the global one-source upper bound only
-   after closing that remaining case.
-3. Then lift the bound to arbitrary source positions
-   and finite-source sums, checking scaling hypotheses.
+1. Improve the **nonsharp** two-hop bound in the
+   short cross-face case `norm_inf(x-y)<d`: control
+   cancellation or exploit the edge/corner geometry.
+2. Prove the sharp C3 one-source global upper bound
+   (or find a rigorous counterexample) before calling
+   it a global theorem.
+3. Only after that result, lift the estimate to
+   arbitrary source positions and finite-source sums,
+   checking scaling hypotheses.
 4. Finally prepare the two Palomar statements and
-   Comparator without assuming the remaining upper bound.
+   Comparator without assuming the missing upper bound.
 
 ## Roadmap
 
@@ -1220,16 +1278,18 @@ safe supporting halfspaces.
   convex and box bounds (R030–R031), R038 proves the
   nonconvex bound for safe pairs separated by at least
   d and R039 handles any common safe supporting face.
-  Only the short cross-face one-source upper bound and
-  its eventual multi-source extension remain open.
+  R040 gives a constructive two-hop nonsharp 2*C3
+  bound for distinct-axis active faces. The sharp
+  short cross-face one-source bound and eventual
+  multi-source theorem remain open.
 - **M06 — Scientific and archival validation: open.** The
   planned Palomar pair is the exact formula for C3 and its
   global optimality (see [PALOMAR.md](PALOMAR.md)).
   The second theorem, independent Comparator, references
   and final review before any Palomar submission remain
-  outstanding. PRs #1–#3 and #5–#6 have been merged
-  into `main`; further research uses one active PR
-  with verification before merge.
+  outstanding. Further research uses one active PR,
+  with verified proof statements and documentation
+  reviewed before merge.
 
 ## Repository structure and reproducibility
 
@@ -1267,7 +1327,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [AdmissibleCriticalDirection][admissible-critical],
   [AdmissibleSecantPairs][admissible-secant],
   [LongSeparation][long-separation],
-  [CommonSafeFace][common-safe-face].
+  [CommonSafeFace][common-safe-face],
+  [CrossFaceTwoHop][cross-face-two-hop].
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
 [derivative-direction]: NewtonianLipschitz/DerivativeAttainingDirection.lean
@@ -1275,6 +1336,7 @@ The substantive library is in `NewtonianLipschitz/`:
 [admissible-secant]: NewtonianLipschitz/AdmissibleSecantPairs.lean
 [long-separation]: NewtonianLipschitz/LongSeparation.lean
 [common-safe-face]: NewtonianLipschitz/CommonSafeFace.lean
+[cross-face-two-hop]: NewtonianLipschitz/CrossFaceTwoHop.lean
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
