@@ -14,13 +14,18 @@ physical derivative. The first planned Palomar statement
 records the exact scalar formula, supported by the
 separately verified local optimality results.
 
-The second question is **global**: does that same sharp
+The second question is **global**: does the same sharp
 coefficient C3 bound the force difference between *any*
-two admissible points outside the nonconvex safety cubes,
-even when their connecting segment is unsafe? This is
-still a conjecture to **prove or refute**. Partial sharp
-bounds and a nonsharp global route are known, but the
-optimal global coefficient is not yet identified.
+two safe points outside a nonconvex source-centered cube,
+even when their connecting segment is unsafe?
+**R047 now proves the global C3 upper bound for the
+exact Newtonian field of one source**. Together with
+R037's necessary two-point lower bound, this identifies
+C3 as the exact optimal universal one-source coefficient.
+For multiple sources, R041's conditional finite-source
+reduction can now use the proved R047 premise; assembling
+the complete physical N-source Palomar declaration and
+independent Comparator validation remain outstanding.
 
 The [Status](#status) section distinguishes verified
 results from current proposals and open problems.
@@ -63,65 +68,53 @@ The first planned Palomar theorem specifies its exact
 scalar characterization, supported by these local results.
 
 **Second question — Does the same optimal coefficient
-control any two allowed points? (Open.)** Now select two
-points P and Q anywhere outside *all* forbidden cube
-interiors, even if the straight line between them
-passes **through** a forbidden cube. We ask whether the
-difference between their actual gravitational forces
-is always bounded using **the same C3** times their
-Cartesian separation and the physical source/clearance
-factors. A bound on the derivative at allowed positions
-does not answer this automatically: the line segment
-may enter a region where our derivative bound does not
-apply. This is the central nonconvex-domain difficulty.
+control any two allowed points? (Proved for one source.)**
+Choose two points P and Q outside the interior of the
+cube surrounding a single mass. Their straight connecting
+segment may pass **through the forbidden cube**, so the
+ordinary derivative bound cannot simply be integrated
+along that unsafe segment.
 
-We have genuine partial results. R030 establishes the
-C3 two-point estimate on convex safe domains; R038
-handles sufficiently separated allowed points; R039
-handles points sharing a safe supporting halfspace.
-R040 constructs two safe steps between different
-active faces, obtaining a **coarser bound with
-coefficient 2*C3**, not proved optimal. Taken
-together, these cases give an explicit global
-2*C3 bound for one source by a case split; that
-all-pairs corollary has not yet been packaged
-as a single Lean theorem. The unresolved question is therefore
-*not* whether some finite global bound exists:
-it is whether **C3 itself works globally and is
-optimal**. R036–R037 already prove that no smaller
-universal coefficient could work.
+R047 proves that the proposed bound **does hold for
+every such pair**. Its geometric idea is simple:
+when P and Q share a safe coordinate halfspace, the
+connecting segment is safe; when their safe coordinates
+lie on different axes, R040 constructs two safe legs.
+R042–R046 establish a stronger derivative estimate
+with coefficient **5/4** along movements parallel
+to a safe coordinate plane. R047 integrates that
+estimate along a genuinely safe leg and obtains
+an actual **5/4 force-difference bound** for any
+pair with one fixed safe coordinate. Applying R043's
+verified case split, the two-leg case has coefficient
+at most **5/2**, strictly below C3.
 
-Either outcome would be a valid mathematical result:
-**prove** that C3 controls every allowed pair, or
-**refute** it with a rigorously certified pair whose
-force difference exceeds the proposed C3 bound.
-In the second case, the true optimal global
-coefficient would need to be characterized separately.
+Consequently, for a point source with gravitational
+parameter mu and cube half-side d>0, Lean proves
 
-R041 proves the exact **conditional** lifting from a
-one-source global C3 estimate to an N-source bound,
-but it does **not** prove its one-source premise.
-R042 certifies the tangential polynomial inequalities
-and the exact strict gap C3 > 5/2. R043 further proves
-that a **5/4 finite-difference estimate along any fixed
-safe coordinate plane would imply the full one-source
-global C3 bound**. This conditional geometric reduction
-is verified, but its single explicit physical premise
-`oneSourceSafePlaneFiveFourthBound` remains unproved.
-R044 now proves the required **physical directional
-derivative bound in normalized coordinates** (1,u,v)
-with u,v nonnegative and first-direction component
-zero. R045 now extends that physical derivative bound to
-every signed displacement whose **first Cartesian
-coordinate is safe**, with arbitrary clearance d>0.
-R046 now verifies the same physical derivative
-estimate for **every signed-safe Cartesian coordinate**
-and arbitrary clearance. The finite-difference
-integration along the safe plane remains unproved.
-The full second Palomar theorem is therefore **not
-yet established**, and
-a potential counterexample would require revising
-its statement.
+```text
+norm_inf(g_mu(P)-g_mu(Q))
+    <= (mu*C3/d^3)*norm_inf(P-Q)
+```
+
+for **all** safe P and Q, including pairs whose
+straight segment is unsafe. R037 had already shown
+that no smaller universal coefficient could work,
+so the **optimal one-source global coefficient is C3**.
+This is not merely a local derivative statement.
+
+**What about N sources?** R041 proves the exact
+conditional lifting of a one-source global C3 bound
+to a finite-source differential-acceleration bound.
+R047 has now established the previously missing
+one-source premise. Thus the multi-source estimate
+is supported by an already checked implication
+and a now checked premise, although the fully
+assembled unconditional N-source declaration,
+physical parameter interface and independent
+Comparator checking are still outstanding.
+The full planned second Palomar submission is
+**not yet completed**.
 
 ### Formal mathematical statement
 
@@ -284,16 +277,17 @@ This does not guarantee improved numerical accuracy,
 unchanged code stability or any runtime gain; these
 require application-level analysis and benchmarking.
 
-**Present limitation:** R027–R029 prove the sharp
-pointwise derivative norm and its attainment;
-R030–R031 handle convex safe domains and boxes;
-R038–R039 handle far or common-face safe pairs;
-R040 gives a nonsharp 2*C3 bound for different-axis
-pairs. The sharp global C3 estimate across the
-nonconvex exterior remains **unproved**.
-Reusing a precomputed scalar has negligible arithmetic
-overhead, but adopting the bound in real software requires
-checking the model, clearance and domain hypotheses.
+**Present limitation:** R047 proves the sharp
+global C3 bound for one Newtonian source on the full
+nonconvex cube exterior. Together with R037's lower
+bound, its universal one-source coefficient is optimal.
+R041 provides a formally checked finite-source lifting
+implication, whose one-source premise R047 now proves.
+A fully assembled unconditional physical N-source
+Palomar theorem and independent Comparator check
+are not yet complete. Adopting the bound in real
+software still requires checking the model, clearance
+and domain hypotheses.
 No measured algorithmic improvement is claimed.
 
 ## Status
@@ -333,22 +327,23 @@ as verified in the permanent mathematical ledger below.
   supported by different safe axes. It gives two convex-safe
   hops of length at most the original separation and thus a
   **nonsharp 2*C3 bound**, even if the direct segment is unsafe.
-- R041 proves that the still-open **one-source global C3**
-  statement, *if established*, implies the sharp finite-source
-  differential-force bound with coefficient N*M*C3/d³.
-  The premise is stated explicitly and remains unproved.
+- R041 proves a **conditional** lifting of the one-source
+  global C3 assertion to an N-source differential-force
+  bound with coefficient N*M*C3/d³. The missing one-source
+  premise is **now proved by R047**; the explicit
+  unconditional N-source declaration is still to be
+  assembled and checked as the final Palomar target.
 - R042 certifies exact **safe-plane tangential algebra**:
   a fifth-power radial denominator estimate, two normalized
   row-numerator bounds supporting a prospective 5/4 estimate,
   and the strict scalar inequality **C3 > 5/2**.
   Its conclusions are algebraic; R044 adds a physical
   normalized derivative result.
-- R043 proves the **conditional global reduction**: if the exact
-  Newtonian finite difference along every fixed safe coordinate
-  plane has coefficient 5/4, then the one-source global C3
-  inequality follows for all safe endpoint pairs. The geometric
-  case split is fully verified, but the plane premise remains
-  **unproved**.
+- R043 proves a **conditional geometric reduction** from
+  the 5/4 safe-plane force-difference estimate to the
+  global one-source C3 inequality for all safe endpoints.
+  R047 has now **proved that safe-plane premise** and
+  applied the reduction unconditionally.
 - R044 proves the **genuine physical Newtonian derivative**
   satisfies the 5/4 tangential directional estimate on the
   normalized plane x0=1 with u,v>=0; it uses exact physical
@@ -362,52 +357,37 @@ as verified in the permanent mathematical ledger below.
 - R046 proves the **genuine physical 5/4 tangential
   derivative bound on any safe Cartesian coordinate
   plane**, with arbitrary signed positions and
-  clearance d > 0. The two-point safe-plane
-  finite-difference premise remains unproved.
+  clearance d > 0.
+- R047 integrates R046 along safe-plane segments,
+  proves the actual **5/4 two-point force estimate**,
+  discharges the R043 premise and establishes the
+  **unconditional sharp global C3 upper bound for
+  one Newtonian source**, including unsafe chords.
 - R001–R015 and R018–R023 document the foundational
   field, regularity, conservative estimates, and the
   verified algebraic reductions.
 
 **Proposed but not yet verified in Lean:**
 
-The proposed **global sharp C3** two-point bound
-remains open for nearby points on different safe
-cube faces (issue #4). It may be proved or
-refuted by a rigorous counterexample. R041 proves
-only a conditional N-source implication and does
-not settle its unproved one-source premise.
-R042 proves the scalar inequalities needed by a safe-plane
-tangent estimate; R044 now proves their transfer to the
-actual Newtonian derivative for normalized points
-(1,u,v) with u,v>=0, and directions with first coordinate
-zero. The unrestricted physical estimate remains open.
-R043 proves the **conditional implication** from the
-explicit, unproved `oneSourceSafePlaneFiveFourthBound`
-to `oneSourceGlobalCandidateBound`. It does not
-establish either proposition unconditionally.
-R045 proves the true physical tangential derivative
-for a safe first coordinate. R046 now extends that
-pointwise derivative inequality to **all three safe
-axes**. The missing step is to integrate the derivative
-along an actual safe-plane segment to prove the
-two-point estimate `oneSourceSafePlaneFiveFourthBound`.
-No proposed result is counted as verified in
-the cumulative mathematical ledger.
+The full end-to-end **N-source Palomar theorem** with
+the intended physical mass/source-position interface
+and explicit global-optimality declaration is still
+to be assembled. R041 formally proves the conditional
+finite-source lifting, while R047 now proves its
+one-source premise; neither fact alone constitutes
+independent Comparator checking of a final two-target
+Palomar submission. No proposed result is counted
+as verified in the cumulative mathematical ledger.
 
 **Still unproved:**
 
-- **Finite-difference integration** of R046's physical
-  5/4 tangential derivative along a fixed safe
-  coordinate plane. The derivative estimate now
-  covers all signed-safe axes. R043 formally proves
-  that the corresponding two-point result would
-  imply the global sharp C3 bound.
-- A universal C3 bound for arbitrary endpoints outside
-  forbidden cubes, even if the joining segment is unsafe;
-  the **nonconvex complement** requires separate analysis.
-- The final N-source global optimality theorem planned
-  as the second Palomar target, and independent Comparator
-  validation of the two selected theorem statements.
+- The final directly stated N-source upper estimate
+  for the complete physical parameterization, and
+  the exact universal optimality statement in that
+  combined interface (using R037 for minimality).
+- Independent Comparator validation of the two
+  selected Palomar theorem declarations, and external
+  mathematical review.
 
 ## Results acquired — cumulative mathematical ledger
 
@@ -1668,28 +1648,101 @@ conclusion and the complete N-source theorem.
 `NewtonianPointSource.accelerationField_fderiv_any_safe_axis_tangent_le`.
 **Source:** [PhysicalTangentialAllAxes.lean][physical-tangential-all-axes].
 
+### R047 — Safe-plane finite differences and unconditional global single-source C3
+
+Lean proves for the exact physical Newtonian
+acceleration `g_mu`, any `d>0` and points x,y
+with one identical signed-safe coordinate i,
+
+```text
+x_i = y_i,  d <= x_i or x_i <= -d
+  =>
+norm_inf(g_mu(x)-g_mu(y))
+  <= (5/4)*(mu/d^3)*norm_inf(x-y).
+```
+
+It parametrizes the entire safe segment by
+`z(t) = x + t*(y-x)`, `0 <= t <= 1`.
+The fixed coordinate remains signed-safe,
+so every `z(t)` avoids the Newtonian source.
+The derivative of the **actual acceleration
+composed with this path** follows by the
+Fréchet/ordinary derivative chain rule. R046
+bounds that true path derivative by
+`(5/4)*(mu/d^3)*norm_inf(y-x)`.
+A Mathlib mean-value norm inequality on
+`[0,1]` yields the finite-difference result.
+
+This resolves the explicit R043 proposition
+`oneSourceSafePlaneFiveFourthBound`
+**unconditionally**, and Lean then invokes
+R043's already verified exhaustive geometric
+case split to prove the proposition
+
+```text
+oneSourceGlobalCandidateBound
+```
+
+without additional assumptions. In other
+words, for **every pair of points** outside
+the open safety cube of one Newtonian source,
+even when their direct chord is unsafe,
+
+```text
+norm_inf(g_mu(x)-g_mu(y))
+  <= (mu*C3/d^3)*norm_inf(x-y).
+```
+
+**Why useful:** Resolves the previously open
+sharp **one-source nonconvex global upper bound**.
+R037 independently proves that a universal
+coefficient strictly below C3 cannot work.
+Combining their mathematical content establishes
+the exact optimal universal global one-source
+coefficient C3. R041's previously conditional
+finite-source lifting now has a proved premise.
+
+**Limit:** R047 does **not** yet package the
+complete N-source physical mass/position
+parametrization and universal optimality
+as the second final Palomar declaration.
+The first Palomar target, Challenge/Solution
+interface and independent Comparator checking
+remain to be assembled and validated.
+No originality, review or submission is claimed.
+
+**Lean:**
+`NewtonianPointSource.accelerationField_norm_sub_le_fiveFourth_safePlane`,
+`oneSourceSafePlaneFiveFourthBound_proved`,
+`oneSourceGlobalCandidateBound_proved`.
+**Source:** [SafePlaneFiniteDifference.lean][safe-plane-finite-difference].
+
 ## Direct proof strategy
 
-The derivative bound (R027) is attained (R029)
-and minimal for derivative estimates (R032).
-R033–R037 close the **admissible two-point lower bound**.
-R038 covers long separations, R039 covers common safe
-supporting halfspaces, and R040 gives the two-hop
-**2*C3** estimate for distinct active axes. R041
-already establishes the **conditional** N-source lift.
+The optimal pointwise derivative bound is
+verified (R027–R032), and R033–R037 establish
+the matching **universal two-point lower bound**.
+R038–R040 establish geometric safe-pair subcases;
+R042–R046 certify exact 5/4 tangential derivative
+bounds for the physical field. R047 integrates
+those bounds, discharges R043's premise and proves
+the **unrestricted one-source global C3 estimate**.
+R041 had already verified the corresponding
+conditional finite-source lifting and now has
+a valid one-source premise.
 
-1. Prove or refute the missing sharp C3 bound for
-   short cross-face one-source pairs; investigate
-   force-difference cancellation instead of merely
-   summing two C3 bounds.
-2. Combine that future one-source theorem with the
-   **already verified conditional reduction R041**
-   and identify physical parameters `mu_k = G*m_k`,
-   including source-position translations.
+1. Package the one-source result with the
+   existing finite-source summation (R041) into
+   an **unconditional** physically parameterized
+   N-source theorem; explicitly identify
+   `mu_k = G*m_k` and source-position translations.
+2. Formally connect the R037 necessary lower bound
+   to the final interface's universal optimality,
+   checking the admissible multiplicities and
+   allowed source arrangements.
 3. Assemble two auditable Palomar statements and
-   configure Comparator only after both targets
-   are actually proved, without implying that
-   the conditional result supplies its premise.
+   independently configure and run Comparator
+   before any claim of submission readiness.
 
 ## Roadmap
 
@@ -1701,36 +1754,37 @@ already establishes the **conditional** N-source lift.
   dominant-axis estimates (R022–R023) and arbitrary
   signed coordinates (R024) have been verified. R025
   expresses the result in the Cartesian norm.
-- **M03 — Sharp upper bound: complete pointwise and on
-  convex safe domains.** R016–R017 fix C3, R024–R027
-  bound the Cartesian derivative operator norm, and
-  R028–R029 prove its attainment. R030 proves the
-  actual finite-difference bound on convex safe domains.
-  The unrestricted nonconvex bound remains unproved.
+- **M03 — Sharp upper bound: complete for one source.**
+  R016–R017 fix C3, R024–R027 bound the Cartesian
+  derivative, and R028–R029 prove its attainment.
+  R030 covers convex domains; R047 proves the
+  **global C3 finite-difference bound outside the
+  entire nonconvex safety cube**.
 - **M04 — Two-point lower bound: complete for the unit
   source.** R029 proves derivative-norm attainment,
   R032 pointwise minimality, R033–R035 supply admissible
   secants, and R036–R037 establish the actual secant
-  limit and necessary lower bound C3. The full
-  nonconvex **upper** bound is still open.
-- **M05 — Domain theorem: in progress.** In addition to
-  convex and box bounds (R030–R031), R038 proves the
-  nonconvex bound for safe pairs separated by at least
-  d and R039 handles any common safe supporting face.
-  R040 gives a constructive two-hop nonsharp 2*C3
-  bound for distinct-axis active faces. R041 proves
-  the **conditional** finite-source lifting with the
-  sharp N*M*C3/d³ factor. The short cross-face
-  one-source C3 bound and thus the unconditional
-  multi-source theorem remain open.
-- **M06 — Scientific and archival validation: open.** The
-  planned Palomar pair is the exact formula for C3 and its
-  global optimality (see [PALOMAR.md](PALOMAR.md)).
-  The second theorem, independent Comparator, references
-  and final review before any Palomar submission remain
-  outstanding. Further research uses one active PR,
-  with verified proof statements and documentation
-  reviewed before merge.
+  limit and necessary lower bound C3. R047 now proves
+  the matching one-source global upper bound.
+- **M05 — Domain theorem: one-source upper bound complete;
+  full N-source declaration in progress.** R038–R040
+  supply the geometric subcases; R042–R046 certify
+  tangential bounds; and R047 proves the unrestricted
+  sharp global C3 upper estimate for one Newtonian
+  source. R041's finite-source lifting implication
+  has its necessary one-source premise proved by
+  R047. Explicit physical N-source parameterization,
+  unconditional final declaration and minimality
+  in the completed interface remain to be formalized.
+- **M06 — Scientific and archival validation: open.**
+  The planned Palomar pair is the exact scalar C3
+  formula and optimal global N-source sensitivity
+  theorem (see [PALOMAR.md](PALOMAR.md)).
+  The final source-parametrized second declaration,
+  independent Comparator, external mathematical
+  review and submission remain outstanding.
+  Work continues through a single active PR
+  and green full builds before merge.
 
 ## Repository structure and reproducibility
 
@@ -1775,7 +1829,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [SafePlaneReduction][safe-plane-reduction],
   [PhysicalTangentialNormalized][physical-tangential-normalized],
   [PhysicalTangentialFirstAxis][physical-tangential-first-axis],
-  [PhysicalTangentialAllAxes][physical-tangential-all-axes].
+  [PhysicalTangentialAllAxes][physical-tangential-all-axes],
+  [SafePlaneFiniteDifference][safe-plane-finite-difference].
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
@@ -1791,6 +1846,7 @@ The substantive library is in `NewtonianLipschitz/`:
 [physical-tangential-normalized]: NewtonianLipschitz/PhysicalTangentialNormalized.lean
 [physical-tangential-first-axis]: NewtonianLipschitz/PhysicalTangentialFirstAxis.lean
 [physical-tangential-all-axes]: NewtonianLipschitz/PhysicalTangentialAllAxes.lean
+[safe-plane-finite-difference]: NewtonianLipschitz/SafePlaneFiniteDifference.lean
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
 The Lean 4 toolchain and Mathlib revision are pinned.
@@ -1817,11 +1873,14 @@ A complete Lean build checks the formal statements as encoded.
 It is different from **independent kernel checking**, scientific
 peer review, physical validation, and proof of originality.
 
-The global nonconvex upper bound and full optimality are
-**not yet Lean-verified theorems**, even though the scalar
-C3 maximum and universal two-point coefficient lower bound
-have been proved. Preserve exact assumptions, norms, source
-links, and uncertainty.
+The **one-source global nonconvex C3 upper bound**
+is now Lean-verified (R047), and R037 proves the
+necessary universal two-point lower bound. The fully assembled physical N-source Palomar
+declarations are **not yet Lean-verified theorems**
+in their final requested interface; independent
+Comparator checking also remains outstanding.
+Preserve exact assumptions, norms, source links,
+and uncertainty.
 
 Keep cumulative **mathematical** results here; keep the build and
 task chronology in the pull request, not in the results catalog.

@@ -67,105 +67,73 @@ the theorem must prove **both**:
    configuration. A single-source example is sufficient
    to prove this lower-bound part.
 
-**Verified progress:** R027 proves the pointwise
-operator-norm bound; R028–R029 prove exact attainment
-of the physical derivative operator norm at C3.
-R030 establishes the candidate finite-difference
-bound on convex domains with positive Cartesian
-clearance. R031 verifies the Cartesian-box center-margin
-corollary. R032 proves C3 is the least universal
-pointwise derivative-norm coefficient. R033 constructs
-an attaining direction; R034 certifies an outward
-orientation whose forward ray stays outside the unit
-safety cube. R035 proves distinct admissible secant
-pairs with exact Cartesian step length. R036 proves the
-right-hand limit of **physical** finite-difference quotients
-along that admissible direction. R037 proves that every
-coefficient valid for all unit-cube-safe two-point
-differences of the unit source must be at least C3.
-R038 proves the C3 upper estimate for safe endpoints
-separated by at least the clearance d without requiring
-a safe segment. R039 proves it for any two endpoints
-in a common positive or negative safe supporting
-halfspace, and combines these two cases. R040 gives
-a constructive safe two-hop path for endpoints on
-different active axes and a verified **nonsharp
-2*C3** two-point bound in that case. R041 verifies
-the **conditional** deduction of the exact finite-source
-bound with coefficient `N*M*C3/d³` from the still-open
-one-source global C3 proposition
-`oneSourceGlobalCandidateBound`. R042 certifies
-exact scalar radial-denominator and tangential
-row-numerator inequalities supporting a proposed
-5/4 derivative factor, and proves **C3 > 5/2**
-without decimal approximations. The link to the
-actual physical Jacobian and the nonconvex **C3
-upper bound** remain unproved for short cross-face
-pairs. R043 proves, **conditionally on** the explicit
-unproved `oneSourceSafePlaneFiveFourthBound` finite-difference
-estimate on fixed safe coordinate planes, the unrestricted
-one-source global sharp C3 proposition
-`oneSourceGlobalCandidateBound`. This covers
-all endpoint configurations using R038–R040, but
-does not prove its safe-plane premise.
-R044 proves the actual physical Newtonian
-Jacobian tangent-column 5/4 bound and the
-corresponding Frechet directional inequality
-at (1,u,v), u,v >= 0, h0 = 0. The transfer
-to arbitrary coordinate signs and scales on
-the first axis is now proved by R045, using exact
-Jacobian sign invariance and inverse-cube scaling.
-R046 now extends the same genuine physical
-5/4 tangential derivative bound to **all signed
-safe axes** using verified cyclic symmetry.
-The safe-plane finite-difference estimate does
-not yet follow: the mean-value integration
-along a fixed safe plane remains outstanding.
+**Verified progress:** R016–R017 prove the exact scalar C3
+formula and maximality. R024–R032 establish the actual
+Newtonian derivative's sharp Cartesian operator-norm
+bound and its attainment. R033–R037 exhibit admissible
+safe secants approaching C3 and prove that no smaller
+universal one-source global coefficient can work.
+R035 constructs exact-step admissible secant pairs;
+R036 proves their right-hand quotient limit.
+R038 handles long admissible pairs, R039 handles
+common supporting safe halfspaces, and R040 builds
+a safe two-hop bridge for different-axis endpoints.
+R045 proves the signed-safe first-axis physical
+tangential derivative bound, later extended to
+all three axes in R046.
 
-**Outstanding evidence:** The sharp global upper
-bound (or a rigorous refutation) for **short
-one-source cross-face pairs** without any shared safe
-coordinate halfspace. R037 supplies the necessary
-two-point lower bound, R038–R039 the proved sharp
-upper subcases, and R040 only a nonsharp 2*C3
-estimate. R042 supplies only the algebraic certificates
-for a proposed tangential 5/4 estimate; R044
-now transfers them to the **actual physical
-Jacobian at normalized nonnegative points**.
-The all-axis pointwise derivative is now certified
-by R046; **integration on safe planes** remains
-outstanding. R045 proves the signed-safe first-axis
-case, and R046 proves the second and third axes
-through exact cyclic permutation of the physical
-Newtonian Jacobian. R043 now verifies the complete
-conditional reduction from the explicit safe-plane 5/4
-finite-difference premise to the one-source global C3
-estimate; the premise remains unproved. R041 already
-proves that a valid one-source
-global C3 estimate *would imply* the exact finite-source
-N*M*C3/d³ bound for the existing nonlinear differential
-acceleration model. The single-source premise is still
-unproved; the full physical-source parametrization,
-matching Palomar declarations and independent
-Comparator verification remain outstanding.
+R042 certifies exact scalar inequalities supporting a
+stronger tangential coefficient 5/4, and proves the
+strict exact comparison **5/2 < C3**. R044–R046
+transfer the tangential estimate to the true
+Newtonian Fréchet derivative for every signed-safe
+coordinate axis and positive clearance.
 
-**Repository stage:** R001–R046 have passed complete
-Lean builds, and the permanent README ledger records
-their exact statements and limitations. R041 and R043
-are **conditional implications**; R042 establishes
-scalar inequalities, and R044 proves the physical
-tangential estimate **only in normalized nonnegative
-coordinates**. R045 proves the actual physical 5/4
-tangential derivative under arbitrary coordinate signs
-and positive clearance on the first Cartesian axis;
-all three axes are now covered by R046, but finite
-differences remain open. The safe-plane proposition
-`oneSourceSafePlaneFiveFourthBound` and the one-source
-global C3 proposition `oneSourceGlobalCandidateBound`
-remain unproved. This description does not depend
-on the transient state of a pull request.
-Neither compilation nor merge constitutes independent
-Comparator validation or a Palomar submission.
+**R047 now proves the previously missing one-source
+global upper bound, without convexity of the entire
+domain.** Using the one-dimensional mean-value
+inequality on a fixed safe coordinate plane,
+it obtains the genuine **5/4 finite-difference
+bound**, proves the earlier explicit proposition
+`oneSourceSafePlaneFiveFourthBound`, and applies
+R043's already verified geometric case split to
+prove `oneSourceGlobalCandidateBound`
+**unconditionally**. Together with R037, this
+identifies C3 as the sharp universal coefficient
+for the one-source nonconvex cube-exterior problem.
+
+R041 had already proved the correct **conditional**
+finite-source lifting of a global one-source bound
+to the exact nonlinear differential-acceleration
+sum with coefficient `N*M*C3/d³`. The necessary
+one-source premise is now a theorem by R047;
+the lifting is mathematically available without
+an open single-source hypothesis. However, a
+standalone unconditional theorem with the intended
+complete physical N-body source positions,
+`mu_k = G*m_k` and universal minimality statement
+has not yet been assembled in the planned
+Palomar interface.
+
+**Outstanding evidence:** Finish the explicit
+physical-source parameterization, the final
+N-source upper/minimality statement with all
+necessary positivity and multiplicity assumptions,
+and matching auditable Challenge/Solution
+declarations for both planned Palomar theorems.
+Configure and run independent Comparator, then
+seek mathematical review. This repository is not
+yet a submission or externally reviewed result.
+
+**Repository stage:** R001–R047 have passed complete
+Lean builds, and the README's cumulative ledger
+records their exact mathematical statements and
+limitations. R041 and R043 remain valid verified
+conditional implications, but R047 now proves
+both premises needed for the one-source and
+finite-source deductions. Compilation and merge
+are not independent Comparator validation or
+Palomar submission.
 
 ## Conditions before actual submission
 
