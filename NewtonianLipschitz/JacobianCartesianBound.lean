@@ -23,7 +23,7 @@ of its three Cartesian coordinates. -/
 theorem cartesian_norm_eq_max_abs (x : Vec3) :
     ‖x‖ = max (|x 0|) (max (|x 1|) (|x 2|)) := by
   simp [Pi.norm_def, Fin.univ_succ, Finset.sup_insert,
-    Real.norm_eq_abs, max_assoc, max_comm, max_left_comm]
+    Real.norm_eq_abs] <;> ac_rfl
 
 /-- Every row of the true Newtonian Jacobian has the exact
 candidate upper bound at an arbitrary nonzero displacement,
