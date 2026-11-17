@@ -209,6 +209,17 @@ applications, not validated performance or safety claims.
   The coefficient does not itself certify a collision probability
   or operational safety.
 
+**Geometry and practical adoption:** More elaborate
+polyhedral exclusion regions may offer more tailored
+bounds, potentially closer to spherical-clearance models.
+For existing Cartesian-box codes, replacing a conservative
+parameter with the precomputed C3 may tighten certified
+error budgets without changing spatial data structures,
+provided the proved domain and clearance conditions apply.
+This does not guarantee improved numerical accuracy,
+unchanged code stability or any runtime gain; these
+require application-level analysis and benchmarking.
+
 **Present limitation:** R027–R029 prove the sharp
 pointwise derivative norm and its attainment; R030–R031
 prove convex-domain and Cartesian-box bounds.
@@ -235,6 +246,8 @@ as verified in the permanent mathematical ledger below.
   where the derivative operator norm **equals C3**.
 - R032 proves that **no smaller universal coefficient**
   works for the Newtonian derivative operator norm.
+- R033 constructs a real Cartesian direction in which
+  the physical derivative action **attains C3**.
 - R030–R031 prove **finite-difference bounds** with C3
   on convex safe domains and certified Cartesian boxes.
 - R001–R015 and R018–R023 document the foundational
@@ -243,9 +256,9 @@ as verified in the permanent mathematical ledger below.
 
 **Proposed but not yet verified in Lean:**
 
-- `DerivativeAttainingDirection.lean` constructs
-  an explicit direction at the critical displacement
-  on which the true derivative action attains C3.
+- `AdmissibleCriticalDirection.lean` proposes an
+  outward-oriented attaining direction whose forward
+  ray remains outside the unit Cartesian safety cube.
 
 **Still unproved:**
 
@@ -920,21 +933,49 @@ two-point estimate on nonconvex cubical exteriors.
 **Source:**
 [DerivativeCoefficientMinimality.lean][derivative-minimality].
 
+### R033 — A direction attaining the physical derivative action
+
+At the exact critical displacement
+`x_star = (1,t_star,t_star)` for a unit-parameter
+Newtonian point source, Lean proves the existence of
+a Cartesian direction `h` with `norm_inf(h) <= 1`
+such that
+
+```text
+norm_inf((fderiv accelerationField x_star) h) = C3.
+```
+
+This is an **actual action of the physical derivative**,
+not merely an abstract operator-norm equality.
+The proof chooses signs matching the critical
+Jacobian row and compares with the R029 upper bound.
+
+**Why useful:** Supplies a precise directional witness
+for a future local difference-quotient argument and
+a route toward optimality of finite-difference bounds.
+**Limit:** It does not yet show that finite perturbed
+positions are admissible outside the safety cube or
+prove global two-point minimality.
+
+**Lean:**
+`NewtonianPointSource.unitAxis_fderiv_exists_attaining_direction`.
+**Source:**
+[DerivativeAttainingDirection.lean][derivative-direction].
+
 ## Direct proof strategy
 
-The candidate bounds the derivative (R027), attains
-its operator norm at the critical point (R029),
-and is least among all universal derivative-norm
-coefficients (R032). R030–R031 prove convex-set
-and Cartesian-box finite-difference estimates.
+The derivative bound (R027) is attained (R029)
+and is minimal among universal derivative estimates
+(R032). An attaining direction is verified (R033).
+R030–R031 cover convex safe sets and Cartesian boxes.
 
-1. Construct a direction of exact derivative action
-   attainment at the critical displacement.
-2. Prove an admissible **two-point** lower bound via
-   a limiting finite-difference quotient.
-3. Investigate arbitrary endpoints outside nonconvex
-   safety cubes, including segments that cross them.
-4. Prove the global multi-source inequality and
+1. Orient a sharp direction so that small positive
+   perturbations remain outside the source safety cube.
+2. Prove the matching admissible **two-point** lower
+   bound using a limiting finite-difference quotient.
+3. Analyze endpoints outside nonconvex forbidden cubes,
+   including pairs whose segments enter the exclusion.
+4. Prove the complete multi-source global bound and
    its separate optimality theorem for Palomar.
 
 ## Roadmap
@@ -954,12 +995,12 @@ and Cartesian-box finite-difference estimates.
   actual finite-difference bound on convex safe domains.
   The unrestricted nonconvex bound remains unproved.
 - **M04 — Optimality: in progress.** R029 verifies
-  exact attainment of the operator norm, and R032
-  proves minimality among universal derivative bounds.
-  A saturating direction is proposed in
-  DerivativeAttainingDirection.lean, pending Lean.
-  An admissible two-point lower bound and the global
-  nonconvex inequality remain unproved.
+  attainment of the operator norm, R032 its universal
+  pointwise minimality, and R033 an attaining direction.
+  An admissible outward ray is proposed in
+  AdmissibleCriticalDirection.lean, awaiting Lean.
+  Two-point minimality and the global nonconvex bound
+  remain unproved.
 - **M05 — Domain theorem: in progress.** The convex
   finite-difference theorem (R030) and Cartesian-box
   center-margin certificate (R031) are both verified.
@@ -1002,10 +1043,12 @@ The substantive library is in `NewtonianLipschitz/`:
   [ConvexSharp](NewtonianLipschitz/ConvexSharp.lean),
   [CartesianBoxSharp](NewtonianLipschitz/CartesianBoxSharp.lean),
   [DerivativeCoefficientMinimality][derivative-minimality],
-  [DerivativeAttainingDirection][derivative-direction].
+  [DerivativeAttainingDirection][derivative-direction],
+  [AdmissibleCriticalDirection][admissible-critical].
 
 [derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
 [derivative-direction]: NewtonianLipschitz/DerivativeAttainingDirection.lean
+[admissible-critical]: NewtonianLipschitz/AdmissibleCriticalDirection.lean
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.

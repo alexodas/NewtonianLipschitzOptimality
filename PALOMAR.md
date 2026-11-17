@@ -74,9 +74,10 @@ R030 establishes the candidate finite-difference
 bound on convex domains with positive Cartesian
 clearance. R031 verifies the Cartesian-box center-margin
 corollary. R032 proves C3 is the least universal
-pointwise derivative-norm coefficient. An explicit
-saturating direction is proposed in
-`DerivativeAttainingDirection.lean`, pending CI.
+pointwise derivative-norm coefficient. R033 constructs
+a direction attaining the physical derivative action.
+An admissible outward ray is proposed in
+`AdmissibleCriticalDirection.lean`, pending CI.
 
 **Outstanding evidence:** An admissible finite-difference
 minimality witness, a global two-point bound across
@@ -106,9 +107,16 @@ CAPD, VNODE-LP or COSY Infinity; AMR and adaptive numerical
 analysts; GPU/HPC developers; and researchers in
 planetary defense, aerospace and space situational awareness.
 
-The constant can be precomputed, but neither speedup nor
-reduced cell subdivision nor prevention of floating-point
-overflow has been demonstrated. Using this estimate does
+Compared with more elaborate polyhedral enclosures,
+the Cartesian coefficient may offer a practical
+parameter substitution for compatible certified
+box-based codes without changing grid data structures.
+More refined polyhedra may yield other, tighter
+bounds, but this comparison has not been established.
+Neither improved numerical accuracy, unchanged code
+stability, speedup, reduced cell subdivision nor
+prevention of floating-point overflow is guaranteed
+or demonstrated. Using this estimate does
 not change the Euclidean denominators of the physical law.
 Coulomb charge signs, periodic models, screening, software
 error budgets and nonconvex geometries need explicit
