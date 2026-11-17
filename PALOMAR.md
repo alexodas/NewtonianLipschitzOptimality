@@ -68,12 +68,13 @@ the theorem must prove **both**:
    to prove this lower-bound part.
 
 **Outstanding evidence:** The pointwise derivative
-operator-norm upper bound is verified (R027), but the
-global two-point upper bound on the nonconvex exterior
-is not. An exact diagonal Jacobian row-sum witness is
-proposed in `JacobianSharpWitness.lean`, pending CI.
-An admissible finite-difference witness and the full
-global theorem still require Lean proofs.
+operator-norm upper bound is verified (R027), and the
+exact diagonal Jacobian row-sum equality is verified
+(R028). The matching derivative operator-norm lower
+bound is proposed in `JacobianOperatorWitness.lean`.
+A global two-point bound across forbidden cubes and an
+admissible finite-difference minimality witness remain
+separate, unproved obligations.
 
 ## Conditions before actual submission
 
@@ -87,17 +88,26 @@ Palomar requires a **public repository pinned to a full
 visibility, submission, or merge to `main` is authorized
 by this planning document.
 
-**Potential importance and audience:** A proved sharp Cartesian-supremum-norm
-sensitivity coefficient for the Newtonian field may help control enclosure
-overestimation in rigorous numerical calculations. Potential readers include
-researchers in validated dynamics and interval/Taylor-model methods (CAPD,
-VNODE-LP, COSY Infinity), planetary defense and asteroid impact monitoring,
-aerospace engineering and space situational awareness, and certified
-Cartesian-grid \(N\)-body algorithms (Octree / Barnes–Hut variants).
-These are **prospective uses**, not demonstrated software integrations,
-validated orbital propagations, certified satellite collision probabilities,
-or achieved applications. All require further assumptions and analysis;
-see [the README](README.md#why-the-result-may-matter--intended-audience).
+**Potential importance and audience:** The mathematical
+scope is especially relevant to Cartesian boxes and validated
+computations involving inverse-square point-source forces.
+Prospective readers include computational astrophysicists
+working with N-body tree codes (Octree / Barnes–Hut) and FMM;
+computational chemists and biophysicists working with Coulomb
+interactions; interval and Taylor-model specialists using
+CAPD, VNODE-LP or COSY Infinity; AMR and adaptive numerical
+analysts; GPU/HPC developers; and researchers in planetary
+defense, aerospace and space situational awareness.
+
+The constant can be precomputed, but neither speedup nor
+reduced cell subdivision nor prevention of floating-point
+overflow has been demonstrated. Using this estimate does
+not change the Euclidean denominators of the physical law.
+Coulomb charge signs, periodic models, screening, software
+error budgets and nonconvex geometries need explicit
+hypotheses and additional analyses. No validated orbital
+propagation, collision probability or integration is claimed.
+See [the README](README.md#why-the-result-may-matter--intended-audience).
 
 **Provenance and review:** The project is initiated and directed by
 **Alessandro Odasso**, a non-mathematician investigating the capabilities and

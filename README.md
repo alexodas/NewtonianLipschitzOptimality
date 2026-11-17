@@ -9,8 +9,9 @@ The objective is to prove the smallest universal sensitivity coefficient
 under explicit positive-clearance and geometric domain assumptions.
 
 **Already proved:** the exact field and Fréchet derivative,
-coefficients 10 and 7, the scalar maximum, and candidate
-Cartesian Jacobian and directional derivative upper bounds.
+coefficients 10 and 7, the scalar candidate maximum, its
+Cartesian derivative operator-norm bound, and an exact
+Jacobian row-sum attainment witness (R027–R028).
 
 **Not yet proved:** the global two-point inequality with the
 candidate coefficient, its optimality, and a Lipschitz
@@ -136,20 +137,56 @@ forbidden region.
 
 ## Why the result may matter — intended audience
 
-These are potential uses, not certified applications:
+The intended readers work with Cartesian boxes, adaptive
+computations or **certified numerical enclosures** for
+inverse-square point-source forces. These are potential
+applications, not validated performance or safety claims.
 
-- **Validated dynamics:** CAPD, VNODE-LP and COSY Infinity may benefit
-  from explicit force sensitivity estimates.
-- **Planetary defense:** uncertainty propagation during close approaches
-  requires rigorous positive separation.
-- **Aerospace and space situational awareness:** a deterministic bound
-  may contribute to conjunction analyses, but a Lipschitz coefficient
-  does not itself certify a collision probability.
-- **Cartesian N-body and Barnes–Hut methods:** force sensitivity bounds
-  may enter error budgets; tree approximation errors need separate proofs.
+- **Computational astrophysicists and N-body developers:**
+  Cartesian tree codes (Barnes–Hut, octrees) and the Fast
+  Multipole Method (FMM) could use a tight force-sensitivity
+  bound within rigorously justified error budgets. The
+  formula alone does not certify fewer subdivisions or
+  bound a particular tree or multipole approximation error.
+- **Computational chemists and biophysicists:**
+  Coulomb point-charge forces share the inverse-square
+  vector kernel with Newtonian gravity, up to the source
+  coefficients and signs. A mathematically appropriate
+  bound may aid electrostatic simulations in 3D boxes.
+  Charges, screening, periodic boundaries and softened
+  potentials require separate treatment.
+- **Interval arithmetic and validated dynamics specialists:**
+  CAPD, VNODE-LP and COSY Infinity users could incorporate
+  an exact coefficient in interval or Taylor-model
+  enclosures with certified separation from singularities.
+  Benefits for wrapping, validated orbital trajectories
+  or planetary defense require application-level proofs.
+- **Numerical analysts and adaptive mesh refinement (AMR)
+  developers:** A Cartesian supremum-norm derivative
+  bound could support local error control and conservative
+  mesh or time-step decisions on suitable safe domains.
+  Actual accuracy and runtime gains remain unmeasured.
+- **GPU and high-performance-computing developers:**
+  The dimensionless constant can be stored once, without
+  solving the cubic at runtime. A bound expressed with
+  `norm_inf` may suit Cartesian block calculations, but
+  the physical force still uses Euclidean radii; no
+  elimination of squared-distance overflow or performance
+  speedup is established.
+- **Aerospace and space situational awareness specialists:**
+  Certified sensitivity estimates may contribute to
+  conjunction analyses and uncertainty propagation.
+  The coefficient does not itself certify collision
+  probability or operational safety.
 
-No application integration, physical validation, or originality claim
-is implied by this list.
+**Present limitation:** R027 bounds the pointwise
+Newtonian derivative; R028 verifies equality for a
+Jacobian row. The global two-point estimate across the
+nonconvex exterior of forbidden cubes is **unproved**.
+Reusing a precomputed scalar has negligible arithmetic
+overhead, but adopting the bound in real software requires
+checking the model, clearance and domain hypotheses.
+No measured algorithmic improvement is claimed.
 
 ## Results acquired — cumulative mathematical ledger
 
@@ -662,16 +699,46 @@ arbitrary points outside the nonconvex safety cubes.
 **Source:**
 [JacobianOperatorNorm.lean](NewtonianLipschitz/JacobianOperatorNorm.lean).
 
+### R028 — Exact attainment of the candidate Jacobian row bound
+
+At the Cartesian displacement `x = (1,t_star,t_star)`,
+where `t_star` is the exact critical root of R016,
+Lean proves
+
+```text
+norm_inf(x) = 1
+sum_j abs(J(1,x)[X,j]) = C3.
+```
+
+Here `J(1,x)` is the physical Newtonian Jacobian with
+unit gravitational parameter, and `C3` is the exact
+candidate maximum defined and maximized in R017.
+The proof first establishes the row-sum identity at
+every diagonal displacement `(1,t,t)` for `0 <= t <= 1`.
+
+**Why useful:** Provides a concrete exact equality
+witness, showing that the universal Jacobian row-sum
+upper bound cannot be improved.
+**Limit:** The witness does not yet establish equality
+for the induced derivative operator norm or a global
+two-point gravitational Lipschitz inequality.
+
+**Lean:** `normalized_diagonal_radius`,
+`newtonianJacobianMatrix_diagonal_firstRow_eq_coefficient`,
+`criticalDiagonal_cartesian_norm_eq_one`,
+`newtonianJacobianMatrix_critical_firstRow_eq_candidateMaximum`.
+**Source:**
+[JacobianSharpWitness.lean](NewtonianLipschitz/JacobianSharpWitness.lean).
+
 ## Direct proof strategy
 
 The exact candidate bounds the true Frechet derivative's
 Cartesian operator norm at positive clearance (R027).
 
-1. Establish an exact Jacobian row-sum witness at the
-   critical diagonal displacement, then prove a matching
-   operator-norm lower bound.
-2. **Prove optimality separately**, using a limiting
-   finite-difference quotient at the witness.
+1. Transfer the exact diagonal row-sum witness (R028)
+   to the true derivative's induced operator norm.
+2. **Prove global optimality separately**, including
+   a limiting admissible finite-difference quotient.
 3. Establish finite-difference bounds on suitable convex
    safe domains.
 4. Analyze arbitrary pairs of points outside nonconvex
@@ -698,13 +765,16 @@ Cartesian operator norm at positive clearance (R027).
   verified (R025). Directional matrix and Frechet
   derivative bounds are verified (R026). The induced
   operator norm and positive-clearance estimate are also
-  verified (R027). The diagonal row-sum witness is
-  proposed in JacobianSharpWitness.lean, pending CI.
-  Optimality and nonconvex bounds remain open.
-- **M04 — Optimality: open.** A diagonal row-sum
-  witness is proposed but not yet verified; proving
-  operator-norm equality and a finite-difference
-  lower bound will be separate steps.
+  verified (R027). The critical diagonal row-sum
+  witness is also verified (R028). An exact lower
+  bound and equality for the induced derivative operator
+  norm are proposed in JacobianOperatorWitness.lean,
+  pending the full Lean build. Global optimality and
+  nonconvex two-point bounds remain open.
+- **M04 — Optimality: in progress.** The exact diagonal
+  row witness is verified (R028). Operator-norm equality
+  is proposed but awaits Lean; an admissible two-point
+  lower bound and global upper bound remain separate.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
 - **M06 — Scientific and archival validation: open.** The
@@ -740,7 +810,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [JacobianCartesianBound](NewtonianLipschitz/JacobianCartesianBound.lean),
   [JacobianOperatorAction](NewtonianLipschitz/JacobianOperatorAction.lean),
   [JacobianOperatorNorm](NewtonianLipschitz/JacobianOperatorNorm.lean),
-  [JacobianSharpWitness](NewtonianLipschitz/JacobianSharpWitness.lean).
+  [JacobianSharpWitness](NewtonianLipschitz/JacobianSharpWitness.lean),
+  [JacobianOperatorWitness](NewtonianLipschitz/JacobianOperatorWitness.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.

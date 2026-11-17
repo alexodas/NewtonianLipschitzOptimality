@@ -2,7 +2,7 @@
   "version": "v0.4",
   "project": {
     "name": "NewtonianLipschitzOptimality",
-    "description": "Research in progress: Lean 4 verification of the sharp Cartesian-supremum-norm Lipschitz coefficient for the exact 3D Newtonian point-source field with explicit noncollision clearance, initially on convex safe domains. A proved deterministic sensitivity bound could inform rigorous dynamics and interval methods, planetary-defense uncertainty propagation, space situational awareness, and certified Cartesian N-body algorithms. The global nonconvex problem remains separate. No optimality theorem, validated application, or Palomar submission is claimed.",
+    "description": "Research in progress: Lean 4 verification of the Cartesian-supremum-norm sensitivity bound for the exact 3D Newtonian point-source field with explicit clearance. Verified pointwise derivative norm upper bound and diagonal row-sum equality may inform rigorous dynamics, interval arithmetic, computational astrophysics (Barnes–Hut/FMM), Coulomb interactions in molecular simulation, adaptive mesh refinement, GPU/HPC algorithms, planetary-defense uncertainty propagation, space situational awareness, and certified Cartesian N-body methods. The global nonconvex two-point bound, optimality, performance improvements and integrations remain unproved or unvalidated. No Palomar submission is claimed.",
     "authors": [
       "Alessandro Odasso"
     ],
@@ -19,7 +19,7 @@
   },
   "sources": [],
   "status": {
-    "scope": "Verified R016–R017 determine the exact scalar coefficient C3; R027 proves its pointwise derivative operator-norm upper bound. One Palomar entry with two targets is planned: the exact C3 formula and its global cubical-clearance optimality. The second remains unproved. No theorem is selected in Comparator and no submission is claimed.",
+    "scope": "Lean verifies scalar C3 (R016–R017), the pointwise Fréchet operator-norm upper bound (R027), and a sharp diagonal Jacobian row-sum witness (R028). The proposed operator-norm equality in JacobianOperatorWitness.lean is unverified pending CI. The global nonconvex two-point theorem and minimality are unproved. Two Palomar targets are planned but Comparator selection remains empty; no submission is claimed.",
     "sorry_count": 0,
     "sorry_in_definitions": 0,
     "axioms": [
@@ -43,7 +43,7 @@
     "notes": "Alessandro Odasso, a non-mathematician interested in assessing LLMs in scientific research, initiated and directs the project. GPT-6 assists with the initial project structure and formal mathematical work."
   },
   "fidelity": {
-    "divergences": "Exact scalar maximality is verified, but its decimal approximation is not yet Lean-certified. Global two-point Lipschitz regularity on the nonconvex cubical safe set and minimality are unproved. The two-target Palomar selection is a plan, not an active Comparator configuration."
+    "divergences": "The exact scalar maximum, pointwise derivative upper bound and a diagonal row witness are verified. Numerical C3 digits are not Lean-certified. The induced derivative operator-norm equality is a current unverified proposal. Global two-point Lipschitz regularity on the nonconvex cubical safe set and minimality are unproved. No claims of zero-cost speedup, overflow avoidance, or deployment."
   },
   "review": {
     "status": "self-assessed",
