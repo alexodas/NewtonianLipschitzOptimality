@@ -9,8 +9,8 @@ The objective is to prove the smallest universal sensitivity coefficient
 under explicit positive-clearance and geometric domain assumptions.
 
 **Already proved:** the exact field and Fréchet derivative,
-conservative coefficients 10 and 7, the exact scalar maximum,
-normalized Jacobian row bounds, and sign/scale invariances.
+coefficients 10 and 7, the scalar maximum, normalized Jacobian
+row bounds, and sign, scale, and axis-permutation identities.
 
 **Not yet proved:** the sharp coefficient, its optimality, and a global
 Lipschitz bound on nonconvex domains.
@@ -20,74 +20,108 @@ uses this project to study the capabilities and limits of
 large language models (LLMs) in scientific research. GPT-6 assists
 with mathematical reasoning, Lean proof development, and verification.
 
-## Mathematical question
-
-Space has **three Cartesian axes: X, Y and Z**. A point is a
-three-component vector, for example `P=(P_X,P_Y,P_Z)`.
-The letters `P` and `Q` denote two points, not two axes.
-
-For a nonzero displacement `r=(r_X,r_Y,r_Z)`, the exact
-Newtonian point-source field is
-
-`g_mu(r) = -mu*r/(norm_2(r))^3`.
-
-The gravitational radius `norm_2` is Euclidean, while the
-sensitivity measure `norm_inf` takes the largest absolute
-value among the **X, Y and Z** coordinates.
-
-The established coefficients 10 and 7 use positive Euclidean
-clearance d. The sharper candidate C3 concerns positive
-Cartesian supremum-norm clearance, a different assumption.
-Derivative bounds extend to suitable **convex** domains;
-the **nonconvex exterior of a cube** needs a separate proof.
-
-The exact scalar value `C3 = candidateMaximum` is defined
-and its one-variable maximality proved in Lean. Its status
-as a **universal sharp Lipschitz constant**, together with
-global optimality, is **not yet Lean-verified**.
-
 ## Main theorem target — gravitational variation outside cubes
 
-Consider `N >= 1` Newtonian point masses `0 <= m_k <= Mmax`
-at three-dimensional positions `a_k`, with gravitational
-constant `G > 0` and cubic half-side `d > 0`.
+### Enunciato in parole (obiettivo di ricerca)
 
-Let `P=(P_X,P_Y,P_Z)` and `Q=(Q_X,Q_Y,Q_Z)` be any two
-safe points: for each source `k`, both satisfy
-`norm_inf(P-a_k) >= d` and `norm_inf(Q-a_k) >= d`.
-Thus neither point is inside any forbidden open cube;
-the cube boundaries are permitted.
+Considera **N corpi puntiformi** nello spazio, lungo i tre assi
+cartesiani **X, Y e Z**. Ogni corpo ha massa non superiore a un
+valore massimo prefissato. Attorno a ciascuno immagina un
+**cubo di sicurezza** allineato agli assi e centrato sul corpo,
+con lato `2d`: l'interno del cubo e vietato, la sua superficie
+e ammessa.
 
-The total Newtonian acceleration at P is
+Scegli **due punti P e Q** esterni agli interni di tutti questi
+cubi, anche se il segmento che li unisce attraversa una
+regione vietata.
 
-`g(P) = -G * sum_k m_k*(P-a_k)/norm_2(P-a_k)^3`,
+**Il teorema che vogliamo dimostrare afferma** che la variazione
+massima di una componente della gravita (X, Y oppure Z) non
+supera la variazione massima di una coordinata tra P e Q,
+moltiplicata per un fattore universale. Tale fattore dipende
+dalla costante gravitazionale, dalla massa massima, dal
+numero di corpi e dall'inverso del cubo della distanza di
+sicurezza.
 
-and similarly for Q. Define three coordinate differences:
+La **costante adimensionale candidata** e circa
+**2,5775644**. Vogliamo anche dimostrare, separatamente,
+che non possa essere ridotta. **La disuguaglianza globale
+e la sua ottimalita non sono ancora dimostrate.**
 
-`Delta X = P_X-Q_X`, `Delta Y = P_Y-Q_Y`,
-`Delta Z = P_Z-Q_Z`.
+### Formulazione matematica
 
-Likewise, `Delta g_X`, `Delta g_Y`, `Delta g_Z` are the
-three components of `g(P)-g(Q)`.
+Un punto `P=(P_X,P_Y,P_Z)` ha tre coordinate, una per asse.
+Le lettere **P e Q indicano punti**, non assi.
 
-**Target theorem — not yet proved in Lean:**
+Per ogni vettore `v=(v_X,v_Y,v_Z)` definiamo:
 
-`max(|Delta g_X|, |Delta g_Y|, |Delta g_Z|)`
-`<= (C3*G*Mmax*N/d^3) * max(|Delta X|, |Delta Y|, |Delta Z|)`.
+- `norm_2(v) = sqrt(v_X^2 + v_Y^2 + v_Z^2)`:
+  la **distanza euclidea**, utilizzata nella legge gravitazionale.
+- `norm_inf(v) = max(|v_X|, |v_Y|, |v_Z|)`:
+  la **norma cartesiana del massimo**, utilizzata nel limite
+  di variazione e nel criterio dei cubi.
 
-The proposed coefficient is the exact real number
-`C3 = candidateCoefficient(candidateCriticalPoint)`,
-numerically `C3 ≈ 2.5775644212`. The critical point is
-the unique root in `[9/50,1/5]` of
+Siano `N >= 1`, `G > 0`, `d > 0`, le posizioni
+`a_1,...,a_N` e le masse `0 <= m_k <= Mmax`.
+Il semilato dei cubi e `d`. La sicurezza di P e Q
+significa, per **ogni** corpo `k`:
+
+`norm_inf(P-a_k) >= d` e `norm_inf(Q-a_k) >= d`.
+
+Il campo di accelerazione gravitazionale totale e:
+
+$$
+g(P) = -G\sum_{k=1}^{N}
+\frac{m_k(P-a_k)}{\|P-a_k\|_2^3}.
+$$
+
+Indichiamo con `Delta X`, `Delta Y`, `Delta Z` le tre
+componenti di `P-Q`; con `Delta g_X`, `Delta g_Y`,
+`Delta g_Z` quelle di `g(P)-g(Q)`.
+
+**Congettura principale (non ancora verificata in Lean):**
+
+$$
+\max\bigl(|\Delta g_X|,|\Delta g_Y|,|\Delta g_Z|\bigr)
+\le
+C_3\frac{G M_{\max}N}{d^3}
+\max\bigl(|\Delta X|,|\Delta Y|,|\Delta Z|\bigr).
+$$
+
+La stessa formula, piu compatta, e:
+
+$$
+\|g(P)-g(Q)\|_\infty
+\le \frac{C_3 G M_{\max}N}{d^3}\|P-Q\|_\infty.
+$$
+
+La candidata esatta e
+`C3 = candidateCoefficient(candidateCriticalPoint)`.
+Il suo valore numerico e circa `2.5775644212`; il punto
+critico e l'unica radice in `[9/50,1/5]` del polinomio
 `2*t^3-8*t^2-4*t+1=0`.
 
-**Separate optimality claim:** No smaller universal
-constant can replace `C3`; this is also unproved.
+**Ottimalita, da provare separatamente:** nessuna costante
+universale inferiore a `C3` soddisfa il teorema per tutte
+le configurazioni ammissibili.
 
-**Status:** The scalar maximum, normalized Jacobian rows,
-and sign/scale invariances are Lean-verified (R016–R020).
-The global inequality for arbitrary P and Q outside the
-nonconvex cubes and its optimality remain open.
+## Mathematical question
+
+La legge di Newton usa la distanza **euclidea** `norm_2`,
+mentre l'ineguaglianza proposta usa `norm_inf` per misurare
+la variazione lungo i tre assi X, Y e Z.
+
+Le stime gia dimostrate con coefficienti 10 e 7 assumono
+una distanza di sicurezza euclidea. La candidata `C3`
+riguarda invece la sicurezza misurata con `norm_inf`:
+le due ipotesi non devono essere confuse.
+
+La massimizzazione scalare, tutte le righe del Jacobiano
+normalizzato e le simmetrie degli assi sono gia verificate
+in Lean (R016–R021). Manca la maggiorazione tridimensionale
+universale. Il **complemento non convesso** dei cubi
+richiede inoltre un argomento specifico per due punti
+arbitrari, indipendentemente dal segmento che li unisce.
 
 ## Why the result may matter — intended audience
 
@@ -411,34 +445,55 @@ inequality or optimality follows from this result alone.
 **Source:**
 [JacobianSymmetries.lean](NewtonianLipschitz/JacobianSymmetries.lean).
 
+### R021 — Cyclic and Y/Z permutations of Cartesian axes
+
+Lean proves that cyclic relabeling `(X,Y,Z) -> (Y,Z,X)`
+and exchanging Y with Z preserve the physical Euclidean
+radius. The entries of the actual Newtonian Jacobian are
+reindexed accordingly, as are the absolute row sums.
+
+**Why useful:** These two transformations generate the six
+permutations of the three axes; they support reducing
+arbitrary Cartesian coordinates to normalized form.
+**Limit:** A full arbitrary-permutation reduction and the
+unrestricted sharp derivative inequality remain open.
+They do not imply the nonconvex global theorem.
+
+**Lean:** `euclideanRadius_cycleVec`,
+`newtonianJacobianMatrix_cycle_entry`,
+`newtonianJacobianMatrix_cycle_rowSum`,
+`euclideanRadius_swapYZVec`,
+`newtonianJacobianMatrix_swapYZ_entry`,
+`newtonianJacobianMatrix_swapYZ_rowSum`.
+**Source:**
+[JacobianPermutations.lean](NewtonianLipschitz/JacobianPermutations.lean).
+
 ## Direct proof strategy
 
-The scalar maximization and normalized Jacobian rows are
-proved. The remaining obligations are:
+Scalar maximization, normalized row bounds and generators
+of coordinate permutations are proved (R016–R021).
 
-1. Prove coordinate-permutation invariance and combine it
-   with sign/scale transfer (R019–R020).
-2. Prove the sharp Jacobian row-sum bound at every nonzero
-   displacement, with `norm_inf` clearance.
-3. Deduce the Cartesian supremum operator-norm bound for
-   the actual Fréchet derivative.
-4. **Separately prove optimality**, with a matching witness
-   and limiting difference quotient.
-5. Derive a sharp Lipschitz theorem on suitable convex
+1. Combine sign, scaling and permutation identities into
+   a full normalization theorem for arbitrary displacements.
+2. Prove the sharp Jacobian bound for every nonzero
+   separation, in the Cartesian supremum norm.
+3. Deduce the matching bound for the physical Fréchet
+   derivative and prove **optimality separately**.
+4. Establish sharp Lipschitz bounds on suitable convex
    safe domains.
-6. Address pairs across the **nonconvex** cubical exclusions
-   directly; only then establish the main global theorem
-   and its `N`-source mass-sum consequence.
+5. Analyze pairs of points across the nonconvex cubical
+   exclusions directly; then address the full `N`-source
+   theorem as a separate global question.
 
 ## Roadmap
 
 - **M01 — Foundation: complete.** Exact field, derivative,
   norm bridges, clearance, and bounds 10 and 7 (R001–R010).
 - **M02 — Jacobian reduction: in progress.** Row algebra
-  (R011), exact Jacobian (R013), normalized rows (R014–R015,
-  R018–R019) and sign/scale identities (R020) are proved.
-  Coordinate permutations are now proposed in Lean
-  and await full CI validation.
+  (R011), exact Jacobian (R013), normalized row estimates
+  (R014–R015, R018–R019), sign/scale invariances (R020)
+  and cyclic/Y-Z axis transformations (R021) are proved.
+  The full normalization of arbitrary vectors is open.
 - **M03 — Sharp upper bound: in progress.** Cubic facts
   (R012), exact root (R016), scalar maximum (R017),
   normalized rows (R018–R019) and sign/scale transfer
