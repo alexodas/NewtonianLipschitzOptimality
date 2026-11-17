@@ -437,7 +437,8 @@ proved. The remaining obligations are:
 - **M02 — Jacobian reduction: in progress.** Row algebra
   (R011), exact Jacobian (R013), normalized rows (R014–R015,
   R018–R019) and sign/scale identities (R020) are proved.
-  Coordinate permutations remain to be formalized.
+  Coordinate permutations are now proposed in Lean
+  and await full CI validation.
 - **M03 — Sharp upper bound: in progress.** Cubic facts
   (R012), exact root (R016), scalar maximum (R017),
   normalized rows (R018–R019) and sign/scale transfer
@@ -469,7 +470,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [CubicCandidate](NewtonianLipschitz/CubicCandidate.lean),
   [ScalarMaximum](NewtonianLipschitz/ScalarMaximum.lean),
   [NormalizedSharpBound](NewtonianLipschitz/NormalizedSharpBound.lean),
-  [JacobianSymmetries](NewtonianLipschitz/JacobianSymmetries.lean).
+  [JacobianSymmetries](NewtonianLipschitz/JacobianSymmetries.lean),
+  [JacobianPermutations](NewtonianLipschitz/JacobianPermutations.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
