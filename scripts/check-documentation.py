@@ -23,7 +23,7 @@ required = [
     "### R009 —", "### R010 —",
     "### R011 —", "### R012 —",
     "### R013 —",
-    "### R014 —", "### R015 —", "### R016 —", "### R017 —", "### R018 —", "### R019 —", "### R020 —", "### R021 —", "### R022 —", "### R023 —", "### R024 —", "### R025 —", "### R026 —", "### R027 —", "### R028 —", "### R029 —", "### R030 —", "### R031 —", "### R032 —", "### R033 —", "### R034 —", "### R035 —", "### R036 —", "### R037 —", "### R038 —", "### R039 —", "### R040 —", "### R041 —", "### R042 —",
+    "### R014 —", "### R015 —", "### R016 —", "### R017 —", "### R018 —", "### R019 —", "### R020 —", "### R021 —", "### R022 —", "### R023 —", "### R024 —", "### R025 —", "### R026 —", "### R027 —", "### R028 —", "### R029 —", "### R030 —", "### R031 —", "### R032 —", "### R033 —", "### R034 —", "### R035 —", "### R036 —", "### R037 —", "### R038 —", "### R039 —", "### R040 —", "### R041 —", "### R042 —", "### R043 —",
     "## Direct proof strategy",
     "M01 — Foundation", "M02 — Jacobian reduction", "M03 — Sharp upper bound",
     "M04 — Two-point lower bound", "M05 — Domain theorem", "M06 — Scientific and archival validation",
@@ -51,7 +51,7 @@ for audience in ("rigorous dynamics", "planetary-defense", "space situational aw
 for audience in ("CAPD", "planetary defense", "space situational awareness", "Barnes–Hut"):
     if audience not in palomar_notes:
         issues.append(f"PALOMAR.md missing potential audience: {audience}")
-for ref in ("R035", "R036", "R037", "R038", "R039", "R040", "R041", "R042"):
+for ref in ("R035", "R036", "R037", "R038", "R039", "R040", "R041", "R042", "R043"):
     if ref not in palomar_notes:
         issues.append(f"PALOMAR.md missing verified {ref} provenance")
     if ref not in description:
@@ -85,6 +85,10 @@ if "oneSourceGlobalCandidateBound" not in readme:
     issues.append("R041 must name its explicit unproved one-source premise")
 if "oneSourceGlobalCandidateBound" not in palomar_notes:
     issues.append("Palomar must identify the unproved R041 premise explicitly")
+if "oneSourceSafePlaneFiveFourthBound" not in readme:
+    issues.append("R043 must identify the explicitly unproved safe-plane premise")
+if "oneSourceSafePlaneFiveFourthBound" not in palomar_notes:
+    issues.append("Palomar must identify R043's unproved safe-plane premise")
 if "conditional" not in palomar_notes.lower() or "conditional" not in readme.lower():
     issues.append("R041 conditional status missing from documentation")
 # The acquired-results section is a cumulative mathematical catalog.
@@ -109,8 +113,8 @@ if section_start in readme and section_end in readme:
     catalog = readme.split(section_start, 1)[1].split(section_end, 1)[0]
     matches = list(re.finditer(r"^### R(\d{3}) — ", catalog, re.M))
     numbers = [int(m.group(1)) for m in matches]
-    if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 42:
-        issues.append("Results must be cumulative, contiguous, and retain R001–R042")
+    if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 43:
+        issues.append("Results must be cumulative, contiguous, and retain R001–R043")
     for idx, match in enumerate(matches):
         block = catalog[match.end():matches[idx+1].start() if idx+1 < len(matches) else len(catalog)]
         if not all(tag in block for tag in ("**Why useful:**", "**Limit:**", "**Lean:**")):
