@@ -246,6 +246,21 @@ still require proof.
 `newtonianJacobianMatrix_normalized_zero_two`.
 **Source:** [JacobianMatrix.lean](NewtonianLipschitz/JacobianMatrix.lean).
 
+### R015 — Diagonal bound for the actual Jacobian's first row
+
+For `mu >= 0` and normalized coordinates `(1,u,v)`
+with `0 <= u,v <= 1`, the first absolute-row sum of
+the actual Jacobian is bounded using the diagonal parameter
+`sqrt((u^2+v^2)/2)`, at the same Euclidean radius.
+
+**Why useful:** Transfers R011's one-variable algebraic
+reduction to a genuine row of the derivative matrix.
+**Limit:** Does not yet prove the global operator norm,
+the sharp coefficient, or its optimality.
+
+**Lean:** `newtonianJacobianMatrix_normalized_firstRow_le_diagonal`.
+**Source:** [JacobianMatrix.lean](NewtonianLipschitz/JacobianMatrix.lean).
+
 ## Direct proof strategy
 
 The next objective is the sharp coefficient, not another
@@ -267,12 +282,14 @@ intermediate constant.
 
 - **M01 — Foundation: complete.** Exact field, derivative,
   norm bridges, clearance, and bounds 10 and 7 (R001–R010).
-- **M02 — Jacobian reduction: in progress.** Row algebra (R011),
-  exact matrix (R013), and the normalized first-row sum (R014) are
-  proved. A diagonal bound for that row is proposed, pending CI.
-  The other rows and global operator-norm bridge remain open.
-- **M03 — Sharp upper bound: open.** Exact maximization and
-  universal estimate; cubic facts R012 are established.
+- **M02 — Jacobian reduction: in progress.** The row algebra
+  (R011), exact Jacobian (R013), first-row sum (R014),
+  and diagonal bound (R015) are proved. Other rows and
+  global operator-norm symmetries remain to be established.
+- **M03 — Sharp upper bound: open.** The cubic properties
+  R012 are proved. Existence and exact designation of its
+  critical root are proposed in Lean, pending full CI.
+  Scalar maximization and the universal bound remain open.
 - **M04 — Optimality: open.** A matching witness.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.

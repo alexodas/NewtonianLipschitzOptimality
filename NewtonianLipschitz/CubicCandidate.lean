@@ -89,4 +89,53 @@ theorem stationaryCubic_root_unique_on_unitInterval
     rw [hpx, hpy] at h
     exact (lt_irrefl (0 : ℝ) h).elim
 
+/-!
+## Exact root of the stationary cubic
+
+The rational sign-changing interval and the intermediate value
+theorem produce a root. The existing strict-antitonicity theorem
+makes it unique. This does not yet prove scalar maximization.
+-/
+
+/-- The stationary cubic has a root in the exact rational bracket. -/
+theorem stationaryCubic_exists_root_bracket :
+    ∃ t : ℝ, (9 / 50 : ℝ) ≤ t ∧ t ≤ 1 / 5 ∧
+      stationaryCubic t = 0 := by
+  have hc : Continuous stationaryCubic := by
+    unfold stationaryCubic
+    fun_prop
+  have hz :
+      (0 : ℝ) ∈ Set.Icc
+        (stationaryCubic (1 / 5 : ℝ))
+        (stationaryCubic (9 / 50 : ℝ)) :=
+    ⟨le_of_lt stationaryCubic_neg_at_one_fifth,
+      le_of_lt stationaryCubic_pos_at_nine_fiftieths⟩
+  obtain ⟨t, ht, hpt⟩ :=
+    (intermediate_value_Icc'
+      (by norm_num : (9 / 50 : ℝ) ≤ 1 / 5)
+      hc.continuousOn) hz
+  exact ⟨t, ht.1, ht.2, hpt⟩
+
+/-- Uniqueness of the root in the exact rational bracket. -/
+theorem stationaryCubic_existsUnique_root_bracket :
+    ∃! t : ℝ, (9 / 50 : ℝ) ≤ t ∧ t ≤ 1 / 5 ∧
+      stationaryCubic t = 0 := by
+  obtain ⟨t, htl, htr, hpt⟩ := stationaryCubic_exists_root_bracket
+  refine ⟨t, ⟨htl, htr, hpt⟩, ?_⟩
+  intro y hy
+  exact stationaryCubic_root_unique_on_unitInterval y t
+    ⟨by linarith [hy.1], by linarith [hy.2.1]⟩
+    ⟨by linarith, by linarith⟩ hy.2.2 hpt
+
+/-- Exact critical-point parameter; no numerical solver is used. -/
+noncomputable def candidateCriticalPoint : ℝ :=
+  Classical.choose stationaryCubic_exists_root_bracket
+
+/-- Exact enclosure and stationary polynomial equation. -/
+theorem candidateCriticalPoint_spec :
+    (9 / 50 : ℝ) ≤ candidateCriticalPoint ∧
+      candidateCriticalPoint ≤ 1 / 5 ∧
+      stationaryCubic candidateCriticalPoint = 0 :=
+  Classical.choose_spec stationaryCubic_exists_root_bracket
+
 end NewtonianLipschitz
