@@ -1,2 +1,1125 @@
 # NewtonianLipschitzOptimality
-Formal verification in Lean 4 of sharp Lipschitz bounds for the 3D Newtonian gravitational field in the Cartesian supremum norm.
+
+Lean 4 formalization of the exact Newtonian gravitational field in 3D
+and its Lipschitz bounds in the Cartesian supremum norm.
+
+## Executive summary
+
+The objective is to prove the smallest universal sensitivity coefficient
+under explicit positive-clearance and geometric domain assumptions.
+
+The coefficient C3 is defined by an exact scalar
+maximization and is attained by the operator norm of
+the physical Newtonian derivative. It also gives a
+proved finite-difference bound on **convex** domains,
+including Cartesian boxes with explicit clearance. The main research
+objective is the best universal two-point bound
+outside nonconvex source-centered safety cubes.
+
+The [Status](#status) section distinguishes verified
+results from current proposals and open problems.
+The [mathematical ledger](#results-acquired--cumulative-mathematical-ledger)
+contains the complete cumulative proof record.
+
+Alessandro Odasso directs the research. He is not a mathematician and
+uses this project to study the capabilities and limits of
+large language models (LLMs) in scientific research. GPT-6 assists
+with mathematical reasoning, Lean proof development, and verification.
+
+## Main theorem target — gravitational variation outside cubes
+
+### Plain-language statement (research goal)
+
+Consider **N point masses** in three-dimensional space, with
+Cartesian axes **X, Y, and Z**. Each body has a mass no greater
+than a prescribed maximum. Around each body, imagine an
+**axis-aligned safety cube**, centered on that body, with
+side length 2d. Its interior is forbidden; its boundary
+is allowed.
+
+Choose **any two points P and Q** outside the interiors of
+all these cubes, even if the straight segment joining them
+passes through a forbidden region.
+
+**The proposed theorem states** that the greatest change in
+gravitational acceleration along any one of the X, Y, or Z
+axes is bounded by the greatest coordinate displacement
+between P and Q, multiplied by a universal factor. That
+factor depends on the gravitational constant, maximum body
+mass, number of bodies, and inverse cube of the safety
+distance.
+
+The exact scalar coefficient **C3** is defined and proved
+in R016–R017; numerically it is about **2.5775644212**.
+R029 proves that C3 is attained by the operator norm of
+the physical Newtonian derivative at a critical point.
+R030 proves a two-point inequality with C3 on **convex**
+domains with uniform Cartesian clearance.
+
+**The global conjecture below is stronger:** it covers
+all safe endpoints, even when their connecting segment
+passes through a forbidden cube. Its universal upper
+bound and optimality are **not yet proved**.
+
+### Formal mathematical statement
+
+Each point has three coordinates:
+P = (P_X, P_Y, P_Z) and Q = (Q_X, Q_Y, Q_Z).
+Here **P and Q are points**, not coordinate axes.
+
+For a vector v = (v_X, v_Y, v_Z), define:
+
+- The **Euclidean norm**, used in Newton's gravitational law:
+  norm_2(v) = sqrt(v_X^2 + v_Y^2 + v_Z^2).
+- The **Cartesian maximum norm**, used for safety cubes and
+  the variation bound:
+  norm_inf(v) = max(|v_X|, |v_Y|, |v_Z|).
+
+Let N >= 1 be the number of bodies, G > 0 the gravitational
+constant, and d > 0 the cube half-side. The bodies have
+positions a_1,...,a_N and masses 0 <= m_k <= Mmax.
+
+The two points are **safe** if, for every body k,
+
+- norm_inf(P-a_k) >= d and norm_inf(Q-a_k) >= d.
+
+Thus P and Q lie outside every open forbidden cube,
+with cube boundaries included in the safe region.
+
+Their total gravitational acceleration is
+
+$$
+g(P) = -G\sum_{k=1}^{N}
+\frac{m_k(P-a_k)}{\|P-a_k\|_2^3},
+$$
+
+and analogously for Q.
+
+Write Delta X, Delta Y, Delta Z for the coordinate differences
+of P-Q, and Delta g_X, Delta g_Y, Delta g_Z for the components
+of g(P)-g(Q).
+
+**Main conjecture — global nonconvex two-point bound
+(not yet proved in Lean):**
+
+$$
+\max\bigl(|\Delta g_X|,|\Delta g_Y|,|\Delta g_Z|\bigr)
+\le
+C_3\frac{G M_{\max}N}{d^3}
+\max\bigl(|\Delta X|,|\Delta Y|,|\Delta Z|\bigr).
+$$
+
+Equivalently, in compact notation,
+
+$$
+\|g(P)-g(Q)\|_\infty
+\le \frac{C_3 G M_{\max}N}{d^3}\|P-Q\|_\infty.
+$$
+
+**Exact value of C3 (proved in R016–R017):** In Lean,
+`candidateMaximum = candidateCoefficient candidateCriticalPoint`.
+The parameter `t_star = candidateCriticalPoint` is the
+unique real root in `[9/50, 1/5]` of
+
+```text
+2*t_star^3 - 8*t_star^2 - 4*t_star + 1 = 0.
+```
+
+The exact coefficient is
+
+$
+C_3 = \frac{2+6t_*-2t_*^2}{(1+2t_*^2)^{5/2}}.
+$
+
+The approximation `2.5775644212` is **not yet a
+Lean-certified decimal enclosure**.
+
+**Separate global optimality conjecture:** No smaller
+universal coefficient can replace C3 for all admissible
+point-source configurations. R029 proves optimality for
+the **pointwise derivative bound**, but establishing
+minimality for the two-point inequality still requires
+an admissible finite-difference witness.
+
+## Mathematical question
+
+Newton's law uses the **Euclidean norm** norm_2, whereas
+the proposed sensitivity inequality uses norm_inf to measure
+variations along the three Cartesian axes X, Y, and Z.
+
+The previously proved coefficients 10 and 7 require
+Euclidean clearance. The sharp candidate C3 instead uses
+clearance in the Cartesian maximum norm. These are
+different geometric assumptions.
+
+Lean verifies the exact scalar maximum (R016–R017),
+a pointwise Cartesian Jacobian bound (R024–R025),
+and the induced Frechet derivative norm bound (R026–R027).
+The critical diagonal witness attains both the Jacobian
+row sum (R028) and the derivative operator norm (R029).
+The candidate also controls finite differences on convex
+Cartesian-safe domains (R030), including certified
+Cartesian boxes (R031).
+The **nonconvex complement** of the forbidden cubes
+requires a separate argument for arbitrary pairs of points,
+including those whose connecting segment crosses a
+forbidden region.
+
+## Why the result may matter — intended audience
+
+The intended readers work with Cartesian boxes, adaptive
+computations or **certified numerical enclosures** for
+inverse-square point-source forces. These are potential
+applications, not validated performance or safety claims.
+
+- **Computational astrophysicists and N-body developers:**
+  Cartesian tree codes (Barnes–Hut, octrees) and the Fast
+  Multipole Method (FMM) could use a tight force-sensitivity
+  bound within rigorously justified error budgets. The
+  formula alone does not certify fewer subdivisions or
+  bound a particular tree or multipole approximation error.
+- **Computational chemists and biophysicists:**
+  Coulomb point-charge forces share the inverse-square
+  vector kernel with Newtonian gravity, up to the source
+  coefficients and signs. A mathematically appropriate
+  bound may aid electrostatic simulations in 3D boxes.
+  Charges, screening, periodic boundaries and softened
+  potentials require separate treatment.
+- **Interval arithmetic and validated dynamics specialists:**
+  CAPD, VNODE-LP and COSY Infinity users could incorporate
+  an exact coefficient in interval or Taylor-model
+  enclosures with certified separation from singularities.
+  Benefits for wrapping, validated orbital trajectories
+  or planetary defense require application-level proofs.
+- **Numerical analysts and adaptive mesh refinement (AMR)
+  developers:** A Cartesian supremum-norm derivative
+  bound could support local error control and conservative
+  mesh or time-step decisions on suitable safe domains.
+  Actual accuracy and runtime gains remain unmeasured.
+- **GPU and high-performance-computing developers:**
+  The dimensionless constant can be stored once, without
+  solving the cubic at runtime. A bound expressed with
+  `norm_inf` may suit Cartesian block calculations, but
+  the physical force still uses Euclidean radii; no
+  elimination of squared-distance overflow or performance
+  speedup is established.
+- **Planetary defense, aerospace and space situational awareness:**
+  Certified sensitivity estimates may contribute to
+  conjunction analyses and uncertainty propagation.
+  The coefficient does not itself certify a collision probability
+  or operational safety.
+
+**Geometry and practical adoption:** More elaborate
+polyhedral exclusion regions may offer more tailored
+bounds, potentially closer to spherical-clearance models.
+For existing Cartesian-box codes, replacing a conservative
+parameter with the precomputed C3 may tighten certified
+error budgets without changing spatial data structures,
+provided the proved domain and clearance conditions apply.
+This does not guarantee improved numerical accuracy,
+unchanged code stability or any runtime gain; these
+require application-level analysis and benchmarking.
+
+**Present limitation:** R027–R029 prove the sharp
+pointwise derivative norm and its attainment; R030–R031
+prove convex-domain and Cartesian-box bounds.
+The global two-point estimate across the nonconvex
+exterior of forbidden cubes is **unproved**.
+Reusing a precomputed scalar has negligible arithmetic
+overhead, but adopting the bound in real software requires
+checking the model, clearance and domain hypotheses.
+No measured algorithmic improvement is claimed.
+
+## Status
+
+This section describes the current proof boundary.
+Only results that passed the full Lean build are listed
+as verified in the permanent mathematical ledger below.
+
+**Verified in Lean:**
+
+- R016–R017 determine the exact critical root and scalar
+  candidate C3, including its maximality.
+- R024–R027 establish the Cartesian Jacobian row-sum
+  and actual Frechet derivative operator-norm bounds.
+- R028–R029 exhibit an explicit physical configuration
+  where the derivative operator norm **equals C3**.
+- R032 proves that **no smaller universal coefficient**
+  works for the Newtonian derivative operator norm.
+- R033–R034 exhibit an attaining derivative direction
+  whose entire forward ray stays outside the unit cube.
+- R030–R031 prove **finite-difference bounds** with C3
+  on convex safe domains and certified Cartesian boxes.
+- R001–R015 and R018–R023 document the foundational
+  field, regularity, conservative estimates, and the
+  verified algebraic reductions.
+
+**Proposed but not yet verified in Lean:**
+
+- `AdmissibleSecantPairs.lean` proposes a unit
+  derivative-attaining direction and distinct admissible
+  secant endpoints with an exact step-length identity.
+
+**Still unproved:**
+
+- An admissible finite-difference lower-bound witness
+  establishing minimality for the two-point constant.
+- A universal C3 bound for arbitrary endpoints outside
+  forbidden cubes, even if the joining segment is unsafe;
+  the **nonconvex complement** requires separate analysis.
+- The final N-source global optimality theorem planned
+  as the second Palomar target, and independent Comparator
+  validation of the two selected theorem statements.
+
+## Results acquired — cumulative mathematical ledger
+
+Only mathematical results verified by a successful full Lean build appear
+here. Numbering is permanent. Each entry records its meaning, utility,
+limits, Lean declarations, and exact source. Work in progress and CI
+chronology are kept outside this catalog.
+
+### R001 — Euclidean radius and Cartesian norm
+
+The physical radius is exactly the norm of the Euclidean representation;
+the Cartesian supremum norm does not exceed it.
+
+**Why useful:** Distinguishes the physical and sensitivity norms.
+**Limit:** It is not a sharp force estimate.
+
+**Lean:** `euclideanRadius_eq_physical_norm`,
+`cartesian_norm_le_euclideanRadius`.
+**Sources:** [Basic.lean](NewtonianLipschitz/Basic.lean),
+[Norms.lean](NewtonianLipschitz/Norms.lean).
+
+### R002 — Differentiability away from collision
+
+The exact Newtonian acceleration is continuously differentiable
+at every nonzero source separation.
+
+**Why useful:** Justifies differential estimates.
+**Limit:** No result at the collision singularity.
+
+**Lean:** `NewtonianPointSource.accelerationField_contDiffAt`.
+**Source:** [Smoothness.lean](NewtonianLipschitz/Smoothness.lean).
+
+### R003 — Exact Fréchet derivative
+
+The complete derivative of the actual inverse-cube field is proved,
+using the physical Euclidean inner product.
+
+**Why useful:** Supplies the exact operator to optimize.
+**Limit:** Its optimal norm is not determined by the formula alone.
+
+**Lean:** `NewtonianPointSource.accelerationField_fderiv_full`.
+**Source:** [Derivative.lean](NewtonianLipschitz/Derivative.lean).
+
+### R004 — Inverse-power estimates from clearance
+
+Positive Euclidean clearance and a parameter cap control the
+inverse-power coefficients in the Newtonian derivative.
+
+**Why useful:** Turns geometry into explicit inequalities.
+**Limit:** Clearance and the parameter bound are assumptions.
+
+**Lean:** `NewtonianPointSource.inverse_power_parameter_le_of_clearance`,
+`NewtonianPointSource.inverse_fifth_derivative_coefficient_le`.
+**Source:** [BaselineBounds.lean](NewtonianLipschitz/BaselineBounds.lean).
+
+### R005 — Derivative coefficient 10
+
+The true field satisfies the derivative estimate with coefficient
+`10*M/d^3` under positive clearance d and gravitational cap M,
+measured using the Cartesian supremum norm.
+
+**Why useful:** Explicit derivative control.
+**Limit:** 10 is not optimal.
+
+**Lean:** `NewtonianPointSource.accelerationField_fderiv_norm_le_ten_of_clearance`.
+**Source:** [BaselineBounds.lean](NewtonianLipschitz/BaselineBounds.lean).
+
+### R006 — Convex Lipschitz coefficient 10
+
+On convex sets with uniform positive Euclidean clearance,
+the exact field has Lipschitz coefficient `10*M/d^3`.
+
+**Why useful:** Controls finite differences.
+**Limit:** Convexity is required; 10 is not sharp.
+
+**Lean:** `NewtonianPointSource.accelerationField_lipschitzOnWith_of_clearance`.
+**Source:** [ConvexBaseline.lean](NewtonianLipschitz/ConvexBaseline.lean).
+
+### R007 — Anchor-ball clearance
+
+A suitably separated anchor yields positive Euclidean clearance
+throughout a specified Cartesian supremum-norm ball.
+
+**Why useful:** Supplies geometric certificates.
+**Limit:** The separation margin must be established independently.
+
+**Lean:** `clearance_on_anchor_ball`.
+**Source:** [Clearance.lean](NewtonianLipschitz/Clearance.lean).
+
+### R008 — Finite-source exact force algebra
+
+Finite sums of exact nonlinear differential forces satisfy the
+empty-list and cons-list identities.
+
+**Why useful:** Foundation for multiple point sources.
+**Limit:** No aggregate Lipschitz bound follows from algebra alone.
+
+**Lean:** `NewtonianPointSource.finiteDifferentialAcceleration_nil`,
+`NewtonianPointSource.finiteDifferentialAcceleration_cons`.
+**Source:** [FiniteSources.lean](NewtonianLipschitz/FiniteSources.lean).
+
+### R009 — Improved derivative coefficient 7
+
+The inequality `norm_2 h <= 2*norm_inf h` yields the derivative
+coefficient `7*M/d^3` for the true field.
+
+**Why useful:** Improves R005 without assuming an unknown derivative cap.
+**Limit:** 7 is still not optimal.
+
+**Lean:** `euclideanRadius_le_two_mul_cartesian_norm`,
+`NewtonianPointSource.accelerationField_fderiv_norm_le_seven_of_clearance`.
+**Sources:** [Norms.lean](NewtonianLipschitz/Norms.lean),
+[ImprovedBounds.lean](NewtonianLipschitz/ImprovedBounds.lean).
+
+### R010 — Improved convex Lipschitz coefficient 7
+
+The exact field has coefficient `7*M/d^3` on convex domains
+with uniform positive Euclidean clearance. An anchor-ball form
+is also proved.
+
+**Why useful:** Improves R006 for finite force differences.
+**Limit:** Requires convexity and is not sharp.
+
+**Lean:** `NewtonianPointSource.accelerationField_lipschitzOnWith_seven`,
+`NewtonianPointSource.unitAxis_lipschitzOnWith_anchor_seven`.
+**Source:** [ConvexImproved.lean](NewtonianLipschitz/ConvexImproved.lean).
+
+### R011 — Dominant-row and diagonal algebra
+
+For normalized `(1,u,v)`, with `0 <= u,v <= 1`, the proposed
+maximal-row numerator dominates both lateral numerators.
+For fixed `u^2+v^2`, its maximum is on the diagonal `u=v`.
+
+**Why useful:** Reduces the algebraic optimization to one variable.
+**Limit:** Does not yet bound the full physical operator globally.
+
+**Lean:** `lateralRowNumerator_le_dominant`,
+`lateralRowNumerator_swapped_le_dominant`,
+`dominantRowNumerator_le_diagonal`.
+**Source:** [JacobianRows.lean](NewtonianLipschitz/JacobianRows.lean).
+
+### R012 — Candidate stationary cubic
+
+For `p(t)=2*t^3-8*t^2-4*t+1`, the cubic is strictly decreasing
+on `[0,1]`, positive at `9/50`, negative at `1/5`, and has
+at most one zero in that interval.
+
+**Why useful:** Exact information about a possible maximizer.
+**Limit:** Existence, maximization, and sharpness remain unproved.
+
+**Lean:** `stationaryCubic_pos_at_nine_fiftieths`,
+`stationaryCubic_neg_at_one_fifth`,
+`stationaryCubic_strictAntiOn_unitInterval`,
+`stationaryCubic_root_unique_on_unitInterval`.
+**Source:** [CubicCandidate.lean](NewtonianLipschitz/CubicCandidate.lean).
+
+### R013 — Exact symmetric Cartesian Jacobian
+
+For every nonzero displacement, the actual Fréchet derivative acts
+as the symmetric matrix
+
+`J_mu(x)=mu/(norm_2 x)^5 * (3*x*x^T-(norm_2 x)^2*I)`.
+
+**Why useful:** Gives the concrete matrix to optimize in the
+Cartesian supremum operator norm.
+**Limit:** No global sharp bound or optimality is proved by this alone.
+
+**Lean:** `NewtonianPointSource.accelerationField_fderiv_eq_jacobianMatrix`,
+`newtonianJacobianMatrix_symmetric`,
+`newtonianJacobianMatrix_mulVec`.
+**Source:** [JacobianMatrix.lean](NewtonianLipschitz/JacobianMatrix.lean).
+
+### R014 — Exact normalized first-row Jacobian sum
+
+For a nonnegative normalized displacement `(1,u,v)`,
+where `0 <= u,v <= 1` and `mu >= 0`, the absolute sum of
+the first row of the **actual** Newtonian Jacobian is
+
+`mu/(norm_2(1,u,v))^5 * (2-u^2-v^2+3*u+3*v)`.
+
+**Why useful:** Connects the physical derivative matrix to the
+dominant-row numerator in R011.
+**Limit:** The other rows and the global operator-norm maximum
+still require proof.
+
+**Lean:** `newtonianJacobianMatrix_normalized_firstRow_abs_sum`,
+`newtonianJacobianMatrix_normalized_zero_zero`,
+`newtonianJacobianMatrix_normalized_zero_one`,
+`newtonianJacobianMatrix_normalized_zero_two`.
+**Source:** [JacobianMatrix.lean](NewtonianLipschitz/JacobianMatrix.lean).
+
+### R015 — Diagonal bound for the actual Jacobian's first row
+
+For `mu >= 0` and normalized coordinates `(1,u,v)`
+with `0 <= u,v <= 1`, the first absolute-row sum of
+the actual Jacobian is bounded using the diagonal parameter
+`sqrt((u^2+v^2)/2)`, at the same Euclidean radius.
+
+**Why useful:** Transfers R011's one-variable algebraic
+reduction to a genuine row of the derivative matrix.
+**Limit:** Does not yet prove the global operator norm,
+the sharp coefficient, or its optimality.
+
+**Lean:** `newtonianJacobianMatrix_normalized_firstRow_le_diagonal`.
+**Source:** [JacobianMatrix.lean](NewtonianLipschitz/JacobianMatrix.lean).
+
+### R016 — Exact existence and uniqueness of the critical cubic root
+
+Lean proves that there is exactly one real number
+$t_* \in [9/50,1/5]$ satisfying the equation
+
+$
+2t_*^3 - 8t_*^2 - 4t_* + 1 = 0.
+$
+
+This number is the **critical parameter** for the proposed
+sharp coefficient. In Lean it is called
+`candidateCriticalPoint`. The interval gives a rigorous
+rational enclosure, without using any floating-point value.
+
+For orientation, $t_* \approx 0.1848316796$. This decimal
+is a numerical approximation, **not a Lean-certified
+decimal enclosure**; the exact root and its uniqueness
+are what Lean formally verifies.
+
+**Why useful:** Identifies the precise algebraic parameter
+that R017 proves maximizes the candidate coefficient.
+**Limit:** A unique stationary root does not by itself
+prove maximality or any global gravitational Lipschitz
+inequality; these are separate mathematical obligations.
+
+**Lean:** `stationaryCubic_exists_root_bracket`,
+`stationaryCubic_existsUnique_root_bracket`,
+`candidateCriticalPoint_spec`.
+**Source:** [CubicCandidate.lean](NewtonianLipschitz/CubicCandidate.lean).
+
+### R017 — Exact maximum of the scalar candidate coefficient
+
+Define the following dimensionless scalar function:
+
+$
+f(t) = \frac{2+6t-2t^2}{(1+2t^2)^{5/2}},
+\qquad 0 \le t \le 1.
+$
+
+Let $t_*$ be the **unique root** specified in R016.
+Lean proves that $f(t) \le f(t_*)$ for every $t \in [0,1]$.
+Thus the exact candidate gravitational coefficient is
+
+$
+\boxed{C_3 = f(t_*) =
+\frac{2+6t_*-2t_*^2}{(1+2t_*^2)^{5/2}}}.
+$
+
+Numerically, $C_3 \approx 2.5775644212$. This decimal
+is **not yet certified as an interval in Lean**: the
+Lean-verified result is the exact formula and the proof
+that it is the maximum of $f$ on $[0,1]$.
+
+In Lean the function is `candidateCoefficient` and the
+exact maximum is `candidateMaximum`. The proof computes
+the derivative of $f$, analyzes the stationary cubic from
+R016, and establishes the maximum without assuming any
+numerical approximation.
+
+**Why useful:** Determines $C_3$ by an exact equation
+rather than merely proposing a numerical constant.
+Later results R018–R027 apply it to the physical Jacobian
+and the pointwise directional derivative upper bound.
+**Limit:** Maximizing $f$ does not establish that $C_3$
+is the smallest coefficient for the global two-point
+gravitational inequality outside nonconvex safety cubes.
+A matching optimality proof is still required.
+
+**Lean:** `candidateCoefficient_hasDerivAt`,
+`candidateCoefficient_le_at_criticalPoint`,
+`candidateMaximum`, `candidateMaximum_eq`.
+**Source:** [ScalarMaximum.lean](NewtonianLipschitz/ScalarMaximum.lean).
+
+
+### R018 — Candidate maximum bounds the normalized first Jacobian row
+
+For `mu >= 0` and `0 <= u,v <= 1`, the absolute
+first-row sum of the physical Jacobian at `(1,u,v)`
+is at most `mu*candidateMaximum`, with the exact scalar
+maximum defined and proved in R017.
+
+**Why useful:** Applies the scalar maximum to the actual
+Jacobian of the Newtonian field.
+**Limit:** Other rows and arbitrarily signed or scaled
+three-dimensional points still require separate proofs.
+
+**Lean:** `newtonianJacobianMatrix_normalized_firstRow_le_candidateMaximum`,
+`diagonalParameter_mem_unitInterval`,
+`normalizedVector_radius_eq_diagonal`.
+**Source:**
+[NormalizedSharpBound.lean](NewtonianLipschitz/NormalizedSharpBound.lean).
+
+### R019 — All rows in the normalized positive octant
+
+For `mu >= 0`, `0 <= u,v <= 1`, and each row index
+`i` of the exact physical Jacobian at `(1,u,v)`,
+Lean proves
+
+`sum_j abs(J_mu(1,u,v)[i,j]) <= mu*candidateMaximum`.
+
+The second and third rows use exact matrix entries,
+the lateral-row algebra from R011, and R018.
+
+**Why useful:** Completes all three physical Jacobian row
+estimates for the normalized nonnegative configuration.
+**Limit:** Arbitrary signs, coordinate permutations and
+non-unit spatial scaling are not yet covered.
+
+**Lean:** `newtonianJacobianMatrix_normalized_allRows_le_candidateMaximum`,
+`newtonianJacobianMatrix_normalized_secondRow_le_candidateMaximum`,
+`newtonianJacobianMatrix_normalized_thirdRow_le_candidateMaximum`.
+**Source:**
+[NormalizedSharpBound.lean](NewtonianLipschitz/NormalizedSharpBound.lean).
+
+### R020 — Sign invariance and cubic scaling of the Jacobian
+
+For the exact Newtonian Jacobian, replacing each coordinate
+by its absolute value leaves every absolute matrix entry,
+and hence every absolute row sum, unchanged.
+
+For positive `c` and nonzero `x`, the physical Jacobian
+at `c*x` equals `c^(-3)` times the Jacobian at `x`.
+
+**Why useful:** Provides the sign and scale bridges needed
+to extend the verified normalized row bound R019.
+**Limit:** Coordinate permutations and the unrestricted
+Jacobian bound remain to be proved. No global two-point
+inequality or optimality follows from this result alone.
+
+**Lean:** `euclideanRadius_coordinateAbs`,
+`newtonianJacobianMatrix_rowSum_coordinateAbs`,
+`newtonianJacobianMatrix_entry_positive_smul`.
+**Source:**
+[JacobianSymmetries.lean](NewtonianLipschitz/JacobianSymmetries.lean).
+
+### R021 — Cyclic and Y/Z permutations of Cartesian axes
+
+Lean proves that cyclic relabeling `(X,Y,Z) -> (Y,Z,X)`
+and exchanging Y with Z preserve the physical Euclidean
+radius. The entries of the actual Newtonian Jacobian are
+reindexed accordingly, as are the absolute row sums.
+
+**Why useful:** These two transformations generate the six
+permutations of the three axes; they support reducing
+arbitrary Cartesian coordinates to normalized form.
+**Limit:** A full arbitrary-permutation reduction and the
+unrestricted sharp derivative inequality remain open.
+They do not imply the nonconvex global theorem.
+
+**Lean:** `euclideanRadius_cycleVec`,
+`newtonianJacobianMatrix_cycle_entry`,
+`newtonianJacobianMatrix_cycle_rowSum`,
+`euclideanRadius_swapYZVec`,
+`newtonianJacobianMatrix_swapYZ_entry`,
+`newtonianJacobianMatrix_swapYZ_rowSum`.
+**Source:**
+[JacobianPermutations.lean](NewtonianLipschitz/JacobianPermutations.lean).
+
+### R022 — Sharp row bound with a maximal positive X coordinate
+
+For a nonnegative Cartesian displacement with positive X
+coordinate dominating Y and Z, Lean proves that every
+absolute Jacobian row sum is at most
+
+`(mu*candidateMaximum)/(X^3)`.
+
+The proof expresses the displacement as X times a normalized
+vector and applies the exact inverse-cubic scaling identity.
+
+**Why useful:** Transfers the sharp normalized row bounds
+from unit X to a full positive scale.
+**Limit:** The verified statement does not yet cover cases
+with maximal Y or Z, arbitrary signs, or the universal
+Cartesian maximum-norm bound.
+
+**Lean:** `newtonianJacobianMatrix_rowSum_positive_smul`,
+`positive_first_coordinate_normalization`,
+`newtonianJacobianMatrix_firstMax_le_candidateMaximum`.
+**Source:**
+[JacobianNormalization.lean](NewtonianLipschitz/JacobianNormalization.lean).
+
+### R023 — Sharp row bounds with maximal Y or Z coordinates
+
+For nonnegative displacements with positive dominant Y
+or positive dominant Z, Lean proves the exact candidate
+bound for every absolute row sum of the physical Jacobian:
+
+`(mu*candidateMaximum)/(dominant_coordinate^3)`.
+
+Both proofs rotate the Cartesian coordinates and reuse R022.
+
+**Why useful:** Covers every choice of dominant axis
+for a nonnegative displacement.
+**Limit:** Signed coordinates, the full maximum-norm bound
+and global two-point Lipschitz estimates remain separate.
+
+**Lean:** `cycleIndex_three`,
+`newtonianJacobianMatrix_secondMax_le_candidateMaximum`,
+`newtonianJacobianMatrix_thirdMax_le_candidateMaximum`.
+**Sources:**
+[JacobianPermutations.lean](NewtonianLipschitz/JacobianPermutations.lean),
+[JacobianAxisBounds.lean](NewtonianLipschitz/JacobianAxisBounds.lean).
+
+### R024 — Global signed-coordinate Jacobian row-sum bound
+
+For every nonzero three-dimensional displacement with
+arbitrary coordinate signs and for `mu >= 0`, Lean proves
+that each absolute row sum of the actual Newtonian Jacobian
+is at most
+
+`mu*candidateMaximum / max(|X|,|Y|,|Z|)^3`.
+
+The proof combines all three dominant-axis cases (R022–R023)
+with the sign invariance of R020.
+
+**Why useful:** Establishes the candidate row bound at
+every nonzero Cartesian displacement, not just a
+normalized configuration or one coordinate octant.
+**Limit:** Its identification with the ambient Pi norm,
+the operator-norm transfer, global two-point bounds
+and optimality are separate obligations.
+
+**Lean:** `newtonianJacobianMatrix_nonnegative_max_le_candidateMaximum`,
+`newtonianJacobianMatrix_signed_max_le_candidateMaximum`.
+**Source:**
+[JacobianSignedBounds.lean](NewtonianLipschitz/JacobianSignedBounds.lean).
+
+### R025 — Sharp Cartesian Jacobian bound at positive clearance
+
+Lean verifies that the norm of a Cartesian displacement
+is exactly `max(|X|,|Y|,|Z|)`. Thus, for `x != 0`,
+each absolute row sum of the physical Jacobian is bounded by
+
+`mu*candidateMaximum / norm_inf(x)^3`.
+
+When `d > 0` and `norm_inf(x) >= d`, the bound is
+`mu*candidateMaximum / d^3`. Lean also verifies that
+the exact scalar candidate maximum is nonnegative.
+
+**Why useful:** States the previously proved sharp row
+estimate in the actual Cartesian norm and under the cube
+clearance hypothesis used in the proposed theorem.
+**Limit:** A row-sum bound does not by itself certify the
+Frechet operator norm, a global two-point inequality on
+nonconvex domains, or optimality.
+
+**Lean:** `cartesian_norm_eq_max_abs`,
+`newtonianJacobianMatrix_rowSum_le_candidateMaximum_norm`,
+`candidateMaximum_nonneg`,
+`newtonianJacobianMatrix_rowSum_le_candidateMaximum_clearance`.
+**Source:**
+[JacobianCartesianBound.lean](NewtonianLipschitz/JacobianCartesianBound.lean).
+
+### R026 — Candidate bound on the actual Frechet derivative action
+
+For nonzero Cartesian separation x, any direction h and
+nonnegative gravitational parameter mu, Lean proves
+
+`norm_inf((fderiv accelerationField x) h)
+  <= mu*candidateMaximum*norm_inf(h)/norm_inf(x)^3`.
+
+The derivative here is the genuine Frechet derivative of
+the physical Newtonian point-source acceleration field.
+The proof bounds each matrix-vector coordinate through its
+corresponding absolute Jacobian row sum.
+
+**Why useful:** Supplies the directional estimate from
+which an induced operator-norm bound can be proved.
+**Limit:** The operator-norm statement is a separate
+obligation. Global two-point bounds on nonconvex domains
+and optimality are not established.
+
+**Lean:** `matrix3_mulVec_coordinate_abs_le_rowSum`,
+`newtonianJacobianMatrix_mulVec_norm_le_candidateMaximum`,
+`NewtonianPointSource.accelerationField_fderiv_norm_le_candidateMaximum`.
+**Source:**
+[JacobianOperatorAction.lean](NewtonianLipschitz/JacobianOperatorAction.lean).
+
+### R027 — Candidate bound for the true Frechet operator norm
+
+Lean proves the candidate upper bound on the **induced
+Cartesian supremum operator norm** of the actual point-source
+Frechet derivative, for every nonzero source displacement x:
+
+```text
+norm(fderiv accelerationField x)
+  <= mu*candidateMaximum / norm_inf(x)^3.
+```
+
+Under positive Cartesian clearance `norm_inf(x) >= d > 0`,
+the same norm is at most `mu*candidateMaximum/d^3`.
+The gravitational parameter `mu` is nonnegative.
+
+**Why useful:** Completes the rigorous passage from the
+physical Jacobian's row estimates (R024–R025) through its
+directional action (R026) to the derivative operator norm.
+**Limit:** An upper bound alone does not prove optimality.
+It also does not imply a two-point Lipschitz bound for
+arbitrary points outside the nonconvex safety cubes.
+
+**Lean:**
+`NewtonianPointSource.accelerationField_fderiv_opNorm_le_candidateMaximum`,
+`NewtonianPointSource.accelerationField_fderiv_opNorm_le_clearance`.
+**Source:**
+[JacobianOperatorNorm.lean](NewtonianLipschitz/JacobianOperatorNorm.lean).
+
+### R028 — Exact attainment of the candidate Jacobian row bound
+
+At the Cartesian displacement `x = (1,t_star,t_star)`,
+where `t_star` is the exact critical root of R016,
+Lean proves
+
+```text
+norm_inf(x) = 1
+sum_j abs(J(1,x)[X,j]) = C3.
+```
+
+Here `J(1,x)` is the physical Newtonian Jacobian with
+unit gravitational parameter, and `C3` is the exact
+candidate maximum defined and maximized in R017.
+The proof first establishes the row-sum identity at
+every diagonal displacement `(1,t,t)` for `0 <= t <= 1`.
+
+**Why useful:** Provides a concrete exact equality
+witness, showing that the universal Jacobian row-sum
+upper bound cannot be improved.
+**Limit:** The witness does not yet establish equality
+for the induced derivative operator norm or a global
+two-point gravitational Lipschitz inequality.
+
+**Lean:** `normalized_diagonal_radius`,
+`newtonianJacobianMatrix_diagonal_firstRow_eq_coefficient`,
+`criticalDiagonal_cartesian_norm_eq_one`,
+`newtonianJacobianMatrix_critical_firstRow_eq_candidateMaximum`.
+**Source:**
+[JacobianSharpWitness.lean](NewtonianLipschitz/JacobianSharpWitness.lean).
+
+### R029 — Exact attainment of the Frechet operator norm C3
+
+For the unit-parameter Newtonian source and the critical
+Cartesian displacement `x = (1,t_star,t_star)`, Lean proves
+
+```text
+norm_inf(x) = 1
+norm_operator(fderiv accelerationField x) = C3.
+```
+
+The proof chooses a Cartesian direction whose components
+match the signs of the first Jacobian row. Its matrix
+action then equals the exact row sum established in R028.
+The verified operator-norm upper bound of R027 supplies
+the reverse inequality.
+
+**Why useful:** Shows that C3 is the smallest universal
+coefficient for the **pointwise Cartesian derivative
+operator-norm estimate** at unit clearance. The bound
+is attained by an actual physical Newtonian field.
+**Limit:** Derivative-norm equality does not automatically
+prove a matching admissible two-point difference quotient
+or a global Lipschitz bound across nonconvex safety cubes.
+
+**Lean:** `matrix3_exists_rowSum_attaining_direction`,
+`NewtonianPointSource.unitAxis_fderiv_opNorm_ge_candidateMaximum`,
+`NewtonianPointSource.unitAxis_fderiv_opNorm_eq_candidateMaximum`.
+**Source:**
+[JacobianOperatorWitness.lean](NewtonianLipschitz/JacobianOperatorWitness.lean).
+
+### R030 — Candidate finite-difference bound on convex safe domains
+
+Lean proves an actual **two-point** sensitivity estimate
+for the Newtonian acceleration of one point source on
+every convex set `S` with positive Cartesian clearance:
+
+```text
+d > 0 and norm_inf(z) >= d for every z in S;
+x, y in S imply
+norm_inf(g(x)-g(y))
+  <= (mu*C3/d^3) * norm_inf(x-y).
+```
+
+Here `mu >= 0` is the source gravitational parameter.
+The proof uses the verified Frechet operator-norm
+upper bound (R027) and the mean-value inequality on
+convex sets; it bounds physical finite differences.
+
+**Why useful:** Bridges the exact pointwise derivative
+estimate to genuine Lipschitz control on convex
+Cartesian-safe domains, with the same coefficient C3.
+**Limit:** Two safe endpoints do not imply their joining
+segment is safe. The exterior of an open safety cube is
+nonconvex, so no unrestricted two-point claim follows.
+Minimality of the global coefficient is still unproved.
+
+**Lean:**
+`NewtonianPointSource.accelerationField_norm_sub_le_candidateMaximum_convex`.
+**Source:**
+[ConvexSharp.lean](NewtonianLipschitz/ConvexSharp.lean).
+
+### R031 — Sharp two-point bound on a certified Cartesian box
+
+Let `B = ball_inf(anchor,rho)` be an open Cartesian
+box, namely a metric ball for the supremum norm.
+For `d > 0`, suppose the center-margin condition holds:
+
+```text
+d + rho <= norm_inf(anchor).
+```
+
+Lean proves `norm_inf(z) >= d` for every `z in B`.
+Consequently, the actual Newtonian point-source field
+satisfies for every `x,y in B`:
+
+```text
+norm_inf(g(x)-g(y))
+  <= (mu*C3/d^3) * norm_inf(x-y).
+```
+
+**Why useful:** Converts the verified convex-domain
+estimate R030 into an explicit, checkable Cartesian
+box certificate applicable to spatial enclosures.
+**Limit:** The claim concerns two points within the
+same certified convex box and one point source.
+It does not extend automatically to arbitrary safe
+points separated by a nonconvex forbidden region.
+
+**Lean:** `cartesianBox_clearance_of_center_margin`,
+`NewtonianPointSource.accelerationField_norm_sub_le_candidateMaximum_box`.
+**Source:**
+[CartesianBoxSharp.lean](NewtonianLipschitz/CartesianBoxSharp.lean).
+
+### R032 — Least universal Cartesian derivative-norm coefficient
+
+For any real `K`, Lean proves that if, for all Newtonian
+point sources with nonnegative gravitational parameter
+`mu` and every nonzero Cartesian displacement `x`,
+
+```text
+norm_operator(fderiv accelerationField x)
+  <= mu*K/norm_inf(x)^3,
+```
+
+then necessarily `C3 <= K`. In particular, every
+`K < C3` fails as a universal pointwise bound.
+The proof evaluates the assumed estimate at the
+unit-parameter critical diagonal witness of R029.
+
+**Why useful:** Establishes the quantified **minimality**
+of C3 for all universal Cartesian derivative-norm
+estimates, rather than just displaying equality.
+**Limit:** It does not yet prove minimality for a global
+two-point estimate on nonconvex cubical exteriors.
+
+**Lean:** `candidateMaximum_le_of_universal_fderiv_opNorm_bound`,
+`candidateMaximum_no_smaller_universal_fderiv_bound`.
+**Source:**
+[DerivativeCoefficientMinimality.lean][derivative-minimality].
+
+### R033 — A direction attaining the physical derivative action
+
+At the exact critical displacement
+`x_star = (1,t_star,t_star)` for a unit-parameter
+Newtonian point source, Lean proves the existence of
+a Cartesian direction `h` with `norm_inf(h) <= 1`
+such that
+
+```text
+norm_inf((fderiv accelerationField x_star) h) = C3.
+```
+
+This is an **actual action of the physical derivative**,
+not merely an abstract operator-norm equality.
+The proof chooses signs matching the critical
+Jacobian row and compares with the R029 upper bound.
+
+**Why useful:** Supplies a precise directional witness
+for a future local difference-quotient argument and
+a route toward optimality of finite-difference bounds.
+**Limit:** It does not yet show that finite perturbed
+positions are admissible outside the safety cube or
+prove global two-point minimality.
+
+**Lean:**
+`NewtonianPointSource.unitAxis_fderiv_exists_attaining_direction`.
+**Source:**
+[DerivativeAttainingDirection.lean][derivative-direction].
+
+### R034 — Admissible outward ray attaining the derivative norm
+
+At the unit-Cartesian-norm critical displacement
+`x_star = (1,t_star,t_star)`, Lean proves that an
+attaining derivative direction can be oriented
+outward, with `norm_inf(h) <= 1` and
+
+```text
+norm_inf((fderiv accelerationField x_star) h) = C3.
+norm_inf(x_star + s*h) >= 1 for every s >= 0.
+```
+
+The proof uses the invariance of derivative-action
+norm under `h -> -h` and chooses the sign with
+nonnegative first Cartesian component. Since
+`(x_star)_X = 1`, the forward ray cannot enter
+the forbidden open unit cube around the source.
+
+**Why useful:** Connects the pointwise sharpness
+witness (R033) to the actual cubical clearance
+geometry required by the global conjecture.
+**Limit:** This is an admissible ray, not yet a
+proof that secant quotients converge to C3 or
+that the global nonconvex two-point bound holds.
+
+**Lean:**
+`NewtonianPointSource.unitAxis_exists_outward_attaining_direction`,
+`criticalDiagonal_outward_ray_cartesian_clearance`,
+`NewtonianPointSource.unitAxis_exists_safe_sharp_outward_ray`.
+**Source:**
+[AdmissibleCriticalDirection.lean][admissible-critical].
+
+## Direct proof strategy
+
+The derivative bound (R027) is attained (R029)
+and minimal for universal derivative estimates (R032).
+R033–R034 construct an attaining direction with an
+admissible outward ray. R030–R031 cover convex domains.
+
+1. Show that the outward ray gives distinct pairs
+   with a unit direction and known step length.
+2. Prove the matching admissible **two-point** lower
+   bound using the finite-difference quotient limit.
+3. Analyze safe endpoints outside nonconvex cubes
+   even when their connecting segment enters a cube.
+4. Prove the multi-source global upper bound and
+   its separate optimality theorem for Palomar.
+
+## Roadmap
+
+- **M01 — Foundation: complete.** Exact field, derivative,
+  norm bridges, clearance, and bounds 10 and 7 (R001–R010).
+- **M02 — Jacobian reduction: complete for pointwise
+  row sums.** The exact Jacobian (R013), normalized row
+  algebra (R014–R015, R018–R019), symmetries (R020–R021),
+  dominant-axis estimates (R022–R023) and arbitrary
+  signed coordinates (R024) have been verified. R025
+  expresses the result in the Cartesian norm.
+- **M03 — Sharp upper bound: complete pointwise and on
+  convex safe domains.** R016–R017 fix C3, R024–R027
+  bound the Cartesian derivative operator norm, and
+  R028–R029 prove its attainment. R030 proves the
+  actual finite-difference bound on convex safe domains.
+  The unrestricted nonconvex bound remains unproved.
+- **M04 — Optimality: in progress.** R029 proves
+  derivative-norm attainment, R032 pointwise minimality,
+  and R033–R034 give a norm-attaining outward-safe ray.
+  Distinct safe secant endpoints are proposed in
+  AdmissibleSecantPairs.lean, pending the next Lean build.
+  The two-point quotient limit and the unrestricted
+  nonconvex upper bound are still open.
+- **M05 — Domain theorem: in progress.** The convex
+  finite-difference theorem (R030) and Cartesian-box
+  center-margin certificate (R031) are both verified.
+  Global bounds across nonconvex cubes remain open.
+- **M06 — Scientific and archival validation: open.** The
+  planned Palomar pair is the exact formula for C3 and its
+  global optimality (see [PALOMAR.md](PALOMAR.md)).
+  The second theorem, independent Comparator, references
+  and final review before merge remain outstanding.
+
+## Repository structure and reproducibility
+
+The substantive library is in `NewtonianLipschitz/`:
+
+- Exact physics: [Basic](NewtonianLipschitz/Basic.lean),
+  [Field](NewtonianLipschitz/Field.lean),
+  [Smoothness](NewtonianLipschitz/Smoothness.lean),
+  [Derivative](NewtonianLipschitz/Derivative.lean).
+- Norms and geometry: [Norms](NewtonianLipschitz/Norms.lean),
+  [Clearance](NewtonianLipschitz/Clearance.lean).
+- Conservative bounds: [BaselineBounds](NewtonianLipschitz/BaselineBounds.lean),
+  [ConvexBaseline](NewtonianLipschitz/ConvexBaseline.lean),
+  [ImprovedBounds](NewtonianLipschitz/ImprovedBounds.lean),
+  [ConvexImproved](NewtonianLipschitz/ConvexImproved.lean).
+- Sharp-bound work: [JacobianRows](NewtonianLipschitz/JacobianRows.lean),
+  [JacobianMatrix](NewtonianLipschitz/JacobianMatrix.lean),
+  [CubicCandidate](NewtonianLipschitz/CubicCandidate.lean),
+  [ScalarMaximum](NewtonianLipschitz/ScalarMaximum.lean),
+  [NormalizedSharpBound](NewtonianLipschitz/NormalizedSharpBound.lean),
+  [JacobianSymmetries](NewtonianLipschitz/JacobianSymmetries.lean),
+  [JacobianPermutations](NewtonianLipschitz/JacobianPermutations.lean),
+  [JacobianNormalization](NewtonianLipschitz/JacobianNormalization.lean),
+  [JacobianAxisBounds](NewtonianLipschitz/JacobianAxisBounds.lean),
+  [JacobianSignedBounds](NewtonianLipschitz/JacobianSignedBounds.lean),
+  [JacobianCartesianBound](NewtonianLipschitz/JacobianCartesianBound.lean),
+  [JacobianOperatorAction](NewtonianLipschitz/JacobianOperatorAction.lean),
+  [JacobianOperatorNorm](NewtonianLipschitz/JacobianOperatorNorm.lean),
+  [JacobianSharpWitness](NewtonianLipschitz/JacobianSharpWitness.lean),
+  [JacobianOperatorWitness](NewtonianLipschitz/JacobianOperatorWitness.lean),
+  [ConvexSharp](NewtonianLipschitz/ConvexSharp.lean),
+  [CartesianBoxSharp](NewtonianLipschitz/CartesianBoxSharp.lean),
+  [DerivativeCoefficientMinimality][derivative-minimality],
+  [DerivativeAttainingDirection][derivative-direction],
+  [AdmissibleCriticalDirection][admissible-critical],
+  [AdmissibleSecantPairs][admissible-secant].
+
+[derivative-minimality]: NewtonianLipschitz/DerivativeCoefficientMinimality.lean
+[derivative-direction]: NewtonianLipschitz/DerivativeAttainingDirection.lean
+[admissible-critical]: NewtonianLipschitz/AdmissibleCriticalDirection.lean
+[admissible-secant]: NewtonianLipschitz/AdmissibleSecantPairs.lean
+- Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
+
+[NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
+The Lean 4 toolchain and Mathlib revision are pinned.
+
+To reproduce the project, run in sequence:
+
+1. `lake exe cache get`
+2. `python3 scripts/check-repository.py`
+3. `python3 scripts/check-documentation.py`
+4. `python3 scripts/check-no-proof-holes.py`
+5. `lake build NewtonianLipschitz`
+
+The independent Comparator is not yet configured with a selected
+theorem; no Comparator pass is claimed.
+**Palomar files are placeholders**, not a formalization submission.
+
+## Methodology — transparent LLM-assisted research
+
+The human research director sets the questions. AI-generated proofs
+and text require verification. No `sorry`, `admit`, or unreviewed
+axioms are allowed in substantive proofs.
+
+A complete Lean build checks the formal statements as encoded.
+It is different from **independent kernel checking**, scientific
+peer review, physical validation, and proof of originality.
+
+The conjectural sharp coefficient and optimality remain
+**not yet Lean-verified theorems**. Preserve exact assumptions,
+norms, source links, and uncertainty.
+
+Keep cumulative **mathematical** results here; keep the build and
+task chronology in the pull request, not in the results catalog.
+Require a green full build and documentation review before merge.
+No novelty, priority, or publication-readiness claim is made.
+
+## License
+
+Apache License, Version 2.0 (Apache-2.0).
+See [LICENSE](LICENSE).
