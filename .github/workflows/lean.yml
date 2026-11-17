@@ -39,5 +39,6 @@ jobs:
           python3 scripts/check-repository.py
           python3 scripts/check-documentation.py
           python3 scripts/check-no-proof-holes.py
-      - name: Compile full substantive Lean library
-        run: lake build NewtonianLipschitz
+          python3 scripts/check-comparator.py --require-selected
+      - name: Compile proof library, standalone Challenge and Solution
+        run: lake build NewtonianLipschitz Challenge Solution
