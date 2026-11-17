@@ -39,6 +39,7 @@ theorem normalizedVector_radius_eq_diagonal
       Real.sqrt (1 + 2 * (diagonalParameter u v) ^ 2) := by
   obtain ⟨ht0, hsq⟩ := diagonalParameter_sq u v
   rw [euclideanRadius_eq_coordinates]
+  simp only [normalizedVector_zero, normalizedVector_one, normalizedVector_two]
   change Real.sqrt ((1 : ℝ) ^ 2 + u ^ 2 + v ^ 2) =
     Real.sqrt (1 + 2 * (diagonalParameter u v) ^ 2)
   congr 1
