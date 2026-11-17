@@ -7,3 +7,4 @@ public import NewtonianLipschitz.CubicCandidate
 public import NewtonianLipschitz.ConvexBaseline
 public import NewtonianLipschitz.ConvexImproved
 public import NewtonianLipschitz.JacobianRows
+public import NewtonianLipschitz.JacobianMatrix

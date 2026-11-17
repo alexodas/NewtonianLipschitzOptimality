@@ -260,7 +260,7 @@ milestone unless it directly resolves a dependency of the sharp proof.
 | Milestone | Mathematical / verification obligation | Status |
 |---|---|---|
 | **M01 — Foundation** | Exact physical field, Fréchet derivative, norm bridges and conservative convex-domain certificates (10 and 7) | **Completed; R001–R010** |
-| **M02 — Jacobian reduction** | Relate exact Jacobian to row numerators, establish sign/permutation symmetry and diagonal reduction | **In progress**; row-numerator and diagonal algebra proved (R011), operator-norm bridge still open |
+| **M02 — Jacobian reduction** | Relate the exact Jacobian to the row numerators, establish sign/permutation symmetry and complete diagonal reduction | **In progress**; algebra proved (R011), matrix-derivative identity proposed (pending CI), induced operator-norm bridge open |
 | **M03 — Sharp upper bound** | Prove existence of the cubic root, identify the maximum of `f(t)` and derive the exact supremum-operator bound | **Open**; sign and uniqueness lemmas proved (R012) |
 | **M04 — Optimality** | Produce a matching directional derivative / nearby-point witness excluding every smaller coefficient | **Open** |
 | **M05 — Domain theorem** | Apply the sharp coefficient on precisely quantified convex safe domains; investigate nonconvex exterior bounds separately | **Open** |
@@ -288,6 +288,7 @@ mathematical results. Review the entire README before merging.
 - `NewtonianLipschitz/ImprovedBounds.lean` — verified conservative derivative coefficient 7 (R009).
 - `NewtonianLipschitz/ConvexImproved.lean` — verified convex-domain coefficient 7 (R010).
 - `NewtonianLipschitz/JacobianRows.lean` — proved algebraic dominant-row and diagonal reduction (R011), not yet the full operator norm.
+- `NewtonianLipschitz/JacobianMatrix.lean` — exact Cartesian matrix action of the physical Newtonian derivative, pending Lean verification.
 - `NewtonianLipschitz/CubicCandidate.lean` — candidate definitions and proved cubic sign/uniqueness properties (R012); maximization remains open.
 - `NewtonianLipschitz.lean` — substantive library entry point.
 - `lean-toolchain`, `lakefile.toml`, `lake-manifest.json` — pinned Lean 4 / Mathlib environment.

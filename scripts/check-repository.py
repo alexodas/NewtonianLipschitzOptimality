@@ -18,6 +18,7 @@ needed = [
     "NewtonianLipschitz/BaselineBounds.lean", "NewtonianLipschitz/ConvexBaseline.lean",
     "NewtonianLipschitz/ImprovedBounds.lean", "NewtonianLipschitz/ConvexImproved.lean",
     "NewtonianLipschitz/JacobianRows.lean",
+    "NewtonianLipschitz/JacobianMatrix.lean",
     "Challenge.lean", "Solution.lean", "comparator.json",
     "formalization.yaml", "PALOMAR.md", ".github/workflows/comparator.yml",
     "scripts/verify-comparator.sh", "scripts/check-comparator.py",
@@ -52,6 +53,7 @@ expected_imports = {
         "NewtonianLipschitz.Derivative", "NewtonianLipschitz.Clearance",
         "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ConvexBaseline",
         "NewtonianLipschitz.ConvexImproved", "NewtonianLipschitz.JacobianRows",
+        "NewtonianLipschitz.JacobianMatrix",
     ],
     "NewtonianLipschitz/Basic.lean": ["Mathlib"],
     "NewtonianLipschitz/Field.lean": ["NewtonianLipschitz.Basic"],
@@ -68,6 +70,7 @@ expected_imports = {
     "NewtonianLipschitz/ImprovedBounds.lean": ["NewtonianLipschitz.BaselineBounds"],
     "NewtonianLipschitz/ConvexImproved.lean": ["NewtonianLipschitz.ImprovedBounds", "NewtonianLipschitz.Clearance"],
     "NewtonianLipschitz/JacobianRows.lean": ["Mathlib"],
+    "NewtonianLipschitz/JacobianMatrix.lean": ["NewtonianLipschitz.Derivative"],
     "Challenge.lean": ["Mathlib"],
     "Solution.lean": ["NewtonianLipschitz"],
 }
