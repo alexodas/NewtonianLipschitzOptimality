@@ -22,58 +22,72 @@ with mathematical reasoning, Lean proof development, and verification.
 
 ## Mathematical question
 
-For nonzero displacement x and nonnegative parameter mu, the exact field is
+Space has **three Cartesian axes: X, Y and Z**. A point is a
+three-component vector, for example `P=(P_X,P_Y,P_Z)`.
+The letters `P` and `Q` denote two points, not two axes.
 
-`g_mu(x) = -mu * x / (euclideanRadius x)^3`.
+For a nonzero displacement `r=(r_X,r_Y,r_Z)`, the exact
+Newtonian point-source field is
 
-The radius in the gravitational law is **Euclidean**. The sensitivity
-bound uses the **Cartesian supremum norm**:
+`g_mu(r) = -mu*r/(norm_2(r))^3`.
 
-`norm_inf (g_mu(x)-g_mu(y)) <= (C*mu/d^3)*norm_inf (x-y)`.
+The gravitational radius `norm_2` is Euclidean, while the
+sensitivity measure `norm_inf` takes the largest absolute
+value among the **X, Y and Z** coordinates.
 
-The existing coefficients 10 and 7 use positive Euclidean
-clearance d. The sharp candidate C3 concerns positive
-**Cartesian supremum-norm clearance**, a different assumption.
-Each theorem must state its clearance and geometric hypotheses.
-Derivative bounds extend to suitable **convex** domains; the
-**nonconvex exterior of a cube** requires a separate argument.
+The established coefficients 10 and 7 use positive Euclidean
+clearance d. The sharper candidate C3 concerns positive
+Cartesian supremum-norm clearance, a different assumption.
+Derivative bounds extend to suitable **convex** domains;
+the **nonconvex exterior of a cube** needs a separate proof.
 
-The exact scalar value `C3 = candidateMaximum` is defined and its
-one-variable maximality proved in Lean. Its identification as a
-**universal sharp Lipschitz constant** and its optimality are
-**not yet Lean-verified theorems**.
+The exact scalar value `C3 = candidateMaximum` is defined
+and its one-variable maximality proved in Lean. Its status
+as a **universal sharp Lipschitz constant**, together with
+global optimality, is **not yet Lean-verified**.
 
 ## Main theorem target — gravitational variation outside cubes
 
-Consider `N >= 1` Newtonian point masses `0 <= m_k <= Mmax` at
-positions `a_k`, with `G > 0` and cube half-side `d > 0`.
-A point `x` is safe when `norm_inf(x-a_k) >= d` for every
-body: it lies outside the **interior** of every forbidden cube.
-The cube boundaries are included in the safe set.
+Consider `N >= 1` Newtonian point masses `0 <= m_k <= Mmax`
+at three-dimensional positions `a_k`, with gravitational
+constant `G > 0` and cubic half-side `d > 0`.
 
-Write `g(x) = -G * sum_k m_k*(x-a_k)/norm_2(x-a_k)^3`,
-where `norm_2` is Euclidean and `norm_inf` is the largest
-absolute Cartesian coordinate.
+Let `P=(P_X,P_Y,P_Z)` and `Q=(Q_X,Q_Y,Q_Z)` be any two
+safe points: for each source `k`, both satisfy
+`norm_inf(P-a_k) >= d` and `norm_inf(Q-a_k) >= d`.
+Thus neither point is inside any forbidden open cube;
+the cube boundaries are permitted.
 
-**Conjectured global inequality, not yet proved in Lean:**
-For any two safe points `x` and `y`,
+The total Newtonian acceleration at P is
 
-`norm_inf(g(x)-g(y)) <= (C3*G*Mmax*N/d^3)*norm_inf(x-y)`.
+`g(P) = -G * sum_k m_k*(P-a_k)/norm_2(P-a_k)^3`,
 
-The proposed exact coefficient is
+and similarly for Q. Define three coordinate differences:
+
+`Delta X = P_X-Q_X`, `Delta Y = P_Y-Q_Y`,
+`Delta Z = P_Z-Q_Z`.
+
+Likewise, `Delta g_X`, `Delta g_Y`, `Delta g_Z` are the
+three components of `g(P)-g(Q)`.
+
+**Target theorem — not yet proved in Lean:**
+
+`max(|Delta g_X|, |Delta g_Y|, |Delta g_Z|)`
+`<= (C3*G*Mmax*N/d^3) * max(|Delta X|, |Delta Y|, |Delta Z|)`.
+
+The proposed coefficient is the exact real number
 `C3 = candidateCoefficient(candidateCriticalPoint)`,
-numerically `C3 ≈ 2.5775644212`. The critical point is the
-unique root in `[9/50,1/5]` of `2*t^3-8*t^2-4*t+1=0`.
+numerically `C3 ≈ 2.5775644212`. The critical point is
+the unique root in `[9/50,1/5]` of
+`2*t^3-8*t^2-4*t+1=0`.
 
-**Separate optimality claim:** No smaller universal `C3` works
-for all admissible configurations. This also awaits proof.
+**Separate optimality claim:** No smaller universal
+constant can replace `C3`; this is also unproved.
 
-**Status:** The scalar maximum, normalized Jacobian rows, and
-sign/scale identities are Lean-verified (R016–R020). They do
-**not** yet establish the global two-point inequality on the
-nonconvex exterior of cubes, nor its optimality. The
-worst local derivative is expected at cube faces, but
-this is not yet a global finite-difference theorem.
+**Status:** The scalar maximum, normalized Jacobian rows,
+and sign/scale invariances are Lean-verified (R016–R020).
+The global inequality for arbitrary P and Q outside the
+nonconvex cubes and its optimality remain open.
 
 ## Why the result may matter — intended audience
 
