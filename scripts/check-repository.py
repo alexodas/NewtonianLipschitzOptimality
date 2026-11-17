@@ -43,6 +43,7 @@ needed = [
     "NewtonianLipschitz/PhysicalTangentialFirstAxis.lean",
     "NewtonianLipschitz/PhysicalTangentialAllAxes.lean",
     "NewtonianLipschitz/SafePlaneFiniteDifference.lean",
+    "NewtonianLipschitz/UnconditionalFiniteSource.lean",
     "NewtonianLipschitz/BaselineBounds.lean", "NewtonianLipschitz/ConvexBaseline.lean",
     "NewtonianLipschitz/ImprovedBounds.lean", "NewtonianLipschitz/ConvexImproved.lean",
     "NewtonianLipschitz/JacobianRows.lean",
@@ -79,7 +80,7 @@ if manifest.get("name") != config.get("name"):
 expected_imports = {
     "NewtonianLipschitz.lean": [
         "NewtonianLipschitz.Derivative", "NewtonianLipschitz.Clearance",
-        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ScalarMaximum", "NewtonianLipschitz.NormalizedSharpBound", "NewtonianLipschitz.JacobianSymmetries", "NewtonianLipschitz.JacobianPermutations", "NewtonianLipschitz.JacobianNormalization", "NewtonianLipschitz.JacobianAxisBounds", "NewtonianLipschitz.JacobianSignedBounds", "NewtonianLipschitz.JacobianCartesianBound", "NewtonianLipschitz.JacobianOperatorAction", "NewtonianLipschitz.JacobianOperatorNorm", "NewtonianLipschitz.JacobianSharpWitness", "NewtonianLipschitz.JacobianOperatorWitness", "NewtonianLipschitz.ConvexSharp", "NewtonianLipschitz.CartesianBoxSharp", "NewtonianLipschitz.DerivativeCoefficientMinimality", "NewtonianLipschitz.DerivativeAttainingDirection", "NewtonianLipschitz.AdmissibleCriticalDirection", "NewtonianLipschitz.AdmissibleSecantPairs", "NewtonianLipschitz.LongSeparation", "NewtonianLipschitz.CommonSafeFace", "NewtonianLipschitz.CrossFaceTwoHop", "NewtonianLipschitz.TangentialAlgebra", "NewtonianLipschitz.ConditionalFiniteSource", "NewtonianLipschitz.SafePlaneReduction", "NewtonianLipschitz.PhysicalTangentialNormalized", "NewtonianLipschitz.PhysicalTangentialFirstAxis", "NewtonianLipschitz.PhysicalTangentialAllAxes", "NewtonianLipschitz.SafePlaneFiniteDifference", "NewtonianLipschitz.ConvexBaseline",
+        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ScalarMaximum", "NewtonianLipschitz.NormalizedSharpBound", "NewtonianLipschitz.JacobianSymmetries", "NewtonianLipschitz.JacobianPermutations", "NewtonianLipschitz.JacobianNormalization", "NewtonianLipschitz.JacobianAxisBounds", "NewtonianLipschitz.JacobianSignedBounds", "NewtonianLipschitz.JacobianCartesianBound", "NewtonianLipschitz.JacobianOperatorAction", "NewtonianLipschitz.JacobianOperatorNorm", "NewtonianLipschitz.JacobianSharpWitness", "NewtonianLipschitz.JacobianOperatorWitness", "NewtonianLipschitz.ConvexSharp", "NewtonianLipschitz.CartesianBoxSharp", "NewtonianLipschitz.DerivativeCoefficientMinimality", "NewtonianLipschitz.DerivativeAttainingDirection", "NewtonianLipschitz.AdmissibleCriticalDirection", "NewtonianLipschitz.AdmissibleSecantPairs", "NewtonianLipschitz.LongSeparation", "NewtonianLipschitz.CommonSafeFace", "NewtonianLipschitz.CrossFaceTwoHop", "NewtonianLipschitz.TangentialAlgebra", "NewtonianLipschitz.ConditionalFiniteSource", "NewtonianLipschitz.SafePlaneReduction", "NewtonianLipschitz.PhysicalTangentialNormalized", "NewtonianLipschitz.PhysicalTangentialFirstAxis", "NewtonianLipschitz.PhysicalTangentialAllAxes", "NewtonianLipschitz.SafePlaneFiniteDifference", "NewtonianLipschitz.UnconditionalFiniteSource", "NewtonianLipschitz.ConvexBaseline",
         "NewtonianLipschitz.ConvexImproved", "NewtonianLipschitz.JacobianRows",
         "NewtonianLipschitz.JacobianMatrix",
     ],
@@ -177,6 +178,9 @@ expected_imports = {
     ],
     "NewtonianLipschitz/SafePlaneFiniteDifference.lean": [
         "NewtonianLipschitz.PhysicalTangentialAllAxes"
+    ],
+    "NewtonianLipschitz/UnconditionalFiniteSource.lean": [
+        "NewtonianLipschitz.SafePlaneFiniteDifference"
     ],
     "NewtonianLipschitz/BaselineBounds.lean": ["NewtonianLipschitz.Derivative"],
     "NewtonianLipschitz/ConvexBaseline.lean": ["NewtonianLipschitz.BaselineBounds", "NewtonianLipschitz.Clearance"],
