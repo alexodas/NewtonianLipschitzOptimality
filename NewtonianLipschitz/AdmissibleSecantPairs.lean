@@ -85,4 +85,117 @@ theorem NewtonianPointSource.unitAxis_exists_safe_distinct_secant_pairs :
     linarith
   exact ⟨hsafe s hs.le, hdist, hdistinct⟩
 
+/-!
+## From admissible secants to optimal two-point coefficients
+
+R036 passes from R035 to the actual *right-hand* limit of finite
+differences. R037 uses that limit to rule out every smaller
+coefficient in a universal bound on pairs outside the unit cube.
+Neither statement assumes that arbitrary segments in the exterior
+are safe, and neither proves the global upper bound.
+-/
+
+/-- R036: the actual finite-difference quotients along an admissible
+outward unit ray converge to the sharp Newtonian coefficient. -/
+theorem NewtonianPointSource.unitAxis_exists_safe_secant_quotient_limit :
+    ∃ h : Vec3, ‖h‖ = 1 ∧
+      (∀ s : ℝ, 0 < s →
+        (1 : ℝ) ≤
+          ‖normalizedVector candidateCriticalPoint candidateCriticalPoint +
+            s • h‖ ∧
+        ‖(normalizedVector candidateCriticalPoint candidateCriticalPoint +
+            s • h) -
+          normalizedVector candidateCriticalPoint candidateCriticalPoint‖ =
+            s ∧
+        normalizedVector candidateCriticalPoint candidateCriticalPoint +
+          s • h ≠
+            normalizedVector candidateCriticalPoint candidateCriticalPoint) ∧
+      Filter.Tendsto
+        (fun s : ℝ =>
+          ‖s⁻¹ •
+            (NewtonianPointSource.unitAxis.accelerationField
+                (normalizedVector candidateCriticalPoint candidateCriticalPoint +
+                  s • h) -
+              NewtonianPointSource.unitAxis.accelerationField
+                (normalizedVector candidateCriticalPoint candidateCriticalPoint))‖)
+        (nhdsWithin 0 (Set.Ioi 0)) (nhds candidateMaximum) := by
+  let c : NewtonianPointSource := NewtonianPointSource.unitAxis
+  let x : Vec3 :=
+    normalizedVector candidateCriticalPoint candidateCriticalPoint
+  obtain ⟨h, hunit, haction, hsafe⟩ :=
+    NewtonianPointSource.unitAxis_exists_safe_distinct_secant_pairs
+  refine ⟨h, hunit, hsafe, ?_⟩
+  have hnorm : ‖x‖ = (1 : ℝ) :=
+    criticalDiagonal_cartesian_norm_eq_one
+  have hx : x ≠ 0 := by
+    intro hzero
+    rw [hzero, norm_zero] at hnorm
+    norm_num at hnorm
+  have hf : HasFDerivAt c.accelerationField
+      (fderiv ℝ c.accelerationField x) x :=
+    (c.accelerationField_contDiffAt x hx).differentiableAt_one.hasFDerivAt
+  have hline :=
+    (hf.hasLineDerivAt h).tendsto_slope_zero_right
+  simpa only [haction] using hline.norm
+
+/-- R037: any coefficient valid for every pair of unit-cube-safe
+displacements for the unit Newtonian source must be at least C3.
+The global upper bound is *not* assumed to have been proved. -/
+theorem candidateMaximum_le_of_universal_safe_secant_bound
+    (K : ℝ)
+    (hK : ∀ x y : Vec3,
+      (1 : ℝ) ≤ ‖x‖ → (1 : ℝ) ≤ ‖y‖ →
+        ‖NewtonianPointSource.unitAxis.accelerationField x -
+          NewtonianPointSource.unitAxis.accelerationField y‖ ≤
+            K * ‖x - y‖) :
+    candidateMaximum ≤ K := by
+  let x : Vec3 :=
+    normalizedVector candidateCriticalPoint candidateCriticalPoint
+  let c : NewtonianPointSource := NewtonianPointSource.unitAxis
+  obtain ⟨h, _hunit, hsafe, hlimit⟩ :=
+    NewtonianPointSource.unitAxis_exists_safe_secant_quotient_limit
+  have hxclear : (1 : ℝ) ≤ ‖x‖ := by
+    change (1 : ℝ) ≤
+      ‖normalizedVector candidateCriticalPoint candidateCriticalPoint‖
+    rw [criticalDiagonal_cartesian_norm_eq_one]
+  have hbound : ∀ s : ℝ, 0 < s →
+      ‖s⁻¹ • (c.accelerationField (x + s • h) -
+        c.accelerationField x)‖ ≤ K := by
+    intro s hs
+    obtain ⟨hclear, hdist, _⟩ := hsafe s hs
+    have hpair := hK (x + s • h) x hclear hxclear
+    have hpositive : 0 ≤ s⁻¹ := inv_nonneg.mpr hs.le
+    calc
+      ‖s⁻¹ • (c.accelerationField (x + s • h) -
+          c.accelerationField x)‖ =
+          s⁻¹ * ‖c.accelerationField (x + s • h) -
+            c.accelerationField x‖ := by
+        rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg hpositive]
+      _ ≤ s⁻¹ * (K * ‖(x + s • h) - x‖) :=
+        mul_le_mul_of_nonneg_left hpair hpositive
+      _ = K := by
+        rw [hdist]
+        field_simp [ne_of_gt hs]
+  have heventually :
+      ∀ᶠ s : ℝ in nhdsWithin 0 (Set.Ioi 0),
+        ‖s⁻¹ • (c.accelerationField (x + s • h) -
+          c.accelerationField x)‖ ≤ K := by
+    filter_upwards [self_mem_nhdsWithin] with s hs
+    exact hbound s hs
+  exact le_of_tendsto_of_tendsto hlimit tendsto_const_nhds heventually
+
+/-- No strictly smaller constant can hold for all *admissible*
+two-point finite differences, already for a single unit source. -/
+theorem candidateMaximum_no_smaller_universal_safe_secant_bound
+    (K : ℝ) (hK : K < candidateMaximum) :
+    ¬ ∀ x y : Vec3,
+      (1 : ℝ) ≤ ‖x‖ → (1 : ℝ) ≤ ‖y‖ →
+        ‖NewtonianPointSource.unitAxis.accelerationField x -
+          NewtonianPointSource.unitAxis.accelerationField y‖ ≤
+            K * ‖x - y‖ := by
+  intro hall
+  have hmin :=
+    candidateMaximum_le_of_universal_safe_secant_bound K hall
+  linarith
+
 end NewtonianLipschitz
