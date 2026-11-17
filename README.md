@@ -348,8 +348,9 @@ intermediate constant.
 - **M03 — Sharp upper bound: in progress.** The cubic
   facts (R012), exact root (R016), scalar maximum (R017),
   and normalized first-row bound (R018) are proved.
-  A second-row bound is proposed, pending the full build.
-  The third row and unrestricted 3D bound remain open.
+  Bounds for the other two normalized rows are proposed
+  in NormalizedSharpBound.lean and await the full build.
+  The unrestricted 3D bound remains open.
 - **M04 — Optimality: open.** A matching witness.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
