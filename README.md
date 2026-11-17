@@ -9,8 +9,8 @@ The objective is to prove the smallest universal sensitivity coefficient
 under explicit positive-clearance and geometric domain assumptions.
 
 **Already proved:** the exact field and Fréchet derivative,
-coefficients 10 and 7, the scalar maximum, normalized Jacobian
-row bounds, and sign, scale, and axis-permutation identities.
+coefficients 10 and 7, the scalar maximum, and candidate
+Cartesian Jacobian and directional derivative upper bounds.
 
 **Not yet proved:** the global two-point inequality with the
 candidate coefficient, its optimality, and a Lipschitz
@@ -125,14 +125,14 @@ Euclidean clearance. The sharp candidate C3 instead uses
 clearance in the Cartesian maximum norm. These are
 different geometric assumptions.
 
-Lean verifies scalar maximization and the sharp candidate
-bound for each Jacobian row at every nonzero displacement
-with Cartesian clearance (R016–R025).
-The transfer to the induced derivative operator norm remains
-open. In addition, the **nonconvex complement** of the
-forbidden cubes requires a separate argument for arbitrary
-pairs of points, including those whose connecting segment
-crosses a forbidden region.
+Lean verifies scalar maximization, the candidate Jacobian
+row bound and the true directional Frechet derivative
+bound at nonzero displacements (R016–R026).
+The induced operator-norm estimate remains open. Moreover,
+the **nonconvex complement** of the forbidden cubes
+requires a separate argument for arbitrary pairs of points,
+including those whose connecting segment crosses a
+forbidden region.
 
 ## Why the result may matter — intended audience
 
@@ -574,16 +574,41 @@ nonconvex domains, or optimality.
 **Source:**
 [JacobianCartesianBound.lean](NewtonianLipschitz/JacobianCartesianBound.lean).
 
+### R026 — Candidate bound on the actual Frechet derivative action
+
+For nonzero Cartesian separation x, any direction h and
+nonnegative gravitational parameter mu, Lean proves
+
+`norm_inf((fderiv accelerationField x) h)
+  <= mu*candidateMaximum*norm_inf(h)/norm_inf(x)^3`.
+
+The derivative here is the genuine Frechet derivative of
+the physical Newtonian point-source acceleration field.
+The proof bounds each matrix-vector coordinate through its
+corresponding absolute Jacobian row sum.
+
+**Why useful:** Supplies the directional estimate from
+which an induced operator-norm bound can be proved.
+**Limit:** The operator-norm statement is a separate
+obligation. Global two-point bounds on nonconvex domains
+and optimality are not established.
+
+**Lean:** `matrix3_mulVec_coordinate_abs_le_rowSum`,
+`newtonianJacobianMatrix_mulVec_norm_le_candidateMaximum`,
+`NewtonianPointSource.accelerationField_fderiv_norm_le_candidateMaximum`.
+**Source:**
+[JacobianOperatorAction.lean](NewtonianLipschitz/JacobianOperatorAction.lean).
+
 ## Direct proof strategy
 
-The sharp candidate bounds all absolute Jacobian
-row sums with Cartesian supremum-norm clearance (R025).
+The candidate bounds the true directional Frechet
+derivative action in the Cartesian supremum norm (R026).
 
-1. Transfer the matrix row estimate to the action and
-   operator norm of the physical Fréchet derivative.
+1. Derive the induced operator norm from R026 and prove
+   its bound under positive Cartesian clearance.
 2. **Separately prove optimality** using a matching witness
    and a limiting difference quotient.
-3. Establish sharp finite-difference bounds on suitable
+3. Establish finite-difference bounds on suitable
    convex safe domains.
 4. Analyze pairs of points across nonconvex cubical
    exclusions directly. The global `N`-source theorem
@@ -607,9 +632,10 @@ row sums with Cartesian supremum-norm clearance (R025).
   and all signed-coordinate row bounds (R024) are proved.
   The Pi-norm and positive-clearance transfer is
   verified (R025). Directional matrix and Frechet
-  derivative bounds are proposed in
-  JacobianOperatorAction.lean, pending the full Lean build.
-  Operator-norm, optimality and nonconvex bounds remain open.
+  derivative bounds are verified (R026). The induced
+  operator norm and clearance version are proposed in
+  JacobianOperatorNorm.lean, awaiting the full Lean build.
+  Optimality and nonconvex bounds remain open.
 - **M04 — Optimality: open.** A matching witness.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
@@ -642,7 +668,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [JacobianAxisBounds](NewtonianLipschitz/JacobianAxisBounds.lean),
   [JacobianSignedBounds](NewtonianLipschitz/JacobianSignedBounds.lean),
   [JacobianCartesianBound](NewtonianLipschitz/JacobianCartesianBound.lean),
-  [JacobianOperatorAction](NewtonianLipschitz/JacobianOperatorAction.lean).
+  [JacobianOperatorAction](NewtonianLipschitz/JacobianOperatorAction.lean),
+  [JacobianOperatorNorm](NewtonianLipschitz/JacobianOperatorNorm.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
