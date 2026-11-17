@@ -2,7 +2,7 @@
   "version": "v0.4",
   "project": {
     "name": "NewtonianLipschitzOptimality",
-    "description": "Research in progress: Lean 4 verification of the Cartesian-supremum-norm sensitivity bound for the exact 3D Newtonian point-source field with explicit clearance. Verified pointwise derivative norm upper bound and diagonal row-sum equality may inform rigorous dynamics, interval arithmetic, computational astrophysics (Barnes–Hut/FMM), Coulomb interactions in molecular simulation, adaptive mesh refinement, GPU/HPC algorithms, planetary-defense uncertainty propagation, space situational awareness, and certified Cartesian N-body methods. The global nonconvex two-point bound, optimality, performance improvements and integrations remain unproved or unvalidated. No Palomar submission is claimed.",
+    "description": "Research in progress: Lean 4 verification of the Cartesian-supremum-norm sensitivity coefficient C3 for the exact 3D Newtonian point-source field. The exact scalar maximum (R016–R017), pointwise derivative-norm upper bound (R027), and exact attainment of the physical derivative norm at a critical Cartesian configuration (R029) are verified. The convex-domain finite-difference inequality is proposed, pending the next Lean build; global nonconvex two-point inequality and optimality remain unproved. Prospective applications include rigorous dynamics, interval arithmetic, computational astrophysics (Barnes–Hut/FMM), electrostatic Coulomb simulation, adaptive mesh refinement, GPU/HPC, planetary-defense uncertainty propagation, space situational awareness and certified Cartesian N-body methods. No performance improvement or Palomar submission is claimed.",
     "authors": [
       "Alessandro Odasso"
     ],
@@ -19,7 +19,7 @@
   },
   "sources": [],
   "status": {
-    "scope": "Lean verifies scalar C3 (R016–R017), the pointwise Fréchet operator-norm upper bound (R027), and a sharp diagonal Jacobian row-sum witness (R028). The proposed operator-norm equality in JacobianOperatorWitness.lean is unverified pending CI. The global nonconvex two-point theorem and minimality are unproved. Two Palomar targets are planned but Comparator selection remains empty; no submission is claimed.",
+    "scope": "R016–R017 verify the exact scalar C3, R024–R027 verify its Jacobian and physical Fréchet derivative upper bounds, R028–R029 verify attainment of the row sum and induced derivative operator norm at the critical diagonal. A convex-domain finite-difference estimate is proposed in ConvexSharp.lean and awaits CI. An admissible finite-difference lower bound and universal nonconvex two-point upper bound remain unproved. Two Palomar targets are planned, not selected in Comparator; no submission is claimed.",
     "sorry_count": 0,
     "sorry_in_definitions": 0,
     "axioms": [
@@ -43,7 +43,7 @@
     "notes": "Alessandro Odasso, a non-mathematician interested in assessing LLMs in scientific research, initiated and directs the project. GPT-6 assists with the initial project structure and formal mathematical work."
   },
   "fidelity": {
-    "divergences": "The exact scalar maximum, pointwise derivative upper bound and a diagonal row witness are verified. Numerical C3 digits are not Lean-certified. The induced derivative operator-norm equality is a current unverified proposal. Global two-point Lipschitz regularity on the nonconvex cubical safe set and minimality are unproved. No claims of zero-cost speedup, overflow avoidance, or deployment."
+    "divergences": "The scalar candidate maximum and exact induced Fréchet derivative-norm equality at the critical diagonal are kernel-verified (R017, R029), but numerical decimal digits of C3 are not certified. The proposed convex-domain finite-difference theorem is awaiting CI; it is not yet a verified result. The global bound on the nonconvex cubical safe set and its minimality remain unproved. No runtime gains, overflow prevention or software deployment are demonstrated."
   },
   "review": {
     "status": "self-assessed",

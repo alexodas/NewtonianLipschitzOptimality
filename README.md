@@ -8,26 +8,26 @@ and its Lipschitz bounds in the Cartesian supremum norm.
 The objective is to prove the smallest universal sensitivity coefficient
 under explicit positive-clearance and geometric domain assumptions.
 
-**Verified in Lean:** R016–R017 determine the exact
-critical root and scalar formula defining C3. R024–R025
-prove the physical Newtonian Jacobian row-sum bound in
-the Cartesian maximum norm, including positive clearance.
-R026–R027 transfer it to the actual Frechet derivative
-and its induced operator norm. R028 exhibits an explicit
-unit-Cartesian-norm displacement where a Jacobian row sum
-attains C3. Earlier results R001–R015 and R018–R023
-establish the field, calculus, conservative estimates
-and the intermediate algebraic reductions.
+**Verified in Lean:** R016–R017 define the exact
+critical root and scalar coefficient C3. R024–R027
+prove the Cartesian Jacobian row-sum and actual Frechet
+operator-norm upper bounds at positive clearance.
+R028–R029 establish a concrete critical displacement
+where the Jacobian row sum and the induced derivative
+operator norm both **equal C3**. Earlier results R001–R015
+and R018–R023 cover the physical field, calculus,
+conservative estimates and intermediate reductions.
 
-**Proposed but not yet verified in Lean:** equality of
-the actual derivative operator norm with C3 at the
-critical diagonal displacement. The proof is in
-`JacobianOperatorWitness.lean` and awaits the next build.
+**Proposed, pending Lean validation:** the candidate
+finite-difference bound between any two points in a
+convex domain with uniform Cartesian clearance, in
+`ConvexSharp.lean`.
 
-**Still unproved:** a matching admissible finite-difference
-lower bound, the candidate two-point bound on convex safe
-domains, and the universal two-point inequality with
-optimality on the nonconvex exterior of safety cubes.
+**Still unproved:** an admissible finite-difference
+lower-bound witness and the universal two-point
+inequality with optimality on the nonconvex exterior
+of forbidden safety cubes. The pointwise equality
+does not itself settle these global questions.
 
 Alessandro Odasso directs the research. He is not a mathematician and
 uses this project to study the capabilities and limits of
@@ -139,11 +139,10 @@ clearance in the Cartesian maximum norm. These are
 different geometric assumptions.
 
 Lean verifies the exact scalar maximum (R016–R017),
-a universal pointwise Jacobian row-sum bound (R024–R025),
-and the induced Cartesian Frechet operator-norm estimate
-(R026–R027). The diagonal Jacobian witness attains the
-same row-sum coefficient exactly (R028). The proposed
-matching operator-norm equality is pending Lean validation.
+a pointwise Cartesian Jacobian bound (R024–R025),
+and the induced Frechet derivative norm bound (R026–R027).
+The critical diagonal witness attains both the Jacobian
+row sum (R028) and the derivative operator norm (R029).
 The **nonconvex complement** of the forbidden cubes
 requires a separate argument for arbitrary pairs of points,
 including those whose connecting segment crosses a
@@ -744,20 +743,50 @@ two-point gravitational Lipschitz inequality.
 **Source:**
 [JacobianSharpWitness.lean](NewtonianLipschitz/JacobianSharpWitness.lean).
 
+### R029 — Exact attainment of the Frechet operator norm C3
+
+For the unit-parameter Newtonian source and the critical
+Cartesian displacement `x = (1,t_star,t_star)`, Lean proves
+
+```text
+norm_inf(x) = 1
+norm_operator(fderiv accelerationField x) = C3.
+```
+
+The proof chooses a Cartesian direction whose components
+match the signs of the first Jacobian row. Its matrix
+action then equals the exact row sum established in R028.
+The verified operator-norm upper bound of R027 supplies
+the reverse inequality.
+
+**Why useful:** Shows that C3 is the smallest universal
+coefficient for the **pointwise Cartesian derivative
+operator-norm estimate** at unit clearance. The bound
+is attained by an actual physical Newtonian field.
+**Limit:** Derivative-norm equality does not automatically
+prove a matching admissible two-point difference quotient
+or a global Lipschitz bound across nonconvex safety cubes.
+
+**Lean:** `matrix3_exists_rowSum_attaining_direction`,
+`NewtonianPointSource.unitAxis_fderiv_opNorm_ge_candidateMaximum`,
+`NewtonianPointSource.unitAxis_fderiv_opNorm_eq_candidateMaximum`.
+**Source:**
+[JacobianOperatorWitness.lean](NewtonianLipschitz/JacobianOperatorWitness.lean).
+
 ## Direct proof strategy
 
-The exact candidate bounds the true Frechet derivative's
-Cartesian operator norm at positive clearance (R027).
+The candidate controls the actual Frechet derivative
+operator norm (R027) and is attained at the exact
+critical diagonal (R029).
 
-1. Transfer the exact diagonal row-sum witness (R028)
-   to the true derivative's induced operator norm.
-2. **Prove global optimality separately**, including
-   a limiting admissible finite-difference quotient.
-3. Establish finite-difference bounds on suitable convex
-   safe domains.
-4. Analyze arbitrary pairs of points outside nonconvex
-   cubical exclusions directly. The global `N`-source
-   theorem remains a separate mathematical objective.
+1. Prove a genuine finite-difference bound with C3 on
+   convex domains of positive Cartesian clearance.
+2. Prove a matching admissible finite-difference
+   lower-bound witness near the critical displacement.
+3. Investigate arbitrary pairs outside nonconvex cubes
+   directly: the connecting segment may be unsafe.
+4. Only then address the global multi-source theorem
+   and universal optimality intended for Palomar.
 
 ## Roadmap
 
@@ -769,22 +798,22 @@ Cartesian operator norm at positive clearance (R027).
   dominant-axis estimates (R022–R023) and arbitrary
   signed coordinates (R024) have been verified. R025
   expresses the result in the Cartesian norm.
-- **M03 — Sharp upper bound: complete pointwise, open
-  for global finite differences.** The exact scalar
-  maximum (R016–R017), Cartesian Jacobian row estimates
-  (R024–R025) and induced Frechet derivative norm bound
-  (R026–R027) are verified. R028 attains the row-sum
-  bound at the critical diagonal. The operator-norm
-  equality is proposed in JacobianOperatorWitness.lean
-  and still awaits CI validation. Two-point bounds
-  across nonconvex safety cubes remain unproved.
-- **M04 — Optimality: in progress.** The exact diagonal
-  row witness (R028) is verified; derivative operator-norm
-  equality is proposed but not yet validated. An admissible
-  finite-difference lower-bound witness and the global
-  upper bound are separate, unproved obligations.
-- **M05 — Domain theorem: open.** Sharp convex-domain bound
-  and separate investigation of nonconvex geometry.
+- **M03 — Sharp upper bound: complete pointwise,
+  open for global finite differences.** R016–R017
+  fix C3, R024–R027 bound the actual Cartesian
+  derivative operator norm, and R028–R029 prove exact
+  attainment at the critical diagonal. A convex-domain
+  finite-difference bound is proposed in ConvexSharp.lean
+  and awaits the full Lean build. The nonconvex bound
+  remains unproved.
+- **M04 — Optimality: in progress.** R029 proves C3 is
+  attained as the actual derivative operator norm.
+  An admissible two-point lower-bound witness and
+  universal global upper bound are still unproved.
+- **M05 — Domain theorem: in progress.** The sharp
+  candidate convex-domain finite-difference theorem
+  is proposed in ConvexSharp.lean, pending Lean.
+  Global bounds across nonconvex safety cubes are open.
 - **M06 — Scientific and archival validation: open.** The
   planned Palomar pair is the exact formula for C3 and its
   global optimality (see [PALOMAR.md](PALOMAR.md)).
@@ -819,7 +848,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [JacobianOperatorAction](NewtonianLipschitz/JacobianOperatorAction.lean),
   [JacobianOperatorNorm](NewtonianLipschitz/JacobianOperatorNorm.lean),
   [JacobianSharpWitness](NewtonianLipschitz/JacobianSharpWitness.lean),
-  [JacobianOperatorWitness](NewtonianLipschitz/JacobianOperatorWitness.lean).
+  [JacobianOperatorWitness](NewtonianLipschitz/JacobianOperatorWitness.lean),
+  [ConvexSharp](NewtonianLipschitz/ConvexSharp.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.

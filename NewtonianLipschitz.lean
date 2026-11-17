@@ -16,6 +16,7 @@ public import NewtonianLipschitz.JacobianOperatorAction
 public import NewtonianLipschitz.JacobianOperatorNorm
 public import NewtonianLipschitz.JacobianSharpWitness
 public import NewtonianLipschitz.JacobianOperatorWitness
+public import NewtonianLipschitz.ConvexSharp
 public import NewtonianLipschitz.ConvexBaseline
 public import NewtonianLipschitz.ConvexImproved
 public import NewtonianLipschitz.JacobianRows

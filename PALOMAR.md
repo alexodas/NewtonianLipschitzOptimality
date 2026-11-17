@@ -67,14 +67,17 @@ the theorem must prove **both**:
    configuration. A single-source example is sufficient
    to prove this lower-bound part.
 
-**Outstanding evidence:** The pointwise derivative
-operator-norm upper bound is verified (R027), and the
-exact diagonal Jacobian row-sum equality is verified
-(R028). The matching derivative operator-norm lower
-bound is proposed in `JacobianOperatorWitness.lean`.
-A global two-point bound across forbidden cubes and an
-admissible finite-difference minimality witness remain
-separate, unproved obligations.
+**Verified progress:** R027 proves the pointwise
+operator-norm upper bound. R028 proves the exact
+diagonal Jacobian row equality, and R029 proves
+equality of the induced Frechet operator norm with C3.
+A candidate finite-difference bound on convex safe
+domains is proposed in `ConvexSharp.lean`, pending CI.
+
+**Outstanding evidence:** An admissible finite-difference
+minimality witness, a global two-point bound across
+nonconvex forbidden cubes and the complete universal
+optimality theorem are not yet proved.
 
 ## Conditions before actual submission
 
