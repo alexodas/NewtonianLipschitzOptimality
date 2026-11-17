@@ -71,6 +71,7 @@ theorem newtonianJacobianMatrix_normalized_firstRow_le_candidateMaximum
     ring
   have hmax :
       candidateCoefficient t ≤ candidateMaximum := by
+    rw [candidateMaximum_eq]
     exact candidateCoefficient_le_at_criticalPoint t ht
   calc
     (∑ j : Fin 3,

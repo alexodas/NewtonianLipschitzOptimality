@@ -151,4 +151,9 @@ theorem candidateCoefficient_le_at_criticalPoint
 noncomputable def candidateMaximum : ℝ :=
   candidateCoefficient candidateCriticalPoint
 
+/-- Exported equality for the exact scalar maximum across sealed modules. -/
+theorem candidateMaximum_eq :
+    candidateMaximum = candidateCoefficient candidateCriticalPoint := by
+  rfl
+
 end NewtonianLipschitz
