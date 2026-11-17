@@ -1875,10 +1875,12 @@ peer review, physical validation, and proof of originality.
 
 The **one-source global nonconvex C3 upper bound**
 is now Lean-verified (R047), and R037 proves the
-necessary universal two-point lower bound. The full
-physical N-source Palomar declarations and independent
-Comparator checking remain outstanding. Preserve exact
-assumptions, norms, source links, and uncertainty.
+necessary universal two-point lower bound. The fully assembled physical N-source Palomar
+declarations are **not yet Lean-verified theorems**
+in their final requested interface; independent
+Comparator checking also remains outstanding.
+Preserve exact assumptions, norms, source links,
+and uncertainty.
 
 Keep cumulative **mathematical** results here; keep the build and
 task chronology in the pull request, not in the results catalog.
