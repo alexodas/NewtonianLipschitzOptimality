@@ -103,7 +103,7 @@ theorem NewtonianPointSource.accelerationField_norm_sub_le_candidateMaximum_diff
   have hxbound :
       ‖c.accelerationField x - c.accelerationField w‖ ≤
         A * ‖x - w‖ :=
-    hPlane c x w d i hd hwi hxi
+    hPlane c x w d i hd hwi.symm hxi
   have hybound :
       ‖c.accelerationField w - c.accelerationField y‖ ≤
         A * ‖w - y‖ :=
