@@ -26,7 +26,7 @@ required = [
     "### R014 —", "### R015 —", "### R016 —", "### R017 —", "### R018 —", "### R019 —", "### R020 —", "### R021 —", "### R022 —", "### R023 —", "### R024 —", "### R025 —", "### R026 —", "### R027 —", "### R028 —", "### R029 —", "### R030 —", "### R031 —", "### R032 —", "### R033 —", "### R034 —", "### R035 —", "### R036 —", "### R037 —",
     "## Direct proof strategy",
     "M01 — Foundation", "M02 — Jacobian reduction", "M03 — Sharp upper bound",
-    "M04 — Optimality", "M05 — Domain theorem", "M06 — Scientific and archival validation",
+    "M04 — Two-point lower bound", "M05 — Domain theorem", "M06 — Scientific and archival validation",
     "## Roadmap",
     "## Repository structure and reproducibility",
     "## Methodology",
