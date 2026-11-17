@@ -5,12 +5,87 @@ Lean-verified mathematical result on the optimal universal supremum-norm
 Lipschitz coefficient of the exact three-dimensional Newtonian point-source
 field. The [README](README.md) explains the current goal and research protocol.
 
-**Selection status:** No theorem is currently selected in
-[`comparator.json`](comparator.json). [`Challenge.lean`](Challenge.lean)
-and [`Solution.lean`](Solution.lean) are reserved standalone entrypoints
-only; the independent Comparator has **not** been run for this project.
-The [`formalization.yaml`](formalization.yaml) is a draft, minimal
-metadata skeleton without a formalization source or submission claim.
+**Comparator status:** No theorems are selected in
+[`comparator.json`](comparator.json). The current
+[`Challenge.lean`](Challenge.lean) and
+[`Solution.lean`](Solution.lean) are reserved entrypoints.
+Comparator has not been run. This is a **plan**, not a
+completed Palomar formalization or submission.
+
+## Planned Palomar theorem pair
+
+Both declarations are intended for **one Comparator configuration**
+and hence one Palomar entry. They will only be selected once
+the two formal statements and proofs are complete and audited.
+
+### Theorem 1 — Exact C3 formula and scalar maximum (proved)
+
+There is a unique real parameter `t_star` in `[9/50, 1/5]`
+satisfying
+
+```text
+2*t_star^3 - 8*t_star^2 - 4*t_star + 1 = 0.
+```
+
+For `0 <= t <= 1`, define
+
+```text
+f(t) = (2 + 6*t - 2*t^2) / (1 + 2*t^2)^(5/2).
+C3 = f(t_star) = max { f(t) : 0 <= t <= 1 }.
+```
+
+Here `C3` is the exact Lean value `candidateMaximum`.
+The approximation `2.5775644212` is informative but
+is not yet certified as a numerical interval in Lean.
+
+**Verified evidence:** R016 proves existence and uniqueness
+of the root; R017 proves exact scalar maximality.
+A standalone two-target Challenge/Solution interface
+has not yet been assembled or independently compared.
+
+### Theorem 2 — Optimal global cubical-clearance constant (open)
+
+For `N >= 1` point masses `0 <= m_k <= Mmax` at
+positions `a_k`, take `G > 0` and safety half-side
+`d > 0`. For every pair of points `P,Q` with
+
+```text
+norm_inf(P-a_k) >= d, norm_inf(Q-a_k) >= d
+for each source k,
+```
+
+the theorem must prove **both**:
+
+1. **Global upper bound**, with no assumption that
+   the segment from P to Q avoids the forbidden cubes:
+
+   `norm_inf(g(P)-g(Q)) <=
+   C3 * G * Mmax * N * norm_inf(P-Q) / d^3`.
+
+2. **Minimality:** Every strictly smaller universal
+   coefficient fails for at least one admissible
+   configuration. A single-source example is sufficient
+   to prove this lower-bound part.
+
+**Outstanding evidence:** The pointwise derivative
+operator-norm upper bound is verified (R027), but the
+global two-point upper bound on the nonconvex exterior
+is not. An exact diagonal Jacobian row-sum witness is
+proposed in `JacobianSharpWitness.lean`, pending CI.
+An admissible finite-difference witness and the full
+global theorem still require Lean proofs.
+
+## Conditions before actual submission
+
+Prepare matching, human-auditable Challenge and Solution
+declarations for both theorems; configure and run
+Comparator; update the provenance and limitations in
+`formalization.yaml`; and arrange mathematical review.
+
+Palomar requires a **public repository pinned to a full
+40-character commit SHA**. No change to private repository
+visibility, submission, or merge to `main` is authorized
+by this planning document.
 
 **Potential importance and audience:** A proved sharp Cartesian-supremum-norm
 sensitivity coefficient for the Newtonian field may help control enclosure
@@ -22,7 +97,7 @@ Cartesian-grid \(N\)-body algorithms (Octree / Barnes–Hut variants).
 These are **prospective uses**, not demonstrated software integrations,
 validated orbital propagations, certified satellite collision probabilities,
 or achieved applications. All require further assumptions and analysis;
-see the [audience discussion in the README](README.md#why-the-result-may-matter--intended-audience).
+see [the README](README.md#why-the-result-may-matter--intended-audience).
 
 **Provenance and review:** The project is initiated and directed by
 **Alessandro Odasso**, a non-mathematician investigating the capabilities and

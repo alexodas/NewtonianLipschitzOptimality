@@ -19,7 +19,7 @@
   },
   "sources": [],
   "status": {
-    "scope": "Repository initialization only: no selected theorem, no independently verified optimality coefficient and no Palomar submission.",
+    "scope": "Verified R016–R017 determine the exact scalar coefficient C3; R027 proves its pointwise derivative operator-norm upper bound. One Palomar entry with two targets is planned: the exact C3 formula and its global cubical-clearance optimality. The second remains unproved. No theorem is selected in Comparator and no submission is claimed.",
     "sorry_count": 0,
     "sorry_in_definitions": 0,
     "axioms": [
@@ -43,7 +43,7 @@
     "notes": "Alessandro Odasso, a non-mathematician interested in assessing LLMs in scientific research, initiated and directs the project. GPT-6 assists with the initial project structure and formal mathematical work."
   },
   "fidelity": {
-    "divergences": "No formal sharpness theorem exists at the date of initialization. A proposed numerical coefficient is not a checked theorem. The global nonconvex-domain case is separate from the convex-domain case."
+    "divergences": "Exact scalar maximality is verified, but its decimal approximation is not yet Lean-certified. Global two-point Lipschitz regularity on the nonconvex cubical safe set and minimality are unproved. The two-target Palomar selection is a plan, not an active Comparator configuration."
   },
   "review": {
     "status": "self-assessed",

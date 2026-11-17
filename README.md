@@ -707,9 +707,11 @@ Cartesian operator norm at positive clearance (R027).
   lower bound will be separate steps.
 - **M05 — Domain theorem: open.** Sharp convex-domain bound
   and separate investigation of nonconvex geometry.
-- **M06 — Scientific and archival validation: open.** Proof
-  integrity, mathematical references, Palomar metadata,
-  independent Comparator, and final review before merge.
+- **M06 — Scientific and archival validation: open.** The
+  planned Palomar pair is the exact formula for C3 and its
+  global optimality (see [PALOMAR.md](PALOMAR.md)).
+  The second theorem, independent Comparator, references
+  and final review before merge remain outstanding.
 
 ## Repository structure and reproducibility
 
