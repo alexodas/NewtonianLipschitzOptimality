@@ -19,6 +19,7 @@ needed = [
     "NewtonianLipschitz/NormalizedSharpBound.lean",
     "NewtonianLipschitz/JacobianSymmetries.lean",
     "NewtonianLipschitz/JacobianPermutations.lean",
+    "NewtonianLipschitz/JacobianNormalization.lean",
     "NewtonianLipschitz/BaselineBounds.lean", "NewtonianLipschitz/ConvexBaseline.lean",
     "NewtonianLipschitz/ImprovedBounds.lean", "NewtonianLipschitz/ConvexImproved.lean",
     "NewtonianLipschitz/JacobianRows.lean",
@@ -55,7 +56,7 @@ if manifest.get("name") != config.get("name"):
 expected_imports = {
     "NewtonianLipschitz.lean": [
         "NewtonianLipschitz.Derivative", "NewtonianLipschitz.Clearance",
-        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ScalarMaximum", "NewtonianLipschitz.NormalizedSharpBound", "NewtonianLipschitz.JacobianSymmetries", "NewtonianLipschitz.JacobianPermutations", "NewtonianLipschitz.ConvexBaseline",
+        "NewtonianLipschitz.FiniteSources", "NewtonianLipschitz.CubicCandidate", "NewtonianLipschitz.ScalarMaximum", "NewtonianLipschitz.NormalizedSharpBound", "NewtonianLipschitz.JacobianSymmetries", "NewtonianLipschitz.JacobianPermutations", "NewtonianLipschitz.JacobianNormalization", "NewtonianLipschitz.ConvexBaseline",
         "NewtonianLipschitz.ConvexImproved", "NewtonianLipschitz.JacobianRows",
         "NewtonianLipschitz.JacobianMatrix",
     ],
@@ -78,6 +79,9 @@ expected_imports = {
     ],
     "NewtonianLipschitz/JacobianPermutations.lean": [
         "NewtonianLipschitz.JacobianSymmetries"
+    ],
+    "NewtonianLipschitz/JacobianNormalization.lean": [
+        "NewtonianLipschitz.JacobianPermutations"
     ],
     "NewtonianLipschitz/BaselineBounds.lean": ["NewtonianLipschitz.Derivative"],
     "NewtonianLipschitz/ConvexBaseline.lean": ["NewtonianLipschitz.BaselineBounds", "NewtonianLipschitz.Clearance"],

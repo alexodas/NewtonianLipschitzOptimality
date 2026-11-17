@@ -502,7 +502,9 @@ of coordinate permutations are proved (R016–R021).
   (R011), exact Jacobian (R013), normalized row estimates
   (R014–R015, R018–R019), sign/scale invariances (R020)
   and cyclic/Y-Z axis transformations (R021) are proved.
-  The full normalization of arbitrary vectors is open.
+  A first-coordinate scaling transfer is proposed
+  in JacobianNormalization.lean, pending the full build.
+  Arbitrary displacements still require further steps.
 - **M03 — Sharp upper bound: in progress.** Cubic facts
   (R012), exact root (R016), scalar maximum (R017),
   normalized rows (R018–R019) and sign/scale transfer
@@ -535,7 +537,8 @@ The substantive library is in `NewtonianLipschitz/`:
   [ScalarMaximum](NewtonianLipschitz/ScalarMaximum.lean),
   [NormalizedSharpBound](NewtonianLipschitz/NormalizedSharpBound.lean),
   [JacobianSymmetries](NewtonianLipschitz/JacobianSymmetries.lean),
-  [JacobianPermutations](NewtonianLipschitz/JacobianPermutations.lean).
+  [JacobianPermutations](NewtonianLipschitz/JacobianPermutations.lean),
+  [JacobianNormalization](NewtonianLipschitz/JacobianNormalization.lean).
 - Multiple sources: [FiniteSources](NewtonianLipschitz/FiniteSources.lean).
 
 [NewtonianLipschitz.lean](NewtonianLipschitz.lean) is the library entry point.
