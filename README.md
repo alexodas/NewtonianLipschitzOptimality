@@ -173,11 +173,11 @@ applications, not validated performance or safety claims.
   the physical force still uses Euclidean radii; no
   elimination of squared-distance overflow or performance
   speedup is established.
-- **Aerospace and space situational awareness specialists:**
+- **Planetary defense, aerospace and space situational awareness:**
   Certified sensitivity estimates may contribute to
   conjunction analyses and uncertainty propagation.
-  The coefficient does not itself certify collision
-  probability or operational safety.
+  The coefficient does not itself certify a collision probability
+  or operational safety.
 
 **Present limitation:** R027 bounds the pointwise
 Newtonian derivative; R028 verifies equality for a

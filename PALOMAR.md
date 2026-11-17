@@ -96,8 +96,8 @@ working with N-body tree codes (Octree / Barnes–Hut) and FMM;
 computational chemists and biophysicists working with Coulomb
 interactions; interval and Taylor-model specialists using
 CAPD, VNODE-LP or COSY Infinity; AMR and adaptive numerical
-analysts; GPU/HPC developers; and researchers in planetary
-defense, aerospace and space situational awareness.
+analysts; GPU/HPC developers; and researchers in
+planetary defense, aerospace and space situational awareness.
 
 The constant can be precomputed, but neither speedup nor
 reduced cell subdivision nor prevention of floating-point
