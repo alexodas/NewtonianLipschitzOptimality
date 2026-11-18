@@ -194,7 +194,9 @@ application-level benchmark or Palomar registration is claimed.
 Only mathematical results verified by a successful full Lean build appear
 here. Numbering is permanent. Each entry records its meaning, utility,
 limits, Lean declarations, and exact source. Work in progress and CI
-chronology are kept outside this catalog.
+chronology are kept outside this catalog. Statements that a task was
+still open refer to the stage of the numbered result; the current
+project-wide verification status is in [Status](#status).
 
 ### R001 — Euclidean radius and Cartesian norm
 
@@ -1126,7 +1128,8 @@ verified nonsharp global-scale estimate on that case.
 **Limit:** The factor 2 is **not sharp** and does not
 establish the desired C3 estimate for short cross-face
 pairs. No full one-source or N-source sharp theorem
-follows from R040, and Comparator remains inactive.
+follows from R040. At that stage the independent Comparator
+had not yet been run.
 
 **Lean:**
 `cartesian_different_axes_two_hop_bridge`,
@@ -1507,9 +1510,9 @@ finite-source lifting now has a proved premise.
 complete N-source physical mass/position
 parametrization and universal optimality
 as the second final Palomar declaration.
-The first Palomar target, Challenge/Solution
-interface and independent Comparator checking
-remain to be assembled and validated.
+At the R047 stage, the standalone Palomar
+interface and independent Comparator check had
+not yet been completed; see the current [Status](#status).
 No originality, review or submission is claimed.
 
 **Lean:**
@@ -1560,14 +1563,13 @@ the existing nonlinear finite-source model.
 The theorem no longer assumes any unproved
 global one-source premise.
 
-**Limit:** The final planned Palomar statement
-still requires the explicit physical G, masses
-and source-position translation interface,
-a matching N-source universal optimality
-statement with clear assumptions, and
-independent Comparator verification.
-No external validation, publication or
-submission is claimed.
+**Limit:** R048 uses the existing finite-source model; it
+does not by itself express the separate physical
+G, masses and source-position translation interface
+of the final standalone theorem. That theorem and its
+independent Comparator verification are described in
+the current [Status](#status). No external validation,
+publication or Palomar registration is claimed.
 
 **Lean:**
 `unitSource_safe_global_bound_iff_candidateMaximum_le`,

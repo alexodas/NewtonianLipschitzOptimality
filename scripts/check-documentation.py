@@ -14,6 +14,12 @@ metadata = json.loads((root / "formalization.yaml").read_text(encoding="utf-8"))
 config = json.loads((root / "comparator.json").read_text(encoding="utf-8"))
 
 issues = []
+if "\\`" in palomar:
+    issues.append("PALOMAR.md must use unescaped inline code delimiters")
+if "this private repository" in palomar.lower():
+    issues.append("PALOMAR.md contains stale repository visibility wording")
+if "still requires the explicit physical G" in readme:
+    issues.append("README contains obsolete final-theorem status")
 readme_headers = [
     "## Executive summary",
     "### Plain-language statement",

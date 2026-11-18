@@ -85,27 +85,27 @@ separated pairs are handled directly. This gives the unrestricted
 one-source upper bound. Summing exact individual source differences
 and applying the mass cap yields the many-source estimate.
 
-The substantive Lean proof is in \`NewtonianLipschitz/\`; its exact
-scalar and global steps are available in \`ScalarMaximum.lean\`,
-\`AdmissibleSecantPairs.lean\`, \`PhysicalTangentialAllAxes.lean\`,
-\`SafePlaneFiniteDifference.lean\`, and
-\`UnconditionalFiniteSource.lean\`.
+The substantive Lean proof is in `NewtonianLipschitz/`; its exact
+scalar and global steps are available in `ScalarMaximum.lean`,
+`AdmissibleSecantPairs.lean`, `PhysicalTangentialAllAxes.lean`,
+`SafePlaneFiniteDifference.lean`, and
+`UnconditionalFiniteSource.lean`.
 
 ## Comparator statements and verification boundary
 
-\`Challenge.lean\` contains exactly the two audited theorem
-statements \`PalomarNewtonian.scalarMaximum\` and
-\`PalomarNewtonian.globalCubicSensitivityAndOptimality\`.
+`Challenge.lean` contains exactly the two audited theorem
+statements `PalomarNewtonian.scalarMaximum` and
+`PalomarNewtonian.globalCubicSensitivityAndOptimality`.
 It imports only Mathlib and spells out the physical field directly,
 without relying on project-specific definitions.
 
-\`Solution.lean\` contains the corresponding completed proofs and
-may import the substantive project. \`comparator.json\` selects
+`Solution.lean` contains the corresponding completed proofs and
+may import the substantive project. `comparator.json` selects
 exactly those two names and permits only
-\`propext\`, \`Quot.sound\` and \`Classical.choice\`.
+`propext`, `Quot.sound` and `Classical.choice`.
 The intentional statement placeholders of the Challenge do not
 count as unsolved substantive proofs. The Solution must be
-free of \`sorry\`, \`admit\` and custom axioms.
+free of `sorry`, `admit` and custom axioms.
 
 The ordinary Lean build and the independent Comparator
 verification are separate. **Do not infer a Comparator pass from
@@ -118,7 +118,7 @@ Neither verification constitutes external mathematical peer review.
 The result was developed in this repository under the
 mathematical direction of Alessandro Odasso with substantive
 GPT-6 assistance in argument discovery, Lean formalization
-and exposition. The \`formalization.yaml\` v0.4 metadata discloses
+and exposition. The `formalization.yaml` v0.4 metadata discloses
 the process, human responsibility, classification, result origin,
 and precise qualifications.
 
@@ -129,7 +129,7 @@ computation are not performance claims. The decimal expansion of
 
 A Palomar submission requires a **public** GitHub repository
 and an immutable **full 40-character commit SHA**, together
-with the selected repository-relative \`comparator.json\`.
-Preparing these files does not make this private repository
-public or submit it on the maintainer's behalf.
+with the selected repository-relative `comparator.json`.
+Preparing these files neither changes repository visibility
+nor submits the formalization to Palomar.
 
