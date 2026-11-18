@@ -10,10 +10,28 @@ readme = (root / "README.md").read_text(encoding="utf-8")
 palomar = (root / "PALOMAR.md").read_text(encoding="utf-8")
 challenge = (root / "Challenge.lean").read_text(encoding="utf-8")
 solution = (root / "Solution.lean").read_text(encoding="utf-8")
-metadata = json.loads((root / "formalization.yaml").read_text(encoding="utf-8"))
-config = json.loads((root / "comparator.json").read_text(encoding="utf-8"))
+metadata_text = (root / "formalization.yaml").read_text(encoding="utf-8")
+metadata = json.loads(metadata_text)
+config_text = (root / "comparator.json").read_text(encoding="utf-8")
+config = json.loads(config_text)
 
 issues = []
+# Registry-facing scientific statements and metadata do not carry
+# repository-development or CI chronology.
+history = re.compile(
+    r"\b(?:pull requests?|PR\s*#\s*\d+|commits?|branches?|"
+    r"GitHub Actions|workflow(?:s)?|CI\s+(?:build|check|run|failure|attempt))\b",
+    re.I,
+)
+for path, content in (
+    ("PALOMAR.md", palomar),
+    ("formalization.yaml", metadata_text),
+    ("Challenge.lean", challenge),
+    ("Solution.lean", solution),
+    ("comparator.json", config_text),
+):
+    if history.search(content):
+        issues.append(f"{path} contains non-scientific development or CI history")
 if "\\`" in palomar:
     issues.append("PALOMAR.md must use unescaped inline code delimiters")
 if "this private repository" in palomar.lower():

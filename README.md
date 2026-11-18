@@ -1010,9 +1010,10 @@ to their right-hand limit.
 
 **Why useful:** Closes the missing lower-bound side of
 the unit-source two-point optimality problem.
-**Limit:** The **global upper bound with C3** is not
-established; neither the arbitrary-clearance multi-source
-upper theorem nor Comparator is complete.
+**Limit:** R037 proves only the necessary coefficient lower bound.
+The matching unrestricted upper bound requires the separate
+safe-plane and geometric arguments of R038–R047; R048 combines
+them with the one-source optimality equivalence.
 
 **Lean:**
 `candidateMaximum_le_of_universal_safe_secant_bound`,
@@ -1076,9 +1077,8 @@ the bound holds if **either** `d <= norm_inf(x-y)`
 for arbitrarily close pairs and isolates the
 short cross-face configuration later resolved by R047.
 **Limit:** R039 alone does not cover the residual
-cross-face case; R047 supplies the global solution.
-The full Palomar comparison remains independent
-of these individual lemmas.
+cross-face case; the safe-plane argument of R047
+supplies the global solution.
 
 **Lean:**
 `cartesianPositiveSafeHalfspace_convex`,
@@ -1127,9 +1127,8 @@ path for different-axis endpoint pairs and a fully
 verified nonsharp global-scale estimate on that case.
 **Limit:** The factor 2 is **not sharp** and does not
 establish the desired C3 estimate for short cross-face
-pairs. No full one-source or N-source sharp theorem
-follows from R040. At that stage the independent Comparator
-had not yet been run.
+pairs. The improvement to the sharp C3 bound requires
+the tangential 5/4 estimate and its integration in R042–R047.
 
 **Lean:**
 `cartesian_different_axes_two_hop_bridge`,
@@ -1283,13 +1282,11 @@ geometric exhaustion, including opposite-face and
 different-axis pairs, is now independently checked
 by Lean under that premise.
 
-**Limit:** The safe-plane 5/4 proposition is **not
-proved** here. R042 proves algebraic ingredients,
-not yet their application to the physical derivative
-or integration along safe planes. Therefore neither
-the unconditional one-source sharp global C3 bound
-nor the final N-source Palomar theorem is yet proved.
-No independent Comparator verification is claimed.
+**Limit:** R043 is a conditional implication and does
+not prove its own safe-plane hypothesis. R044–R047
+establish the physical tangential estimate and its
+finite-difference form; R048 then derives the
+unconditional finite-source estimate.
 
 **Lean:**
 `oneSourceSafePlaneFiveFourthBound`,
@@ -1506,14 +1503,12 @@ the exact optimal universal global one-source
 coefficient C3. R041's previously conditional
 finite-source lifting now has a proved premise.
 
-**Limit:** R047 does **not** yet package the
-complete N-source physical mass/position
-parametrization and universal optimality
-as the second final Palomar declaration.
-At the R047 stage, the standalone Palomar
-interface and independent Comparator check had
-not yet been completed; see the current [Status](#status).
-No originality, review or submission is claimed.
+**Limit:** The R047 theorem concerns a single source.
+The unconditional finite-source extension and the
+explicit physical mass/center formulation are separate
+consequences, developed in R048 and `Solution.lean`.
+No claim of optimality for each fixed source arrangement
+follows from the one-source witness.
 
 **Lean:**
 `NewtonianPointSource.accelerationField_norm_sub_le_fiveFourth_safePlane`,
@@ -1563,13 +1558,11 @@ the existing nonlinear finite-source model.
 The theorem no longer assumes any unproved
 global one-source premise.
 
-**Limit:** R048 uses the existing finite-source model; it
-does not by itself express the separate physical
-G, masses and source-position translation interface
-of the final standalone theorem. That theorem and its
-independent Comparator verification are described in
-the current [Status](#status). No external validation,
-publication or Palomar registration is claimed.
+**Limit:** R048 uses the existing finite-source model;
+its stand-alone physical counterpart with explicit G,
+masses and translated source centers is proved in
+`Solution.lean`. Universal optimality does not mean
+attainment for every fixed multi-source layout.
 
 **Lean:**
 `unitSource_safe_global_bound_iff_candidateMaximum_le`,

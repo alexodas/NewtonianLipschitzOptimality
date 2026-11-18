@@ -1,10 +1,8 @@
-# Palomar — mathematical statements and comparison preparation
+# Sharp Newtonian Lipschitz coefficient — mathematical account
 
-This repository contains a substantive Lean 4 proof development for two
-connected theorems on the **sharp Cartesian Lipschitz coefficient of
-three-dimensional Newtonian point-source gravity**. This document
-describes the mathematical submission, not the history of its
-development. It is **not yet a Palomar registration**.
+This account describes two connected Lean 4 theorems on the **sharp
+Cartesian Lipschitz coefficient of three-dimensional Newtonian
+point-source gravity**, their mathematical proof and their scope.
 
 ## Theorem 1 — Exact algebraic coefficient
 
@@ -44,7 +42,8 @@ Let \(P,Q\in\mathbb R^3\) have *Cartesian clearance*
 \|P-a_i\|_\infty\geq d,\qquad
 \|Q-a_i\|_\infty\geq d
 \]
-from every source. Cube boundaries are admissible; the connecting
+from every source. Source centers may coincide and the safety cubes
+may overlap. Cube boundaries are admissible; the connecting
 segment \([P,Q]\) is not required to avoid the excluded cubes.
 Then
 
@@ -107,11 +106,11 @@ The intentional statement placeholders of the Challenge do not
 count as unsolved substantive proofs. The Solution must be
 free of `sorry`, `admit` and custom axioms.
 
-The ordinary Lean build and the independent Comparator
-verification are separate. **Do not infer a Comparator pass from
-a successful Lean build**; the independent-kernel result must
-be reported only after the selected configuration actually runs.
-Neither verification constitutes external mathematical peer review.
+Comparator checks that the proofs supplied by `Solution.lean` have
+the same types as the statements in `Challenge.lean` and depend only
+on the permitted axioms. Kernel verification establishes this formal
+claim, not the scientific originality or practical significance of
+the mathematical statements and not an external peer review.
 
 ## Provenance and limitations
 
@@ -127,9 +126,7 @@ and the stated applications to rigorous N-body or interval
 computation are not performance claims. The decimal expansion of
 \(C_3\) has not been Lean-certified as an interval.
 
-A Palomar submission requires a **public** GitHub repository
-and an immutable **full 40-character commit SHA**, together
-with the selected repository-relative `comparator.json`.
-Preparing these files neither changes repository visibility
-nor submits the formalization to Palomar.
+Neither the formal proof nor its automated verification establishes
+priority against all existing mathematical literature, validation
+of any numerical application, or an independent scientific review.
 

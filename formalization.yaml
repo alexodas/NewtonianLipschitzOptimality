@@ -2,7 +2,7 @@
   "version": "v0.4",
   "project": {
     "name": "Sharp Cartesian Lipschitz bounds for three-dimensional Newtonian point-source fields",
-    "description": "Two Lean-verified mathematical results. First, the unique root t of 2t^3-8t^2-4t+1=0 in [9/50,1/5] gives the exact maximum C3=(2+6t-2t^2)/(1+2t^2)^(5/2) of the scalar coefficient on [0,1]. Second, for any finite collection of nonnegative point masses at arbitrary centers in R^3, with gravitational parameter G>=0, uniform mass cap M>=0, and Cartesian clearance d>0 at two observation points from every source, the difference of their exact Newtonian gravitational accelerations is bounded in the Cartesian supremum norm by (N*G*M*C3/d^3) times their separation. No condition on the connecting segment is imposed: it may enter the excluded open safety cubes. The coefficient is the least possible universal coefficient over these configurations, already witnessed by the unit single-source case. The force law itself uses Euclidean radial distances. The statements and proofs are presented in standalone Challenge and Solution modules for Comparator; external review and Palomar registration are separate.",
+    "description": "For the three-dimensional Newtonian inverse-square field, we determine the exact sharp Cartesian Lipschitz coefficient C3. It is the global maximum on [0,1] of f(t)=(2+6t-2t^2)/(1+2t^2)^(5/2), attained at the unique root t* in [9/50,1/5] of 2t^3-8t^2-4t+1=0. For any finite set of point sources with arbitrary centers a_i, masses 0<=m_i<=M, G>=0 and Cartesian clearance d>0 at both observation points P,Q, the exact Newtonian acceleration g satisfies ||g(P)-g(Q)||_infinity <= (n G M C3/d^3)||P-Q||_infinity. The segment from P to Q need not remain outside the excluded cubes. The coefficient is optimal universally across configurations: for the unit source at the origin it is the least constant controlling all safe pairs. Euclidean radii occur in the physical force law; clearance and force differences use the Cartesian supremum norm.",
     "authors": [
       "Alessandro Odasso"
     ],
@@ -27,11 +27,11 @@
       "title": "Exact global Cartesian Lipschitz coefficient of the three-dimensional Newtonian point-source field outside safety cubes",
       "type": "original-proof",
       "relationship": "other",
-      "note": "The specific sharp cubical-clearance theorem and its two-part presentation were developed in this repository with machine-checked proofs. This classifies the origin of the submitted formalization, not priority or novelty against all prior mathematical literature; no exhaustive published-literature equivalence review has been completed."
+      "note": "The sharp global theorem for the exterior of Cartesian safety cubes is presented here with a fully machine-checked proof. The 'original-proof' label identifies this presentation as the declared source of the formal result, not as evidence of priority over the literature. No exhaustive comparison against previous mathematical publications or formalizations has been completed."
     }
   ],
   "status": {
-    "scope": "Compared theorem 1 establishes existence and uniqueness of the stationary cubic root in the stated rational interval and exact maximality of the associated scalar function on [0,1]. Compared theorem 2 establishes the nonconvex global Lipschitz upper bound for the exact inverse-square Newtonian field of any finite number N of sources with arbitrary centers, masses between 0 and M, gravitational constant G>=0 and positive common Cartesian clearance d at both endpoints. It also states the least possible universal coefficient via an iff on the unit one-source instance. The optimality assertion is universal across allowable configurations (which include N=1), not a claim that the N*M coefficient is attained for each fixed N, fixed mass layout or degenerate M=0 instance. Both theorems use Pi supremum norm for spatial differences and Euclidean radius inside the field; cube boundaries are allowed. Deliberate statement placeholders in Challenge are excluded from substantive sorry counts. No independent Comparator result or Palomar registration is asserted until actually run and checked.",
+    "scope": "The first theorem proves the unique root of the specified stationary cubic in [9/50,1/5] and exact maximality of f on [0,1]. The second proves the global finite-source Newtonian acceleration-difference bound in the Cartesian supremum norm for any n>=0, arbitrary (possibly coincident) source centers, G>=0, M>=0, 0<=m_i<=M, d>0 and endpoint clearance ||P-a_i||_infinity, ||Q-a_i||_infinity >= d for every source. The physical denominator uses Euclidean radius, and the straight segment between endpoints need not stay safe. The optimality equivalence concerns the unit one-source problem and establishes the least coefficient universal across the whole class; it does not assert that every fixed multi-source arrangement, every n or any zero-mass instance attains the upper-bound constant. Deliberate statement holes in Challenge are not counted as unfinished proofs in the substantive Solution.",
     "sorry_count": 0,
     "sorry_in_definitions": 0,
     "axioms": [
@@ -48,12 +48,12 @@
           "OpenAI GPT-6"
         ],
         "framework": "ChatGPT",
-        "tool_setup": "AI-assisted mathematical analysis and Lean 4 proof writing through a connected GitHub repository; Lean 4.35.0 and pinned Mathlib; GitHub Actions for routine compilation, separately runnable Comparator for independent checking.",
+        "tool_setup": "Lean 4.35.0 with pinned Mathlib; AI-assisted mathematical argument design and Lean proof construction; compilation by Lean and separate proof checking using Comparator with independent kernels.",
         "prompting_notes": "Human selected research questions and insisted on clear separation of proved, conditional and conjectural statements, exact mathematical hypotheses, and reproducible kernel checks."
       }
     ],
     "spend_usd": "not tracked",
-    "notes": "Alessandro Odasso directed the scientific questions and repository review. GPT-6 generated mathematical arguments, Lean proofs and editorial drafts. Full Lean build results establish formal proof checking, not independent mathematical peer review or bibliographic originality."
+    "notes": "Alessandro Odasso directed the mathematical questions and assessed the intended scientific scope. GPT-6 provided substantive assistance in argument development, Lean formalization and exposition. Proof checking establishes correctness of the encoded statements under the allowed axioms, not literature priority, physical-model validation or peer review."
   },
   "fidelity": {
     "divergences": "The exact field is Newtonian inverse-square acceleration using Euclidean radii; both clearance and the variation norm are Cartesian supremum norms. Gravitational G>=0 is allowed in the formal upper bound, a harmless extension of the customary G>0 assumption; masses are nonnegative with a common cap. The minimality is of the coefficient universal over all finite-source instances, already forced when N=1, G=M=d=1; no claim of attainability for a fixed N or source arrangement. The coefficient is specified exactly by a rationally bracketed cubic root, not by Lean-certified decimal digits. Research originality and scientific applications are not independently established."
@@ -61,7 +61,7 @@
   "review": {
     "status": "self-assessed",
     "reviewers": [],
-    "notes": "Internal statement-to-model review and Lean CI checks are performed during preparation. No independent mathematical peer review or Palomar review has been completed; Comparator status must be reported from its actual run, not inferred from ordinary Lean compilation."
+    "notes": "Self-assessment of the mathematical scope, hypotheses and correspondence between informal and formal statements, together with mechanical proof verification. No independent mathematical peer review, exhaustive literature-priority assessment or Palomar editorial review has been completed."
   },
   "acknowledgements": "The proof development uses Lean 4 and Mathlib. No other author's unpublished result is claimed."
 }
