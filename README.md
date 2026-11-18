@@ -174,12 +174,13 @@ unconditional global one-source bound, and R048 proves an
 exact one-source optimality equivalence and unconditional
 finite-source bounds for the physical nonlinear sum model.
 
-**Palomar comparison:** The two standalone statements are
-selected in \`comparator.json\`. The Challenge imports Mathlib
-only; the Solution connects the explicit physical statement
-to the verified mathematical development. Their separate
-Comparator and independent-kernel execution must be reported
-from the actual run, not inferred from an ordinary Lean build.
+**Independent comparison:** The two statements selected
+in `comparator.json` have passed the dedicated Comparator
+check: the exact Solution was accepted by con-ron, NanoDa
+and Lean's default kernel. The Challenge imports Mathlib only;
+the Solution connects its physical statement to the substantive
+development. This verification is separate from Palomar
+registration and external mathematical peer review.
 
 **Scope and limitations:** \(G\geq0\) and nonnegative masses
 are used. The coefficient is optimal over the whole
@@ -1669,13 +1670,17 @@ To reproduce the project, run in sequence:
 2. `python3 scripts/check-repository.py`
 3. `python3 scripts/check-documentation.py`
 4. `python3 scripts/check-no-proof-holes.py`
-5. `lake build NewtonianLipschitz`
+5. `python3 scripts/check-comparator.py --require-selected`
+6. `lake build NewtonianLipschitz Challenge Solution`
+7. `bash scripts/verify-comparator.sh` (requires Bubblewrap
+   and the bundled Lean independent kernels)
 
 `Challenge.lean`, `Solution.lean` and `comparator.json`
-now select the exact scalar theorem and the explicit
-physical global Newtonian theorem. A green ordinary Lean
-build is not an independent Comparator check. No Palomar
-registration or external mathematical review is claimed.
+select exactly the scalar theorem and the explicit
+physical global Newtonian theorem. The selected comparison
+has passed the independent con-ron, NanoDa and default
+Lean kernels. This is not a Palomar registration or
+external mathematical review.
 
 ## Methodology — transparent LLM-assisted research
 
@@ -1687,21 +1692,20 @@ A complete Lean build checks the formal statements as encoded.
 It is different from **independent kernel checking**, scientific
 peer review, physical validation, and proof of originality.
 
-The global nonconvex one-source C3 upper bound
-(R047), exact unit-source optimality iff (R048)
-and unconditional exact finite-source sum bounds
-(R048) are Lean-verified. The fully assembled
-physical G/mass/position Palomar declarations
-are **not yet Lean-verified theorems** in the
-final requested interface; independent
-Comparator checking also remains outstanding.
-Preserve exact assumptions, norms, source links,
-and uncertainty.
+The exact root and scalar maximum, sharp nonconvex
+single-source coefficient, and unconditional finite-source
+bound are Lean-verified. The explicit physical
+G/mass/center declarations are now compared as the
+two standalone mathematical statements and have also
+passed independent Comparator kernel checking.
 
-Keep cumulative **mathematical** results here; keep the build and
-task chronology in the pull request, not in the results catalog.
-Require a green full build and documentation review before merge.
-No novelty, priority, or publication-readiness claim is made.
+This does not establish mathematical originality,
+peer-reviewed publication, validated software performance
+or Palomar acceptance. Preserve exact assumptions,
+norms and source links. The cumulative mathematical
+ledger documents proof content rather than software
+activity. No novelty, priority or publication-readiness
+claim is made.
 
 ## License
 
