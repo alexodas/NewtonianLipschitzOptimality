@@ -98,7 +98,9 @@ private theorem physicalFiniteSourceGlobalBound
       _ = (n : ℝ) * (G * M) := by ring
   have hcoefNonneg :
       0 ≤ (1 / d ^ 3) * candidateMaximum * ‖P - Q‖ := by
-    positivity
+    exact mul_nonneg
+      (mul_nonneg (by positivity) candidateMaximum_nonneg)
+      (norm_nonneg _)
   have hsum :
       ‖g P - g Q‖ ≤
         ((n : ℝ) * G * M * candidateMaximum / d ^ 3) *
