@@ -204,16 +204,24 @@ for rel, imports in expected_imports.items():
         issues.append(f"{rel}: expected imports {imports}, got {found}")
     if len(source.splitlines()) > 10000:
         issues.append(f"{rel}: source exceeds 10,000 lines")
-# No independent proof is selected at initialization; forbid any
-# silent claim that the empty Comparator configuration verified a theorem.
+# Comparator selects exactly the two mathematical statements in Challenge.
 comparison = json.loads((root / "comparator.json").read_text(encoding="utf-8"))
-if comparison.get("theorem_names") != [] or comparison.get("definition_names") != []:
-    issues.append("A selected Comparator theorem requires updating the readiness and CI policy")
+if comparison.get("challenge_module") != "Challenge" or comparison.get("solution_module") != "Solution":
+    issues.append("Unexpected Comparator module names")
+if comparison.get("theorem_names") != [
+    "PalomarNewtonian.scalarMaximum",
+    "PalomarNewtonian.globalCubicSensitivityAndOptimality",
+] or comparison.get("definition_names") != []:
+    issues.append("The Comparator configuration must select the two final Palomar theorems")
 if comparison.get("permitted_axioms") != ["propext", "Quot.sound", "Classical.choice"]:
     issues.append("Invalid Comparator axiom allowance")
 metadata = json.loads((root / "formalization.yaml").read_text(encoding="utf-8"))
-if metadata.get("version") != "v0.4" or metadata.get("sources") != []:
-    issues.append("The current Palomar file is a draft with no selected proof source")
+if metadata.get("version") != "v0.4":
+    issues.append("Formalization metadata requires v0.4")
+if not metadata.get("sources"):
+    issues.append("Palomar metadata requires nonempty mathematically grounded sources")
+if not metadata.get("classification", {}).get("arxiv"):
+    issues.append("Palomar metadata requires an official arXiv mathematics category")
 if issues:
     print("\n".join(issues), file=sys.stderr)
     sys.exit(1)

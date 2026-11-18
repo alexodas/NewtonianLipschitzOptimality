@@ -1,7 +1,10 @@
 {
   "challenge_module": "Challenge",
   "solution_module": "Solution",
-  "theorem_names": [],
+  "theorem_names": [
+    "PalomarNewtonian.scalarMaximum",
+    "PalomarNewtonian.globalCubicSensitivityAndOptimality"
+  ],
   "definition_names": [],
   "permitted_axioms": [
     "propext",

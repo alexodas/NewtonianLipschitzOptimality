@@ -1,141 +1,136 @@
 #!/usr/bin/env python3
-"""Audit declared goals and provenance without claiming unproved results."""
+"""Check mathematical statements, exact scope and cumulative provenance."""
 from pathlib import Path
+import json
+import re
 import sys
 
 root = Path(__file__).resolve().parent.parent
 readme = (root / "README.md").read_text(encoding="utf-8")
-required = [
+palomar = (root / "PALOMAR.md").read_text(encoding="utf-8")
+challenge = (root / "Challenge.lean").read_text(encoding="utf-8")
+solution = (root / "Solution.lean").read_text(encoding="utf-8")
+metadata_text = (root / "formalization.yaml").read_text(encoding="utf-8")
+metadata = json.loads(metadata_text)
+config_text = (root / "comparator.json").read_text(encoding="utf-8")
+config = json.loads(config_text)
+
+issues = []
+# Registry-facing scientific statements and metadata do not carry
+# repository-development or CI chronology.
+history = re.compile(
+    r"\b(?:pull requests?|PR\s*#\s*\d+|commits?|branches?|"
+    r"GitHub Actions|workflow(?:s)?|CI\s+(?:build|check|run|failure|attempt))\b",
+    re.I,
+)
+for path, content in (
+    ("PALOMAR.md", palomar),
+    ("formalization.yaml", metadata_text),
+    ("Challenge.lean", challenge),
+    ("Solution.lean", solution),
+    ("comparator.json", config_text),
+):
+    if history.search(content):
+        issues.append(f"{path} contains non-scientific development or CI history")
+if "\\`" in palomar:
+    issues.append("PALOMAR.md must use unescaped inline code delimiters")
+if "this private repository" in palomar.lower():
+    issues.append("PALOMAR.md contains stale repository visibility wording")
+if "still requires the explicit physical G" in readme:
+    issues.append("README contains obsolete final-theorem status")
+readme_headers = [
     "## Executive summary",
+    "### Plain-language statement",
+    "### Formal mathematical statements",
     "## Mathematical question",
-    "## Main theorem target — gravitational variation outside cubes",
-    "## Why the result may matter — intended audience",
-    "CAPD", "VNODE-LP", "COSY Infinity",
-    "Planetary defense", "space situational awareness",
-    "Barnes–Hut", "does not itself certify a collision probability",
-        "## Status",
-    "**Verified in Lean:**",
-    "**Proposed but not yet verified in Lean:**",
-    "**Still unproved:**",
+    "## Why the result may matter",
+    "## Status",
     "## Results acquired — cumulative mathematical ledger",
-    "### R001 —",
-    "### R008 —",
-    "### R009 —", "### R010 —",
-    "### R011 —", "### R012 —",
-    "### R013 —",
-    "### R014 —", "### R015 —", "### R016 —", "### R017 —", "### R018 —", "### R019 —", "### R020 —", "### R021 —", "### R022 —", "### R023 —", "### R024 —", "### R025 —", "### R026 —", "### R027 —", "### R028 —", "### R029 —", "### R030 —", "### R031 —", "### R032 —", "### R033 —", "### R034 —", "### R035 —", "### R036 —", "### R037 —", "### R038 —", "### R039 —", "### R040 —", "### R041 —", "### R042 —", "### R043 —", "### R044 —", "### R045 —", "### R046 —", "### R047 —", "### R048 —",
-    "## Direct proof strategy",
-    "M01 — Foundation", "M02 — Jacobian reduction", "M03 — Sharp upper bound",
-    "M04 — Two-point lower bound", "M05 — Domain theorem", "M06 — Scientific and archival validation",
-    "## Roadmap",
+    "## Mathematical proof architecture",
     "## Repository structure and reproducibility",
     "## Methodology",
-    "Alessandro Odasso",
-    "not a mathematician",
-    "large language models (LLMs)",
-    "not yet Lean-verified theorems",
-    "nonconvex complement",
-    "independent kernel checking",
-    "Palomar files are placeholders",
 ]
-issues = [f"README missing: {token}" for token in required if token not in readme]
-palomar_notes = (root / "PALOMAR.md").read_text(encoding="utf-8")
-if "not a submitted formalization" not in palomar_notes:
-    issues.append("PALOMAR.md must explicitly disclose placeholder status")
-description = __import__("json").loads(
-    (root / "formalization.yaml").read_text(encoding="utf-8")
-)["project"]["description"]
-for audience in ("rigorous dynamics", "planetary-defense", "space situational awareness", "Cartesian N-body"):
-    if audience not in description:
-        issues.append(f"Metadata description missing potential audience: {audience}")
-for audience in ("CAPD", "planetary defense", "space situational awareness", "Barnes–Hut"):
-    if audience not in palomar_notes:
-        issues.append(f"PALOMAR.md missing potential audience: {audience}")
-for ref in ("R035", "R036", "R037", "R038", "R039", "R040", "R041", "R042", "R043", "R044", "R045", "R046", "R047", "R048"):
-    if ref not in palomar_notes:
-        issues.append(f"PALOMAR.md missing verified {ref} provenance")
-    if ref not in description:
-        issues.append(f"Metadata description missing verified {ref} provenance")
+for item in readme_headers:
+    if item not in readme:
+        issues.append(f"README is missing {item}")
 
-# Release-facing documentation must describe durable proof status, not
-# a PR that may already have been merged. The mathematical ledger itself
-# records historical theorem scope, never transient CI chronology.
-import re
-for document_name, content in (
-    ("README.md", readme),
-    ("PALOMAR.md", palomar_notes),
-):
-    if re.search(r"\b(?:current|present|active).{0,45}\bPR\s*#\d+", content, re.I):
-        issues.append(f"{document_name} contains a transient active-PR claim")
-if "**Proposed but not yet verified in Lean:**" in readme and "**Still unproved:**" in readme:
-    proposed = readme.split("**Proposed but not yet verified in Lean:**", 1)[1].split(
-        "**Still unproved:**", 1
-    )[0]
-    if re.search(r"\bR\d{3}\s+is now Lean-verified\b", proposed):
-        issues.append("Proposed-status block misplaces a verified result")
-if "R040" not in readme.split("**Verified in Lean:**", 1)[1].split(
-    "**Proposed but not yet verified in Lean:**", 1
-)[0]:
-    issues.append("README verified-status block omits R040")
-if "R041" not in readme.split("**Verified in Lean:**", 1)[1].split(
-    "**Proposed but not yet verified in Lean:**", 1
-)[0]:
-    issues.append("README verified-status block omits R041")
-if "oneSourceGlobalCandidateBound" not in readme:
-    issues.append("R041 must name its explicit unproved one-source premise")
-if "oneSourceGlobalCandidateBound" not in palomar_notes:
-    issues.append("Palomar must identify the unproved R041 premise explicitly")
-if "oneSourceSafePlaneFiveFourthBound" not in readme:
-    issues.append("R043 must identify the explicitly unproved safe-plane premise")
-if "oneSourceSafePlaneFiveFourthBound" not in palomar_notes:
-    issues.append("Palomar must identify the R043 safe-plane premise")
-if "oneSourceSafePlaneFiveFourthBound_proved" not in readme:
-    issues.append("R047 must record the proved physical safe-plane bound")
-if "oneSourceGlobalCandidateBound_proved" not in readme:
-    issues.append("R047 must record the unconditional global single-source theorem")
-if "unitSource_safe_global_bound_iff_candidateMaximum_le" not in readme:
-    issues.append("R048 must record the exact unit-source optimality equivalence")
-if "finiteDifferentialAcceleration_norm_le_length_mul_global" not in readme:
-    issues.append("R048 must record unconditional N-source finite-difference bound")
-if "oneSourceGlobalCandidateBound" not in description:
-    issues.append("Metadata must identify the now-proved one-source global proposition")
-if "conditional" not in palomar_notes.lower() or "conditional" not in readme.lower():
-    issues.append("R041 conditional status missing from documentation")
-# The acquired-results section is a cumulative mathematical catalog.
-# It must never be turned into an activity log or silently renumbered.
-import re
+math_markers = [
+    "2t_*^3-8t_*^2-4t_*+1=0",
+    "C_3=f(t_*)",
+    "nonconvex",
+    "Euclidean",
+    "Cartesian",
+    "5/2",
+    "one-source",
+    "finite-source",
+]
+for marker in math_markers:
+    if marker not in readme and marker not in palomar:
+        issues.append(f"Mathematical narrative missing {marker}")
+
+if re.search(r"Main conjecture.{0,100}not yet proved", readme, re.I | re.S):
+    issues.append("README still describes the proved global inequality as a conjecture")
+if "Palomar files are placeholders" in readme:
+    issues.append("README retains obsolete unselected-Comparator disclaimer")
+if re.search(r"\b(?:current|present|active).{0,45}\bPR\s*#\d+", readme + palomar, re.I):
+    issues.append("Mathematical documentation must not depend on current PR status")
+
+names = [
+    "PalomarNewtonian.scalarMaximum",
+    "PalomarNewtonian.globalCubicSensitivityAndOptimality",
+]
+if config.get("theorem_names") != names:
+    issues.append("Comparator must select the exact two principal theorems")
+for name in names:
+    if f"theorem {name}" not in challenge or f"theorem {name}" not in solution:
+        issues.append(f"Challenge/Solution declaration missing: {name}")
+    if name not in palomar:
+        issues.append(f"Palomar account does not identify {name}")
+
+if not challenge.startswith("module\n") or "public import Mathlib\n" not in challenge:
+    issues.append("Challenge must be a Mathlib-only Lean module")
+if "import NewtonianLipschitz" in challenge:
+    issues.append("Challenge must not import project-specific proofs")
+if not solution.startswith("module\n") or "public import NewtonianLipschitz" not in solution:
+    issues.append("Solution must import the proof development")
+if re.search(r"\b(?:sorry|admit|axiom)\b", solution):
+    issues.append("Solution contains a prohibited proof hole or custom axiom")
+
+if metadata.get("version") != "v0.4":
+    issues.append("Metadata must use formalization.yaml v0.4")
+for field in ("authors", "responsible_maintainers", "description", "license"):
+    if not metadata.get("project", {}).get(field):
+        issues.append(f"Missing project.{field}")
+if not metadata.get("classification", {}).get("arxiv"):
+    issues.append("Missing mathematical arXiv classification")
+if not metadata.get("sources"):
+    issues.append("Missing mathematically grounded result origin")
+if metadata.get("review", {}).get("status") not in ("self-assessed", "unchecked", "author-verified"):
+    issues.append("Review metadata must reflect actual review status")
+if "originality" not in metadata["fidelity"]["divergences"] and "priority" not in metadata["fidelity"]["divergences"]:
+    # The origin note and Palomar account may disclose this elsewhere.
+    if "priority" not in palomar:
+        issues.append("No explicit caution on mathematical priority")
+
 section_start = "## Results acquired — cumulative mathematical ledger"
-if "## Status" in readme and section_start in readme:
-    if readme.index("## Status") >= readme.index(section_start):
-        issues.append("Mathematical status must precede the acquired-results ledger")
-    executive = readme.split("## Executive summary", 1)[1].split(
-        "## Main theorem target", 1
-    )[0]
-    if any(token in executive for token in (
-        "**Verified in Lean:**",
-        "**Proposed but not yet verified in Lean:**",
-        "**Still unproved:**",
-    )):
-        issues.append("Detailed proof status belongs in the Status section")
-
-section_end = "## Direct proof strategy"
+section_end = "## Mathematical proof architecture"
 if section_start in readme and section_end in readme:
     catalog = readme.split(section_start, 1)[1].split(section_end, 1)[0]
     matches = list(re.finditer(r"^### R(\d{3}) — ", catalog, re.M))
-    numbers = [int(m.group(1)) for m in matches]
+    numbers = [int(x.group(1)) for x in matches]
     if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 48:
-        issues.append("Results must be cumulative, contiguous, and retain R001–R048")
+        issues.append("Historical mathematical ledger must retain R001–R048 consecutively")
     for idx, match in enumerate(matches):
-        block = catalog[match.end():matches[idx+1].start() if idx+1 < len(matches) else len(catalog)]
+        nxt = matches[idx + 1].start() if idx + 1 < len(matches) else len(catalog)
+        block = catalog[match.end():nxt]
         if not all(tag in block for tag in ("**Why useful:**", "**Limit:**", "**Lean:**")):
-            issues.append(f"Result R{numbers[idx]:03d} missing statement/use/limit/Lean evidence")
+            issues.append(f"R{numbers[idx]:03d} missing mathematical scope or evidence")
         if not ("**Source:**" in block or "**Sources:**" in block):
-            issues.append(f"Result R{numbers[idx]:03d} missing exact source link")
+            issues.append(f"R{numbers[idx]:03d} missing source citation")
     if re.search(r"Action\s*#\s*\d+|workflow run|CI failure|CI attempt", catalog, re.I):
-        issues.append("Acquired results must not contain build or task chronology")
-if "LeanAsteroidPairs" in readme:
-    issues.append("New project README must be scientifically self-contained")
+        issues.append("Mathematical ledger must not include CI/task chronology")
+
 if issues:
     print("\n".join(issues), file=sys.stderr)
     sys.exit(1)
-print("README research scope, uncertainty and provenance verified.")
+print("Two mathematical statements, source provenance and R001–R048 ledger audited.")

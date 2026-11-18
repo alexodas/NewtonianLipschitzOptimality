@@ -1,7 +1,18 @@
-name: Independent Comparator (manual; selected theorem required)
+name: Independent Comparator — two theorem statements
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "Challenge.lean"
+      - "Solution.lean"
+      - "comparator.json"
+      - "formalization.yaml"
+      - "NewtonianLipschitz/**"
+      - "scripts/verify-comparator.sh"
+      - "scripts/check-comparator.py"
+      - ".github/workflows/comparator.yml"
 
 permissions:
   contents: read
